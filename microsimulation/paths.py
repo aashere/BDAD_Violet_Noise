@@ -102,7 +102,6 @@ def discover_paths(node, sink, pair, visited, cur_path, paths):
             for edge in DG.out_edges(node):
                 nbh = edge[1]
                 if filter_edge(edge, node, sink):
-                    #print("Passed filter" + str(node))
                     if visited[nbh] is False:
                         discover_paths(nbh, sink, pair, visited, cur_path, paths)
 
@@ -112,7 +111,7 @@ def discover_paths(node, sink, pair, visited, cur_path, paths):
         cur_path.pop()
 
 if __name__ == "__main__":
-    show_graph()
+    #show_graph()
     
     # List of all sources in graph
     sources = []
@@ -142,5 +141,5 @@ if __name__ == "__main__":
                 paths[pair].sort(key=lambda x : len(x))
                 print(pair)
     print("Done!")
-    for k in paths.keys():
-        print(str(k) + " " + str(len(paths[k])))
+    #for k in paths.keys():
+    #    print(str(k) + " " + str(len(paths[k])))
