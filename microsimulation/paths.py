@@ -36,6 +36,8 @@ DG.add_edge(5, 8, direction='north')
 DG.add_edge(9, 6, direction='south')
 DG.add_edge(7, 8, direction='east')
 DG.add_edge(8, 9, direction='east')
+DG.add_edge(8, 5, direction='south')
+DG.add_edge(5, 2, direction='south')
 
 def show_graph():
     pos = nx.get_node_attributes(DG,'cartesian')
@@ -56,6 +58,33 @@ def show_graph():
     plt.show()
 '''
 
+def filter_edge(edge, node, sink):
+    if DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] < 0 and DG.edges[edge]['direction'] == 'west':
+        return True
+    if DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] > 0 and DG.edges[edge]['direction'] == 'east':
+        return True
+    if DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] < 0 and DG.edges[edge]['direction'] == 'south':
+        return True
+    if DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] > 0 and DG.edges[edge]['direction'] == 'north':
+        return True
+    if (DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] == 0 and 
+        DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] < 0 and
+        DG.edges[edge]['direction'] == 'south'):
+        return True
+    if (DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] == 0 and 
+        DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] > 0 and
+        DG.edges[edge]['direction'] == 'north'):
+        return True
+    if (DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] == 0 and 
+        DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] < 0 and
+        DG.edges[edge]['direction'] == 'west'):
+        return True
+    if (DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] == 0 and 
+        DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] > 0 and
+        DG.edges[edge]['direction'] == 'east'):
+        return True
+    return False                                           
+
 def discover_paths(node, sink, pair, visited, cur_path, paths):        
         # Mark the current node as visited and push it to the path
         visited[node] = True
@@ -72,14 +101,8 @@ def discover_paths(node, sink, pair, visited, cur_path, paths):
         else:
             for edge in DG.out_edges(node):
                 nbh = edge[1]
-                if ((DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] < 0 and DG.edges[edge]['direction'] == 'west') or
-                    (DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] > 0 and DG.edges[edge]['direction'] == 'east') or
-                    (DG.nodes[sink]['cartesian'][0]-DG.nodes[node]['cartesian'][0] == 0 and DG.edges[edge]['direction'] != 'east'
-                                                                                        and DG.edges[edge]['direction'] != 'west') or
-                    (DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] < 0 and DG.edges[edge]['direction'] == 'south') or
-                    (DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] > 0 and DG.edges[edge]['direction'] == 'north') or
-                    (DG.nodes[sink]['cartesian'][1]-DG.nodes[node]['cartesian'][1] == 0 and DG.edges[edge]['direction'] != 'south'
-                                                                                        and DG.edges[edge]['direction'] != 'north')):
+                if filter_edge(edge, node, sink):
+                    #print("Passed filter" + str(node))
                     if visited[nbh] is False:
                         discover_paths(nbh, sink, pair, visited, cur_path, paths)
 
@@ -89,7 +112,7 @@ def discover_paths(node, sink, pair, visited, cur_path, paths):
         cur_path.pop()
 
 if __name__ == "__main__":
-    #show_graph()
+    show_graph()
     
     # List of all sources in graph
     sources = []
@@ -119,4 +142,5 @@ if __name__ == "__main__":
                 paths[pair].sort(key=lambda x : len(x))
                 print(pair)
     print("Done!")
-    #print(paths)
+    for k in paths.keys():
+        print(str(k) + " " + str(len(paths[k])))
