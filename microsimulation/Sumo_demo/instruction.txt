@@ -1,2 +1,7 @@
 netconvert --node-files my_nodes.nod.xml --edge-files my_edge.edg.xml -t my_type.type.xml -o my_net.net.xml
 sumo -c my_config_file.sumocfg --fcd-output sumoTrace.xml
+
+# import from open street map
+netconvert --osm-files manhattan.osm -o manhattan.net.xml
+python C:\Users\yingl\OneDrive\Desktop\BDAD_Proj\microsimulation\Sumo_demo\manhattan\randomTrips.py -n manhattan.net.xml -r manhattan.rou.xml -e 50 -l
+python C:\Users\yingl\OneDrive\Desktop\BDAD_Proj\microsimulation\sumoDataGeneration\data\randomTrips.py -n my_net.net.xml -r my_route.rou.xml -e 50 -l

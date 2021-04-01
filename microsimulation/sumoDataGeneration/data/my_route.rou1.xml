@@ -1,0 +1,7 @@
+<routes> 
+<vType accel="1.0" decel="5.0" id="Bus" length="12.0" maxSpeed="0.1" sigma="0.0" /> 
+
+<route id="route1" edges="9_30to8_30 8_30to7_30"/>  
+
+<vehicle depart="10" id="veh1" route="route1" type="Bus" />  
+</routes>
