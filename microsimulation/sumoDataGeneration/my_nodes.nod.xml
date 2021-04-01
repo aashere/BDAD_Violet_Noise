@@ -1,8 +1,0 @@
-<nodes>
-<node id="n1" x = "0" y="0" type="priority"/>
-<node id="n2" x = "0" y="300"/>
-<node id="n3" x = "250" y="0" type="traffic_light"/>
-<node id="n4" x = "250" y="300" type="traffic_light"/>
-<node id="n5" x = "500" y="0"/>
-<node id="n6" x = "500" y="300" type="traffic_light"/>
-</nodes>
