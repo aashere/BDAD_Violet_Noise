@@ -58,7 +58,7 @@ with open('data/my_route.rou.xml', 'w') as f:
     for pair in busroute:
         options = paths[pair]
         options = [i["path_id"] for i in options if i["turns"] <= 1]
-        for hour in range(23):
+        for hour in range(24):
             minute = busroute[pair] + hour*60
             for route in options:
                 vehicle_id +=1

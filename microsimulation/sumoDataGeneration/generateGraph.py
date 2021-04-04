@@ -101,8 +101,8 @@ for node in DG.nodes:
             DG.nodes[node]["color"] = "red"
 
 
-mins = [i*60 for i in list(range(24))]
-rate = [int(i) for i in list(np.ones(24)*2)]
+mins = [i*15 for i in list(range(96))]
+rate = [int(i) for i in list(np.ones(96)*2)]
 
 defaultrate = dict(zip(mins,rate))
 
