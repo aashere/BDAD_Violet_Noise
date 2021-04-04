@@ -27,13 +27,12 @@ with open('data/my_route.rou.xml', 'w') as f:
     f.write('<vType accel="1.0" decel="3.0" id="Bus" length="12.0" maxSpeed="10" sigma="0.0" />\n')
     f.write('<vType accel="5.0" decel="5.0" id="Car" length="3.0" maxSpeed="25" sigma="0.0" />\n')
     
-    route_id = 0
     for pair in paths:
         for record in paths[pair]:
             path = record["path"]
             if record["length"] == 0 or not path:
                 continue
-            tmp_route = [DG.nodes[i]['name'] + 'to' + DG.nodes[i + 1]['name'] for i, v in enumerate(path)]
+            tmp_route = [DG.nodes[path[i]]['name'] + 'to' + DG.nodes[path[i + 1]]['name'] for i in range(record["length"]-1)]
             f.write('<route id="route{}" edges="{}"/>\n'.format(record["path_id"], ' '.join(tmp_route)))
 
 
