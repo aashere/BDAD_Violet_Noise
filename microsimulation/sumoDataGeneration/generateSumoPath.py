@@ -18,7 +18,7 @@ with open('data/my_route.rou.xml', 'a') as f:
     f.write('<vType accel="5.0" decel="5.0" id="Car" length="3.0" maxSpeed="25" sigma="0.0" />\n')
     counter = 0
     for k, v in paths.items():
-        print(k, v)
+        #print(k, v)
         if not v or not v[0]:
             continue
         counter += 1

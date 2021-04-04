@@ -1,9 +1,10 @@
 import networkx as nx
-import matplotlib.pyplot as plt
-import pprint
-from GraphTest import DG
-import time
 import json
+import pickle
+
+with open("data/graph.p", "rb") as f:
+    DG = pickle.load(f)
+
 
 # Dict of all paths from every source to every sink.
 # This gives all the routes. It is a dict that maps
@@ -92,7 +93,7 @@ if __name__ == "__main__":
                 # Generate all possible paths
                 discover_paths(s, t, pair, visited, cur_path, paths)
                 paths[pair].sort(key=lambda x : len(x))
-                print(pair)
+                
 
     with open("data/pathdict.json", 'w') as outf:
         jsonformat = json.dumps({"%s|%s" % k:v for k, v in paths.items()})
