@@ -1,12 +1,13 @@
 import networkx as nx
-import matplotlib.pyplot as plt
-import pprint
-from GraphTest import DG
-import time
+import pickle
 import json
 # Dict of all paths from every source to every sink.
 # This gives all the routes. It is a dict that maps
 # (source, sink): [list of routes in ascending order of size]
+
+with open("data/graph.p", "rb") as f:
+    DG = pickle.load(f)
+
 with open("data/pathdict.json", 'r') as inf:
     paths = json.load(inf)
     paths = {tuple([int(i) for i in k.split("|")]): v for k, v in paths.items()}
@@ -18,6 +19,7 @@ with open('data/my_route.rou.xml', 'a') as f:
     f.write('<vType accel="5.0" decel="5.0" id="Car" length="3.0" maxSpeed="25" sigma="0.0" />\n')
     counter = 0
     for k, v in paths.items():
+        v = [record["path"] for record in v]
         #print(k, v)
         if not v or not v[0]:
             continue
