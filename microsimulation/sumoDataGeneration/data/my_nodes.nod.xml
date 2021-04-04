@@ -1,234 +1,234 @@
 <nodes>
-<node id="9_30" x = "0" y="0"/>
-<node id="9_31" x = "0" y="100"/>
-<node id="9_32" x = "0" y="200"/>
-<node id="9_33" x = "0" y="300"/>
-<node id="9_34" x = "0" y="400"/>
-<node id="9_35" x = "0" y="500"/>
-<node id="9_36" x = "0" y="600"/>
-<node id="9_37" x = "0" y="700"/>
-<node id="9_38" x = "0" y="800"/>
-<node id="9_39" x = "0" y="900"/>
-<node id="9_40" x = "0" y="1000"/>
-<node id="9_41" x = "0" y="1100"/>
-<node id="9_42" x = "0" y="1200"/>
-<node id="9_43" x = "0" y="1300"/>
-<node id="9_44" x = "0" y="1400"/>
-<node id="9_45" x = "0" y="1500"/>
-<node id="9_46" x = "0" y="1600"/>
-<node id="9_47" x = "0" y="1700"/>
-<node id="9_48" x = "0" y="1800"/>
-<node id="9_49" x = "0" y="1900"/>
-<node id="9_50" x = "0" y="2000"/>
-<node id="9_51" x = "0" y="2100"/>
-<node id="9_52" x = "0" y="2200"/>
-<node id="9_53" x = "0" y="2300"/>
-<node id="9_54" x = "0" y="2400"/>
-<node id="9_55" x = "0" y="2500"/>
-<node id="9_56" x = "0" y="2600"/>
-<node id="9_57" x = "0" y="2700"/>
-<node id="9_58" x = "0" y="2800"/>
-<node id="8_30" x = "200" y="0"/>
-<node id="8_31" x = "200" y="100"/>
-<node id="8_32" x = "200" y="200"/>
-<node id="8_33" x = "200" y="300"/>
-<node id="8_34" x = "200" y="400"/>
-<node id="8_35" x = "200" y="500"/>
-<node id="8_36" x = "200" y="600"/>
-<node id="8_37" x = "200" y="700"/>
-<node id="8_38" x = "200" y="800"/>
-<node id="8_39" x = "200" y="900"/>
-<node id="8_40" x = "200" y="1000"/>
-<node id="8_41" x = "200" y="1100"/>
-<node id="8_42" x = "200" y="1200"/>
-<node id="8_43" x = "200" y="1300"/>
-<node id="8_44" x = "200" y="1400"/>
-<node id="8_45" x = "200" y="1500"/>
-<node id="8_46" x = "200" y="1600"/>
-<node id="8_47" x = "200" y="1700"/>
-<node id="8_48" x = "200" y="1800"/>
-<node id="8_49" x = "200" y="1900"/>
-<node id="8_50" x = "200" y="2000"/>
-<node id="8_51" x = "200" y="2100"/>
-<node id="8_52" x = "200" y="2200"/>
-<node id="8_53" x = "200" y="2300"/>
-<node id="8_54" x = "200" y="2400"/>
-<node id="8_55" x = "200" y="2500"/>
-<node id="8_56" x = "200" y="2600"/>
-<node id="8_57" x = "200" y="2700"/>
-<node id="8_58" x = "200" y="2800"/>
-<node id="7_30" x = "400" y="0"/>
-<node id="7_31" x = "400" y="100"/>
-<node id="7_32" x = "400" y="200"/>
-<node id="7_33" x = "400" y="300"/>
-<node id="7_34" x = "400" y="400"/>
-<node id="7_35" x = "400" y="500"/>
-<node id="7_36" x = "400" y="600"/>
-<node id="7_37" x = "400" y="700"/>
-<node id="7_38" x = "400" y="800"/>
-<node id="7_39" x = "400" y="900"/>
-<node id="7_40" x = "400" y="1000"/>
-<node id="7_41" x = "400" y="1100"/>
-<node id="7_42" x = "400" y="1200"/>
-<node id="7_43" x = "400" y="1300"/>
-<node id="7_44" x = "400" y="1400"/>
-<node id="7_45" x = "400" y="1500"/>
-<node id="7_46" x = "400" y="1600"/>
-<node id="7_47" x = "400" y="1700"/>
-<node id="7_48" x = "400" y="1800"/>
-<node id="7_49" x = "400" y="1900"/>
-<node id="7_50" x = "400" y="2000"/>
-<node id="7_51" x = "400" y="2100"/>
-<node id="7_52" x = "400" y="2200"/>
-<node id="7_53" x = "400" y="2300"/>
-<node id="7_54" x = "400" y="2400"/>
-<node id="7_55" x = "400" y="2500"/>
-<node id="7_56" x = "400" y="2600"/>
-<node id="7_57" x = "400" y="2700"/>
-<node id="7_58" x = "400" y="2800"/>
-<node id="6_30" x = "600" y="0"/>
-<node id="6_31" x = "600" y="100"/>
-<node id="6_32" x = "600" y="200"/>
-<node id="6_33" x = "600" y="300"/>
-<node id="6_34" x = "600" y="400"/>
-<node id="6_35" x = "600" y="500"/>
-<node id="6_36" x = "600" y="600"/>
-<node id="6_37" x = "600" y="700"/>
-<node id="6_38" x = "600" y="800"/>
-<node id="6_39" x = "600" y="900"/>
-<node id="6_40" x = "600" y="1000"/>
-<node id="6_41" x = "600" y="1100"/>
-<node id="6_42" x = "600" y="1200"/>
-<node id="6_43" x = "600" y="1300"/>
-<node id="6_44" x = "600" y="1400"/>
-<node id="6_45" x = "600" y="1500"/>
-<node id="6_46" x = "600" y="1600"/>
-<node id="6_47" x = "600" y="1700"/>
-<node id="6_48" x = "600" y="1800"/>
-<node id="6_49" x = "600" y="1900"/>
-<node id="6_50" x = "600" y="2000"/>
-<node id="6_51" x = "600" y="2100"/>
-<node id="6_52" x = "600" y="2200"/>
-<node id="6_53" x = "600" y="2300"/>
-<node id="6_54" x = "600" y="2400"/>
-<node id="6_55" x = "600" y="2500"/>
-<node id="6_56" x = "600" y="2600"/>
-<node id="6_57" x = "600" y="2700"/>
-<node id="6_58" x = "600" y="2800"/>
-<node id="5_30" x = "700" y="0"/>
-<node id="5_31" x = "700" y="100"/>
-<node id="5_32" x = "700" y="200"/>
-<node id="5_33" x = "700" y="300"/>
-<node id="5_34" x = "700" y="400"/>
-<node id="5_35" x = "700" y="500"/>
-<node id="5_36" x = "700" y="600"/>
-<node id="5_37" x = "700" y="700"/>
-<node id="5_38" x = "700" y="800"/>
-<node id="5_39" x = "700" y="900"/>
-<node id="5_40" x = "700" y="1000"/>
-<node id="5_41" x = "700" y="1100"/>
-<node id="5_42" x = "700" y="1200"/>
-<node id="5_43" x = "700" y="1300"/>
-<node id="5_44" x = "700" y="1400"/>
-<node id="5_45" x = "700" y="1500"/>
-<node id="5_46" x = "700" y="1600"/>
-<node id="5_47" x = "700" y="1700"/>
-<node id="5_48" x = "700" y="1800"/>
-<node id="5_49" x = "700" y="1900"/>
-<node id="5_50" x = "700" y="2000"/>
-<node id="5_51" x = "700" y="2100"/>
-<node id="5_52" x = "700" y="2200"/>
-<node id="5_53" x = "700" y="2300"/>
-<node id="5_54" x = "700" y="2400"/>
-<node id="5_55" x = "700" y="2500"/>
-<node id="5_56" x = "700" y="2600"/>
-<node id="5_57" x = "700" y="2700"/>
-<node id="5_58" x = "700" y="2800"/>
-<node id="Madison_30" x = "800" y="0"/>
-<node id="Madison_31" x = "800" y="100"/>
-<node id="Madison_32" x = "800" y="200"/>
-<node id="Madison_33" x = "800" y="300"/>
-<node id="Madison_34" x = "800" y="400"/>
-<node id="Madison_35" x = "800" y="500"/>
-<node id="Madison_36" x = "800" y="600"/>
-<node id="Madison_37" x = "800" y="700"/>
-<node id="Madison_38" x = "800" y="800"/>
-<node id="Madison_39" x = "800" y="900"/>
-<node id="Madison_40" x = "800" y="1000"/>
-<node id="Madison_41" x = "800" y="1100"/>
-<node id="Madison_42" x = "800" y="1200"/>
-<node id="Madison_43" x = "800" y="1300"/>
-<node id="Madison_44" x = "800" y="1400"/>
-<node id="Madison_45" x = "800" y="1500"/>
-<node id="Madison_46" x = "800" y="1600"/>
-<node id="Madison_47" x = "800" y="1700"/>
-<node id="Madison_48" x = "800" y="1800"/>
-<node id="Madison_49" x = "800" y="1900"/>
-<node id="Madison_50" x = "800" y="2000"/>
-<node id="Madison_51" x = "800" y="2100"/>
-<node id="Madison_52" x = "800" y="2200"/>
-<node id="Madison_53" x = "800" y="2300"/>
-<node id="Madison_54" x = "800" y="2400"/>
-<node id="Madison_55" x = "800" y="2500"/>
-<node id="Madison_56" x = "800" y="2600"/>
-<node id="Madison_57" x = "800" y="2700"/>
-<node id="Madison_58" x = "800" y="2800"/>
-<node id="Park_30" x = "900" y="0"/>
-<node id="Park_31" x = "900" y="100"/>
-<node id="Park_32" x = "900" y="200"/>
-<node id="Park_33" x = "900" y="300"/>
-<node id="Park_34" x = "900" y="400"/>
-<node id="Park_35" x = "900" y="500"/>
-<node id="Park_36" x = "900" y="600"/>
-<node id="Park_37" x = "900" y="700"/>
-<node id="Park_38" x = "900" y="800"/>
-<node id="Park_39" x = "900" y="900"/>
-<node id="Park_40" x = "900" y="1000"/>
-<node id="Park_41" x = "900" y="1100"/>
-<node id="Park_42" x = "900" y="1200"/>
-<node id="Park_43" x = "900" y="1300"/>
-<node id="Park_44" x = "900" y="1400"/>
-<node id="Park_45" x = "900" y="1500"/>
-<node id="Park_46" x = "900" y="1600"/>
-<node id="Park_47" x = "900" y="1700"/>
-<node id="Park_48" x = "900" y="1800"/>
-<node id="Park_49" x = "900" y="1900"/>
-<node id="Park_50" x = "900" y="2000"/>
-<node id="Park_51" x = "900" y="2100"/>
-<node id="Park_52" x = "900" y="2200"/>
-<node id="Park_53" x = "900" y="2300"/>
-<node id="Park_54" x = "900" y="2400"/>
-<node id="Park_55" x = "900" y="2500"/>
-<node id="Park_56" x = "900" y="2600"/>
-<node id="Park_57" x = "900" y="2700"/>
-<node id="Park_58" x = "900" y="2800"/>
-<node id="Lexington_30" x = "1000" y="0"/>
-<node id="Lexington_31" x = "1000" y="100"/>
-<node id="Lexington_32" x = "1000" y="200"/>
-<node id="Lexington_33" x = "1000" y="300"/>
-<node id="Lexington_34" x = "1000" y="400"/>
-<node id="Lexington_35" x = "1000" y="500"/>
-<node id="Lexington_36" x = "1000" y="600"/>
-<node id="Lexington_37" x = "1000" y="700"/>
-<node id="Lexington_38" x = "1000" y="800"/>
-<node id="Lexington_39" x = "1000" y="900"/>
-<node id="Lexington_40" x = "1000" y="1000"/>
-<node id="Lexington_41" x = "1000" y="1100"/>
-<node id="Lexington_42" x = "1000" y="1200"/>
-<node id="Lexington_43" x = "1000" y="1300"/>
-<node id="Lexington_44" x = "1000" y="1400"/>
-<node id="Lexington_45" x = "1000" y="1500"/>
-<node id="Lexington_46" x = "1000" y="1600"/>
-<node id="Lexington_47" x = "1000" y="1700"/>
-<node id="Lexington_48" x = "1000" y="1800"/>
-<node id="Lexington_49" x = "1000" y="1900"/>
-<node id="Lexington_50" x = "1000" y="2000"/>
-<node id="Lexington_51" x = "1000" y="2100"/>
-<node id="Lexington_52" x = "1000" y="2200"/>
-<node id="Lexington_53" x = "1000" y="2300"/>
-<node id="Lexington_54" x = "1000" y="2400"/>
-<node id="Lexington_55" x = "1000" y="2500"/>
-<node id="Lexington_56" x = "1000" y="2600"/>
-<node id="Lexington_57" x = "1000" y="2700"/>
-<node id="Lexington_58" x = "1000" y="2800"/>
+<node id="9_30" x = "0" y="0" type="traffic_light"/>
+<node id="9_31" x = "0" y="100" type="traffic_light"/>
+<node id="9_32" x = "0" y="200" type="traffic_light"/>
+<node id="9_33" x = "0" y="300" type="traffic_light"/>
+<node id="9_34" x = "0" y="400" type="traffic_light"/>
+<node id="9_35" x = "0" y="500" type="traffic_light"/>
+<node id="9_36" x = "0" y="600" type="traffic_light"/>
+<node id="9_37" x = "0" y="700" type="traffic_light"/>
+<node id="9_38" x = "0" y="800" type="traffic_light"/>
+<node id="9_39" x = "0" y="900" type="traffic_light"/>
+<node id="9_40" x = "0" y="1000" type="traffic_light"/>
+<node id="9_41" x = "0" y="1100" type="traffic_light"/>
+<node id="9_42" x = "0" y="1200" type="traffic_light"/>
+<node id="9_43" x = "0" y="1300" type="traffic_light"/>
+<node id="9_44" x = "0" y="1400" type="traffic_light"/>
+<node id="9_45" x = "0" y="1500" type="traffic_light"/>
+<node id="9_46" x = "0" y="1600" type="traffic_light"/>
+<node id="9_47" x = "0" y="1700" type="traffic_light"/>
+<node id="9_48" x = "0" y="1800" type="traffic_light"/>
+<node id="9_49" x = "0" y="1900" type="traffic_light"/>
+<node id="9_50" x = "0" y="2000" type="traffic_light"/>
+<node id="9_51" x = "0" y="2100" type="traffic_light"/>
+<node id="9_52" x = "0" y="2200" type="traffic_light"/>
+<node id="9_53" x = "0" y="2300" type="traffic_light"/>
+<node id="9_54" x = "0" y="2400" type="traffic_light"/>
+<node id="9_55" x = "0" y="2500" type="traffic_light"/>
+<node id="9_56" x = "0" y="2600" type="traffic_light"/>
+<node id="9_57" x = "0" y="2700" type="traffic_light"/>
+<node id="9_58" x = "0" y="2800" type="traffic_light"/>
+<node id="8_30" x = "200" y="0" type="traffic_light"/>
+<node id="8_31" x = "200" y="100" type="traffic_light"/>
+<node id="8_32" x = "200" y="200" type="traffic_light"/>
+<node id="8_33" x = "200" y="300" type="traffic_light"/>
+<node id="8_34" x = "200" y="400" type="traffic_light"/>
+<node id="8_35" x = "200" y="500" type="traffic_light"/>
+<node id="8_36" x = "200" y="600" type="traffic_light"/>
+<node id="8_37" x = "200" y="700" type="traffic_light"/>
+<node id="8_38" x = "200" y="800" type="traffic_light"/>
+<node id="8_39" x = "200" y="900" type="traffic_light"/>
+<node id="8_40" x = "200" y="1000" type="traffic_light"/>
+<node id="8_41" x = "200" y="1100" type="traffic_light"/>
+<node id="8_42" x = "200" y="1200" type="traffic_light"/>
+<node id="8_43" x = "200" y="1300" type="traffic_light"/>
+<node id="8_44" x = "200" y="1400" type="traffic_light"/>
+<node id="8_45" x = "200" y="1500" type="traffic_light"/>
+<node id="8_46" x = "200" y="1600" type="traffic_light"/>
+<node id="8_47" x = "200" y="1700" type="traffic_light"/>
+<node id="8_48" x = "200" y="1800" type="traffic_light"/>
+<node id="8_49" x = "200" y="1900" type="traffic_light"/>
+<node id="8_50" x = "200" y="2000" type="traffic_light"/>
+<node id="8_51" x = "200" y="2100" type="traffic_light"/>
+<node id="8_52" x = "200" y="2200" type="traffic_light"/>
+<node id="8_53" x = "200" y="2300" type="traffic_light"/>
+<node id="8_54" x = "200" y="2400" type="traffic_light"/>
+<node id="8_55" x = "200" y="2500" type="traffic_light"/>
+<node id="8_56" x = "200" y="2600" type="traffic_light"/>
+<node id="8_57" x = "200" y="2700" type="traffic_light"/>
+<node id="8_58" x = "200" y="2800" type="traffic_light"/>
+<node id="7_30" x = "400" y="0" type="traffic_light"/>
+<node id="7_31" x = "400" y="100" type="traffic_light"/>
+<node id="7_32" x = "400" y="200" type="traffic_light"/>
+<node id="7_33" x = "400" y="300" type="traffic_light"/>
+<node id="7_34" x = "400" y="400" type="traffic_light"/>
+<node id="7_35" x = "400" y="500" type="traffic_light"/>
+<node id="7_36" x = "400" y="600" type="traffic_light"/>
+<node id="7_37" x = "400" y="700" type="traffic_light"/>
+<node id="7_38" x = "400" y="800" type="traffic_light"/>
+<node id="7_39" x = "400" y="900" type="traffic_light"/>
+<node id="7_40" x = "400" y="1000" type="traffic_light"/>
+<node id="7_41" x = "400" y="1100" type="traffic_light"/>
+<node id="7_42" x = "400" y="1200" type="traffic_light"/>
+<node id="7_43" x = "400" y="1300" type="traffic_light"/>
+<node id="7_44" x = "400" y="1400" type="traffic_light"/>
+<node id="7_45" x = "400" y="1500" type="traffic_light"/>
+<node id="7_46" x = "400" y="1600" type="traffic_light"/>
+<node id="7_47" x = "400" y="1700" type="traffic_light"/>
+<node id="7_48" x = "400" y="1800" type="traffic_light"/>
+<node id="7_49" x = "400" y="1900" type="traffic_light"/>
+<node id="7_50" x = "400" y="2000" type="traffic_light"/>
+<node id="7_51" x = "400" y="2100" type="traffic_light"/>
+<node id="7_52" x = "400" y="2200" type="traffic_light"/>
+<node id="7_53" x = "400" y="2300" type="traffic_light"/>
+<node id="7_54" x = "400" y="2400" type="traffic_light"/>
+<node id="7_55" x = "400" y="2500" type="traffic_light"/>
+<node id="7_56" x = "400" y="2600" type="traffic_light"/>
+<node id="7_57" x = "400" y="2700" type="traffic_light"/>
+<node id="7_58" x = "400" y="2800" type="traffic_light"/>
+<node id="6_30" x = "600" y="0" type="traffic_light"/>
+<node id="6_31" x = "600" y="100" type="traffic_light"/>
+<node id="6_32" x = "600" y="200" type="traffic_light"/>
+<node id="6_33" x = "600" y="300" type="traffic_light"/>
+<node id="6_34" x = "600" y="400" type="traffic_light"/>
+<node id="6_35" x = "600" y="500" type="traffic_light"/>
+<node id="6_36" x = "600" y="600" type="traffic_light"/>
+<node id="6_37" x = "600" y="700" type="traffic_light"/>
+<node id="6_38" x = "600" y="800" type="traffic_light"/>
+<node id="6_39" x = "600" y="900" type="traffic_light"/>
+<node id="6_40" x = "600" y="1000" type="traffic_light"/>
+<node id="6_41" x = "600" y="1100" type="traffic_light"/>
+<node id="6_42" x = "600" y="1200" type="traffic_light"/>
+<node id="6_43" x = "600" y="1300" type="traffic_light"/>
+<node id="6_44" x = "600" y="1400" type="traffic_light"/>
+<node id="6_45" x = "600" y="1500" type="traffic_light"/>
+<node id="6_46" x = "600" y="1600" type="traffic_light"/>
+<node id="6_47" x = "600" y="1700" type="traffic_light"/>
+<node id="6_48" x = "600" y="1800" type="traffic_light"/>
+<node id="6_49" x = "600" y="1900" type="traffic_light"/>
+<node id="6_50" x = "600" y="2000" type="traffic_light"/>
+<node id="6_51" x = "600" y="2100" type="traffic_light"/>
+<node id="6_52" x = "600" y="2200" type="traffic_light"/>
+<node id="6_53" x = "600" y="2300" type="traffic_light"/>
+<node id="6_54" x = "600" y="2400" type="traffic_light"/>
+<node id="6_55" x = "600" y="2500" type="traffic_light"/>
+<node id="6_56" x = "600" y="2600" type="traffic_light"/>
+<node id="6_57" x = "600" y="2700" type="traffic_light"/>
+<node id="6_58" x = "600" y="2800" type="traffic_light"/>
+<node id="5_30" x = "700" y="0" type="traffic_light"/>
+<node id="5_31" x = "700" y="100" type="traffic_light"/>
+<node id="5_32" x = "700" y="200" type="traffic_light"/>
+<node id="5_33" x = "700" y="300" type="traffic_light"/>
+<node id="5_34" x = "700" y="400" type="traffic_light"/>
+<node id="5_35" x = "700" y="500" type="traffic_light"/>
+<node id="5_36" x = "700" y="600" type="traffic_light"/>
+<node id="5_37" x = "700" y="700" type="traffic_light"/>
+<node id="5_38" x = "700" y="800" type="traffic_light"/>
+<node id="5_39" x = "700" y="900" type="traffic_light"/>
+<node id="5_40" x = "700" y="1000" type="traffic_light"/>
+<node id="5_41" x = "700" y="1100" type="traffic_light"/>
+<node id="5_42" x = "700" y="1200" type="traffic_light"/>
+<node id="5_43" x = "700" y="1300" type="traffic_light"/>
+<node id="5_44" x = "700" y="1400" type="traffic_light"/>
+<node id="5_45" x = "700" y="1500" type="traffic_light"/>
+<node id="5_46" x = "700" y="1600" type="traffic_light"/>
+<node id="5_47" x = "700" y="1700" type="traffic_light"/>
+<node id="5_48" x = "700" y="1800" type="traffic_light"/>
+<node id="5_49" x = "700" y="1900" type="traffic_light"/>
+<node id="5_50" x = "700" y="2000" type="traffic_light"/>
+<node id="5_51" x = "700" y="2100" type="traffic_light"/>
+<node id="5_52" x = "700" y="2200" type="traffic_light"/>
+<node id="5_53" x = "700" y="2300" type="traffic_light"/>
+<node id="5_54" x = "700" y="2400" type="traffic_light"/>
+<node id="5_55" x = "700" y="2500" type="traffic_light"/>
+<node id="5_56" x = "700" y="2600" type="traffic_light"/>
+<node id="5_57" x = "700" y="2700" type="traffic_light"/>
+<node id="5_58" x = "700" y="2800" type="traffic_light"/>
+<node id="Madison_30" x = "800" y="0" type="traffic_light"/>
+<node id="Madison_31" x = "800" y="100" type="traffic_light"/>
+<node id="Madison_32" x = "800" y="200" type="traffic_light"/>
+<node id="Madison_33" x = "800" y="300" type="traffic_light"/>
+<node id="Madison_34" x = "800" y="400" type="traffic_light"/>
+<node id="Madison_35" x = "800" y="500" type="traffic_light"/>
+<node id="Madison_36" x = "800" y="600" type="traffic_light"/>
+<node id="Madison_37" x = "800" y="700" type="traffic_light"/>
+<node id="Madison_38" x = "800" y="800" type="traffic_light"/>
+<node id="Madison_39" x = "800" y="900" type="traffic_light"/>
+<node id="Madison_40" x = "800" y="1000" type="traffic_light"/>
+<node id="Madison_41" x = "800" y="1100" type="traffic_light"/>
+<node id="Madison_42" x = "800" y="1200" type="traffic_light"/>
+<node id="Madison_43" x = "800" y="1300" type="traffic_light"/>
+<node id="Madison_44" x = "800" y="1400" type="traffic_light"/>
+<node id="Madison_45" x = "800" y="1500" type="traffic_light"/>
+<node id="Madison_46" x = "800" y="1600" type="traffic_light"/>
+<node id="Madison_47" x = "800" y="1700" type="traffic_light"/>
+<node id="Madison_48" x = "800" y="1800" type="traffic_light"/>
+<node id="Madison_49" x = "800" y="1900" type="traffic_light"/>
+<node id="Madison_50" x = "800" y="2000" type="traffic_light"/>
+<node id="Madison_51" x = "800" y="2100" type="traffic_light"/>
+<node id="Madison_52" x = "800" y="2200" type="traffic_light"/>
+<node id="Madison_53" x = "800" y="2300" type="traffic_light"/>
+<node id="Madison_54" x = "800" y="2400" type="traffic_light"/>
+<node id="Madison_55" x = "800" y="2500" type="traffic_light"/>
+<node id="Madison_56" x = "800" y="2600" type="traffic_light"/>
+<node id="Madison_57" x = "800" y="2700" type="traffic_light"/>
+<node id="Madison_58" x = "800" y="2800" type="traffic_light"/>
+<node id="Park_30" x = "900" y="0" type="traffic_light"/>
+<node id="Park_31" x = "900" y="100" type="traffic_light"/>
+<node id="Park_32" x = "900" y="200" type="traffic_light"/>
+<node id="Park_33" x = "900" y="300" type="traffic_light"/>
+<node id="Park_34" x = "900" y="400" type="traffic_light"/>
+<node id="Park_35" x = "900" y="500" type="traffic_light"/>
+<node id="Park_36" x = "900" y="600" type="traffic_light"/>
+<node id="Park_37" x = "900" y="700" type="traffic_light"/>
+<node id="Park_38" x = "900" y="800" type="traffic_light"/>
+<node id="Park_39" x = "900" y="900" type="traffic_light"/>
+<node id="Park_40" x = "900" y="1000" type="traffic_light"/>
+<node id="Park_41" x = "900" y="1100" type="traffic_light"/>
+<node id="Park_42" x = "900" y="1200" type="traffic_light"/>
+<node id="Park_43" x = "900" y="1300" type="traffic_light"/>
+<node id="Park_44" x = "900" y="1400" type="traffic_light"/>
+<node id="Park_45" x = "900" y="1500" type="traffic_light"/>
+<node id="Park_46" x = "900" y="1600" type="traffic_light"/>
+<node id="Park_47" x = "900" y="1700" type="traffic_light"/>
+<node id="Park_48" x = "900" y="1800" type="traffic_light"/>
+<node id="Park_49" x = "900" y="1900" type="traffic_light"/>
+<node id="Park_50" x = "900" y="2000" type="traffic_light"/>
+<node id="Park_51" x = "900" y="2100" type="traffic_light"/>
+<node id="Park_52" x = "900" y="2200" type="traffic_light"/>
+<node id="Park_53" x = "900" y="2300" type="traffic_light"/>
+<node id="Park_54" x = "900" y="2400" type="traffic_light"/>
+<node id="Park_55" x = "900" y="2500" type="traffic_light"/>
+<node id="Park_56" x = "900" y="2600" type="traffic_light"/>
+<node id="Park_57" x = "900" y="2700" type="traffic_light"/>
+<node id="Park_58" x = "900" y="2800" type="traffic_light"/>
+<node id="Lexington_30" x = "1000" y="0" type="traffic_light"/>
+<node id="Lexington_31" x = "1000" y="100" type="traffic_light"/>
+<node id="Lexington_32" x = "1000" y="200" type="traffic_light"/>
+<node id="Lexington_33" x = "1000" y="300" type="traffic_light"/>
+<node id="Lexington_34" x = "1000" y="400" type="traffic_light"/>
+<node id="Lexington_35" x = "1000" y="500" type="traffic_light"/>
+<node id="Lexington_36" x = "1000" y="600" type="traffic_light"/>
+<node id="Lexington_37" x = "1000" y="700" type="traffic_light"/>
+<node id="Lexington_38" x = "1000" y="800" type="traffic_light"/>
+<node id="Lexington_39" x = "1000" y="900" type="traffic_light"/>
+<node id="Lexington_40" x = "1000" y="1000" type="traffic_light"/>
+<node id="Lexington_41" x = "1000" y="1100" type="traffic_light"/>
+<node id="Lexington_42" x = "1000" y="1200" type="traffic_light"/>
+<node id="Lexington_43" x = "1000" y="1300" type="traffic_light"/>
+<node id="Lexington_44" x = "1000" y="1400" type="traffic_light"/>
+<node id="Lexington_45" x = "1000" y="1500" type="traffic_light"/>
+<node id="Lexington_46" x = "1000" y="1600" type="traffic_light"/>
+<node id="Lexington_47" x = "1000" y="1700" type="traffic_light"/>
+<node id="Lexington_48" x = "1000" y="1800" type="traffic_light"/>
+<node id="Lexington_49" x = "1000" y="1900" type="traffic_light"/>
+<node id="Lexington_50" x = "1000" y="2000" type="traffic_light"/>
+<node id="Lexington_51" x = "1000" y="2100" type="traffic_light"/>
+<node id="Lexington_52" x = "1000" y="2200" type="traffic_light"/>
+<node id="Lexington_53" x = "1000" y="2300" type="traffic_light"/>
+<node id="Lexington_54" x = "1000" y="2400" type="traffic_light"/>
+<node id="Lexington_55" x = "1000" y="2500" type="traffic_light"/>
+<node id="Lexington_56" x = "1000" y="2600" type="traffic_light"/>
+<node id="Lexington_57" x = "1000" y="2700" type="traffic_light"/>
+<node id="Lexington_58" x = "1000" y="2800" type="traffic_light"/>
 </nodes>
