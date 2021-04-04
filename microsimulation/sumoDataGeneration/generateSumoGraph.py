@@ -7,7 +7,7 @@ with open("data/graph.p", "rb") as f:
 with open('data/my_nodes.nod.xml', 'w') as f:
     f.write('<nodes>\n')
     for i, n in enumerate(DG.nodes):
-        f.write('<node id="{}" x = "{}" y="{}"/>\n'.format(DG.nodes[n]['name'], DG.nodes[n]['cartesian'][0] * 100,
+        f.write('<node id="{}" x = "{}" y="{}" type="traffic_light"/>\n'.format(DG.nodes[n]['name'], DG.nodes[n]['cartesian'][0] * 100,
                                                            DG.nodes[n]['cartesian'][1] * 100))
         # f.write('<node id="{}" x = "{}" y="{}"/>\n'.format(DG.nodes[n]['name'], DG.nodes[n]['longitude'],
         #                                                    DG.nodes[n]['latitude']))
