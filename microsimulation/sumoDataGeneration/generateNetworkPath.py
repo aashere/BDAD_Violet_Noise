@@ -93,6 +93,15 @@ if __name__ == "__main__":
                 # Generate all possible paths
                 discover_paths(s, t, pair, visited, cur_path, paths)
                 paths[pair].sort(key=lambda x : len(x))
+
+                # add metadata to paths collected for each pair
+                records = []
+                for p in paths[pair]:
+                    dirs = [DG.edges[tuple(p[i:i+2])]["direction"] for i in range(len(p)-1)]
+                    turns = sum([int(dirs[i] != dirs[i+1]) for i in range(len(dirs)-1)])
+                    length = len(p) - 1
+                    records.append({"turns": turns, "length": length, "path": p})
+                paths[pair] = records
                 
 
     with open("data/pathdict.json", 'w') as outf:
