@@ -16,7 +16,7 @@ for nodeid, pair in enumerate(coords):
     intersection = name_Xs[pair[0]] + "_" + name_Ys[pair[1]]
     gps = get_gps_coords(*pair)
     DG.add_node(nodeid, cartesian=pair, name=intersection, latitude=gps[0], longitude=gps[1], nodetype="inner",
-                color="#e1e3f0")
+                color="#e1e3f0", volume_rate=dict())
 
 nodes = {v: k for k, v in nx.get_node_attributes(DG, "cartesian").items()}
 
@@ -99,6 +99,17 @@ for node in DG.nodes:
         else:
             DG.nodes[node]["nodetype"] = "sink"
             DG.nodes[node]["color"] = "red"
+
+
+mins = [i*60 for i in list(range(24))]
+rate = [int(i) for i in list(np.ones(24)*2)]
+
+defaultrate = dict(zip(mins,rate))
+
+for node in DG.nodes:
+    if "source" in DG.nodes[node]["nodetype"]:
+        DG.nodes[node]["volume_rate"] = defaultrate
+
 
 with open("data/graph.p", 'wb') as f:
     pickle.dump(DG, f)
