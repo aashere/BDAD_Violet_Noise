@@ -144,22 +144,6 @@ pos = nx.get_node_attributes(DG, 'cartesian')
 nodecol = nx.get_node_attributes(DG, 'color').values()
 nodename = nx.get_node_attributes(DG, 'name')
 
-# plt.figure(figsize=(15, 40))
-# nx.draw(DG,
-#         pos,
-#         width=2,
-#         node_color=nodecol,
-#         font_color='blue',
-#         node_size=500)
-# # labels=nodename)  # todo: error
-#
-# stnames = nx.get_edge_attributes(DG, "name")
-# for key in stnames:
-#     stnames[key] = stnames[key][:5]
-#
-# nx.draw_networkx_edge_labels(DG, pos, edge_labels=stnames, font_color='black')
-#
-# plt.show()
 
 open("data/my_nodes.nod.xml", "w").close()
 with open('data/my_nodes.nod.xml', 'a') as f:
