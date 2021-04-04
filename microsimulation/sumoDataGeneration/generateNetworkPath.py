@@ -78,6 +78,7 @@ if __name__ == "__main__":
         if DG.nodes[node]['nodetype'] == "sink" or DG.nodes[node]['nodetype'] == "source_sink":
             sinks.append(node)
     
+    path_id = 0
     # For every 2 distinct source and sink, load all paths from source to sink
     for s in sources:
         for t in sinks:
@@ -97,10 +98,11 @@ if __name__ == "__main__":
                 # add metadata to paths collected for each pair
                 records = []
                 for p in paths[pair]:
+                    path_id += 1
                     dirs = [DG.edges[tuple(p[i:i+2])]["direction"] for i in range(len(p)-1)]
                     turns = sum([int(dirs[i] != dirs[i+1]) for i in range(len(dirs)-1)])
                     length = len(p) - 1
-                    records.append({"turns": turns, "length": length, "path": p})
+                    records.append({"turns": turns, "length": length, "path_id": path_id, "path": p})
                 paths[pair] = records
                 
 
