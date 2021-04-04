@@ -26,6 +26,8 @@ with open('data/my_route.rou.xml', 'a') as f:
         counter += 1
         tmp_route = [DG.nodes[v[0][i]]['name'] + 'to' + DG.nodes[v[0][i + 1]]['name'] for i in range(len(v[0]) - 1)]
         f.write('<route id="route{}" edges="{}"/>\n'.format(counter, ' '.join(tmp_route)))
+        
+        ## BUS logic
         if counter % 2 == 0:
             f.write(
                     '<vehicle depart="{}" id="veh{}" route="route{}" type="Bus"/>\n'.format(counter, counter, counter))
