@@ -1,7 +1,8 @@
-To run:
+# Scala code to create graph from node_table.csv and edge_table.csv
+## To run:
 
-spark-shell --deploy-mode=client
+`<addr>` spark-shell --deploy-mode=client
 
-In spark shell:
+## In spark shell:
 
-:load loadGraph.sc
+`<addr>` :load loadGraph.sc
