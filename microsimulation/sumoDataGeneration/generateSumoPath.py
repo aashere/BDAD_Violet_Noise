@@ -56,7 +56,8 @@ with open('data/my_route.rou.xml', 'w') as f:
                     options = [v for k, v in paths.items() if k[0] == source]
                     options = list(itertools.chain.from_iterable(options))
                     options = [i["path_id"] for i in options]
-                    assignment = {"time": time, "vehicle_id": vehicle_id, "route_id": np.random.choice(options), "type":np.random.choice(cardist)}
+                    vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}"/>\n'.format(time, vehicle_id, np.random.choice(options), np.random.choice(cardist))
+                    assignment = {"time": time, "vxml":vehiclestr}
                     vehicle_assigns.append(assignment)
 
     for hour in range(24):
@@ -65,7 +66,7 @@ with open('data/my_route.rou.xml', 'w') as f:
                 options = paths[bus['busroute']]
                 path_id = [i["path_id"] for i in options if i["turns"] <=1][0]
                 vehicle_id +=1
-                minute = busroute[pair] + hour*60
+                minute = bus["start_min"] + hour*60
                 vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}">\n'.format(minute, vehicle_id, path_id, "Bus")
                 stopstr = "".join(["<stop busStop=\"%s\" duration=\"20\"/>\n" % i for i in bus['stops']])
                 vehiclestr = vehiclestr + stopstr + "</vehicle>\n"
@@ -75,6 +76,6 @@ with open('data/my_route.rou.xml', 'w') as f:
     vehicle_assigns.sort(key = lambda x: x["time"])
 
     for v in vehicle_assigns:
-        f.write('<vehicle depart="{}" id="veh{}" route="route{}" type="{}"/>\n'.format(v["time"], v["vehicle_id"], v["route_id"], v["type"]))
+        f.write(v["vxml"])
 
     f.write('</routes>\n')
