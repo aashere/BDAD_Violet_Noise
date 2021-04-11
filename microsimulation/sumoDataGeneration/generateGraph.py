@@ -4,9 +4,10 @@ import itertools
 import numpy as np
 from helpers import get_gps_coords
 import pickle
+import json
 
 cart_Xs = [0, 2, 4, 6, 7, 8, 9, 10]
-name_Xs = dict(zip(cart_Xs, ["9", "8", "7", "6", "5", "Madison", "Park", "Lexington", "3"]))
+name_Xs = dict(zip(cart_Xs, ["9", "8", "7", "6", "5", "Madison", "Park", "Lexington"]))
 cart_Ys = list(range(0, 29))
 name_Ys = dict(zip(cart_Ys, [str(i + 30) for i in cart_Ys]))
 
@@ -100,15 +101,13 @@ for node in DG.nodes:
             DG.nodes[node]["nodetype"] = "sink"
             DG.nodes[node]["color"] = "red"
 
-
-mins = [i*15 for i in list(range(96))]
-rate = [int(i) for i in list(np.ones(96)*2)]
-
-defaultrate = dict(zip(mins,rate))
+with open("data/nodelambdas.json", 'r') as inf:
+    lambdas = json.load(inf)
+    lambdas = {int(k):{int(i):j for i,j in v.items()} for k, v in lambdas.items()}
 
 for node in DG.nodes:
     if "source" in DG.nodes[node]["nodetype"]:
-        DG.nodes[node]["volume_rate"] = defaultrate
+        DG.nodes[node]["volume_rate"] = lambdas[node]
 
 
 with open("data/graph.p", 'wb') as f:
