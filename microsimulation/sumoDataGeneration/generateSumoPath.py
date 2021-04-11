@@ -9,7 +9,9 @@ import itertools
 
 with open("data/busschedule.json",'r') as inf:
     busroute = json.loads(inf.read())
-    busroute = {tuple([int(i) for i in k.split("|")]): v for k, v in busroute.items()}
+    for record in busroute:
+        key = record['busroute']
+        record['busroute'] = tuple([int(i) for i in key.split("|")])
 
 with open("data/pathdict.json", 'r') as inf:
     paths = json.load(inf)
@@ -24,8 +26,10 @@ vehicle_assigns = []
 
 with open('data/my_route.rou.xml', 'w') as f:
     f.write('<routes>\n')
-    f.write('<vType accel="1.0" decel="3.0" id="Bus" length="12.0" maxSpeed="10" sigma="0.0" />\n')
-    f.write('<vType accel="5.0" decel="5.0" id="Car" length="3.0" maxSpeed="25" sigma="0.0" />\n')
+    f.write('<vType accel="1.0" decel="3.9" id="Bus" length="15.0" maxSpeed="25" sigma="0.5" />\n')
+    f.write('<vType accel="2.7" decel="4.6" id="Car1" length="4.0" maxSpeed="25" sigma="0.5" />\n')
+    f.write('<vType accel="2.4" decel="4.5" id="Car2" length="5.0" maxSpeed="25" sigma="0.5" />\n')
+    f.write('<vType accel="1.9" decel="4.3" id="Car3" length="7.0" maxSpeed="25" sigma="0.5" />\n')
     
     for pair in paths:
         for record in paths[pair]:
@@ -35,7 +39,7 @@ with open('data/my_route.rou.xml', 'w') as f:
             tmp_route = [DG.nodes[path[i]]['name'] + 'to' + DG.nodes[path[i + 1]]['name'] for i in range(record["length"]-1)]
             f.write('<route id="route{}" edges="{}"/>\n'.format(record["path_id"], ' '.join(tmp_route)))
 
-
+    cardist = ["Car1"]*3 + ["Car2"]*6 + ["Car3"]
     vehicle_id = 0
     for source in sources:
         vol_rates = DG.nodes[source]["volume_rate"]  # dict of minute start to rate {0:3, 15:4, etc.}
@@ -52,19 +56,22 @@ with open('data/my_route.rou.xml', 'w') as f:
                     options = [v for k, v in paths.items() if k[0] == source]
                     options = list(itertools.chain.from_iterable(options))
                     options = [i["path_id"] for i in options]
-                    assignment = {"time": time, "vehicle_id": vehicle_id, "route_id": np.random.choice(options), "type":"Car"}
+                    assignment = {"time": time, "vehicle_id": vehicle_id, "route_id": np.random.choice(options), "type":np.random.choice(cardist)}
                     vehicle_assigns.append(assignment)
 
-    for pair in busroute:
-        options = paths[pair]
-        options = [i["path_id"] for i in options if i["turns"] <= 1]
-        for hour in range(24):
-            minute = busroute[pair] + hour*60
-            for route in options:
+    for hour in range(24):
+        for bus in busroute:
+            if hour in bus['active_hrs']:
+                options = paths[bus['busroute']]
+                path_id = [i["path_id"] for i in options if i["turns"] <=1][0]
                 vehicle_id +=1
-                assignment = {"time": minute, "vehicle_id":vehicle_id, "route_id":route, "type": "Bus"}
+                minute = busroute[pair] + hour*60
+                vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}">\n'.format(minute, vehicle_id, path_id, "Bus")
+                stopstr = "".join(["<stop busStop=\"%s\" duration=\"20\"/>\n" % i for i in bus['stops']])
+                vehiclestr = vehiclestr + stopstr + "</vehicle>\n"
+                assignment = {"time":minute, "vxml":vehiclestr}
                 vehicle_assigns.append(assignment)
-
+                
     vehicle_assigns.sort(key = lambda x: x["time"])
 
     for v in vehicle_assigns:
