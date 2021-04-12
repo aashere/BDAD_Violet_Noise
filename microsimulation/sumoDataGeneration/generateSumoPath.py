@@ -68,7 +68,7 @@ with open('data/my_route.rou.xml', 'w') as f:
                 vehicle_id +=1
                 minute = bus["start_min"] + hour*60
                 vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}">\n'.format(minute, vehicle_id, path_id, "Bus")
-                stopstr = "".join(["<stop busStop=\"%s\" duration=\"20\"/>\n" % i for i in bus['stops']])
+                stopstr = "".join(["<stop busStop=\"%s\" duration=\"120\"/>\n" % i for i in bus['stops']])
                 vehiclestr = vehiclestr + stopstr + "</vehicle>\n"
                 assignment = {"time":minute, "vxml":vehiclestr}
                 vehicle_assigns.append(assignment)
