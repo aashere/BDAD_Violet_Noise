@@ -1,0 +1,24 @@
+<additional>
+    <busStop id="station0" lane="8_36to8_37_0"/>
+    <busStop id="station1" lane="7_34to8_34_0"/>
+    <busStop id="station2" lane="7_49to7_48_0"/>
+    <busStop id="station3" lane="7_42to8_42_0"/>
+    <busStop id="station4" lane="5_40to5_39_0"/>
+    <busStop id="station5" lane="Madison_36toMadison_37_0"/>
+    <busStop id="station6" lane="Park_49toPark_50_0"/>
+    <busStop id="station7" lane="6_34to5_34_0"/>
+    <busStop id="station8" lane="6_49to7_49_0"/>
+    <busStop id="station9" lane="5_52to5_51_0"/>
+    <busStop id="station10" lane="Park_36toPark_35_0"/>
+    <busStop id="station11" lane="7_37to7_36_0"/>
+    <busStop id="station12" lane="6_49to6_50_0"/>
+    <busStop id="station13" lane="6_42to5_42_0"/>
+    <busStop id="station14" lane="Park_47toPark_46_0"/>
+    <busStop id="station15" lane="Madison_57to5_57_0"/>
+    <busStop id="station16" lane="Park_38toPark_39_0"/>
+    <busStop id="station17" lane="Park_54toPark_53_0"/>
+    <busStop id="station18" lane="7_57to6_57_0"/>
+    <busStop id="station19" lane="Madison_47toMadison_48_0"/>
+    <busStop id="station20" lane="6_36to6_37_0"/>
+    <busStop id="station21" lane="8_46to8_47_0"/>
+</additional>
