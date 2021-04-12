@@ -1,0 +1,13 @@
+<configuration> 
+
+<input> 
+<net-file value="my_net.net.xml"/> 
+<route-files value="my_route.rou.xml"/> 
+<additional-files value="bus_stops.xml"/>
+</input> 
+<time> 
+<begin value="0"/> 
+<end value="1440"/> 
+</time> 
+
+</configuration> 

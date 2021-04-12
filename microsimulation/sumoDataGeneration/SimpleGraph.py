@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import List
+import GraphTest
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -82,9 +83,15 @@ def generate_trace():
     pass
 
 
+import subprocess
+
 if __name__ == "__main__":
-    generate_graph()
-    generate_trace()
+    pass
+    # 1. run graph test, or local generate_graph()
+    # 2. run sumo commend in cmd
+    #    or subprocess.Popen(['netconvert', '--node-files', 'my_nodes.nod.xml', '--edge-files', 'my_edge.edg.xml', '-t',
+    #                   'my_type.type.xml', '-o', 'my_net.net.xml'])
+    # 3. generate_trace()
 
 '''
 TODO:
