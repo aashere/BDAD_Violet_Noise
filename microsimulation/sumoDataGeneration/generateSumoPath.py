@@ -35,7 +35,7 @@ for day in range(7):
     for source in sources:
         vol_rates = DG.nodes[source]["volume_rate"]  # dict of minute start to rate diff from mean {0:3, 15:4, etc.}
         for minute in vol_rates: 
-            rate = vol_rates[minute] + meanlambda[minute]
+            rate = min(vol_rates[minute] + meanlambda[minute], 0)
             cars = int(np.random.poisson(rate))
             spread_cars = [min(i,2) for i in np.histogram(list(range(cars)),bins=15,density=False)[0]]
             timestamps = [i + minute + daymins for i in range(15)]
