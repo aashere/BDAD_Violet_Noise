@@ -1,7 +1,7 @@
 from generateSumoPath import PathGenerator
 
 generator = PathGenerator()
-WEEKS = 1
+WEEKS = 10
 
 if __name__ == "__main__":
     for i in range(WEEKS):

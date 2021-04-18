@@ -3,3 +3,5 @@ __pycache__
 *.pyo
 *.ipynb_checkpoints*
 /microsimulation/sumoDataGeneration/data/sumoTrace.xml
+/microsimulation/sumoDataGeneration/data/routes/
+/microsimulation/sumoDataGeneration/data/traces/
