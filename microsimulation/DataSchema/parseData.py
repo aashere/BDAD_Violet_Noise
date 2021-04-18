@@ -39,7 +39,7 @@ df.to_csv('sampleSchema/vehicle_type.csv', index=False)
 
 ### THIS OUTPUT WILL CHANGE FOR EACH WEEK RUN - we need to get the vehicle ID for all the files
 
-WEEKS=1
+WEEKS=1  ## t
 for i in range(WEEKS):
     fn = "week_%s_route.rou.xml" % i
     pathstr = "../sumoDataGeneration/data/routes/" + fn
