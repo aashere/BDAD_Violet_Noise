@@ -37,34 +37,35 @@ root = tree.getroot()
 df = pd.DataFrame([row.attrib for row in root.findall('vType')])
 df.to_csv('sampleSchema/vehicle_type.csv', index=False)
 
-### THIS OUTPUT WILL CHANGE FOR EACH WEEK RUN - we need to get the vehicle ID for all the files
 
-WEEKS=1  ## t
-for i in range(WEEKS):
-    fn = "week_%s_route.rou.xml" % i
-    pathstr = "../sumoDataGeneration/data/routes/" + fn
-    tree = ET.parse(pathstr)
-    root = tree.getroot()
-    df = pd.DataFrame([row.attrib for row in root.findall('vehicle')])
-    output = "sampleSchema/traffic_plan_week%s.csv" % i
-    df.to_csv(output, index=False)
+### This part isn't scaling
+
+# WEEKS=1  ## t
+# for i in range(WEEKS):
+#     fn = "week_%s_route.rou.xml" % i
+#     pathstr = "../sumoDataGeneration/data/routes/" + fn
+#     tree = ET.parse(pathstr)
+#     root = tree.getroot()
+#     df = pd.DataFrame([row.attrib for row in root.findall('vehicle')])
+#     output = "sampleSchema/traffic_plan_week%s.csv" % i
+#     df.to_csv(output, index=False)
 
 ### need to replace this with full list of trace files
-for tracefn in ["sumoTrace.xml"]:
-    pathstr = "../sumoDataGeneration/data/traces/" + tracefn
-    data = [] 
-    tree = ET.parse(pathstr)
-    root = tree.getroot()
-    for child in root:
-        for v in child.findall('vehicle'):
-            v.attrib.update(child.attrib)
-            data.append(v.attrib)
+# for tracefn in ["sumoTrace.xml"]:
+#     pathstr = "../sumoDataGeneration/data/traces/" + tracefn
+#     data = [] 
+#     tree = ET.parse(pathstr)
+#     root = tree.getroot()
+#     for child in root:
+#         for v in child.findall('vehicle'):
+#             v.attrib.update(child.attrib)
+#             data.append(v.attrib)
 
-    df = pd.DataFrame(data)
-    gps = df[["x","y"]].astype(float).applymap(lambda s: max([0.0, s/100]))
-    gps = gps.apply(lambda s: pd.Series(get_gps_coords(s["x"],s["y"])),axis=1)
-    gps = gps.rename(columns={0:"latitude", 1:"longitude"})
-    df = df.join(gps)
+#     df = pd.DataFrame(data)
+#     # gps = df[["x","y"]].astype(float).applymap(lambda s: max([0.0, s/100]))
+#     # gps = gps.apply(lambda s: pd.Series(get_gps_coords(s["x"],s["y"])),axis=1)
+#     # gps = gps.rename(columns={0:"latitude", 1:"longitude"})
+#     # df = df.join(gps)
 
-    output = "sampleSchema/gps_table_%s.csv" % tracefn.split(".")[0]
-    df.to_csv(output, index=False)
+#     output = "sampleSchema/gps_table_%s.csv" % tracefn.split(".")[0]
+#     df.to_csv(output, index=False)
