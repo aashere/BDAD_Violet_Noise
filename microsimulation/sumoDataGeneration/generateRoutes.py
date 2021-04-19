@@ -6,9 +6,9 @@ WEEKS = 1
 config_schema = '''<configuration> 
 
 <input> 
-<net-file value="my_net.net.xml"/> 
+<net-file value="data/net/my_net.net.xml"/> 
 <route-files value="%s"/> 
-<additional-files value="bus_stops.xml"/>
+<additional-files value="data/net/bus_stops.xml"/>
 </input> 
 <time> 
 <begin value="%s"/> 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
             generator.generate_traffic_route(filepath=filename, start_tm_seconds=startseconds, weekday=d)
 
             configname = "data/configs/week_%s_day_%s_config.sumocfg" % (w,d)
-            configdata = config_schema % (routefile, startseconds, startseconds + 86400)
+            configdata = config_schema % (filename, startseconds, startseconds + 86400)
             with open(configname, "w") as f:
                 f.write(configdata)
             break
