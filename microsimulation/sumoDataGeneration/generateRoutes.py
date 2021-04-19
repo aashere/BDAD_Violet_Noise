@@ -1,7 +1,5 @@
 from generateSumoPath import PathGenerator
-
-generator = PathGenerator()
-WEEKS = 1
+import argparse
 
 config_schema = '''<configuration> 
 
@@ -20,7 +18,15 @@ config_schema = '''<configuration>
 
 
 if __name__ == "__main__":
-    for w in range(0,WEEKS):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("weeks", type=int)
+    parser.add_argument("basevol", type=float)
+    args = parser.parse_args()
+
+    generator = PathGenerator(basevol=args.basevol)
+    weeks = args.weeks
+
+    for w in range(0,weeks):
         for d in range(0,7):
             startseconds = (w * 604800) + (d * 86400)
             routefile = "week_%s_day_%s_route.rou.xml" % (w, d)
