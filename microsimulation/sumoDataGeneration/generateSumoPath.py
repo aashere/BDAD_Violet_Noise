@@ -89,7 +89,7 @@ class PathGenerator:
 
         with open(filepath, 'w') as f:
             f.write('<routes>\n')
-            f.write('<vType accel="1.0" decel="3.5" id="Bus" length="15.0" maxSpeed="8" sigma="0.5" />\n')
+            f.write('<vType accel="1.0" decel="3.5" id="Bus" length="15.0" maxSpeed="8.0" sigma="0.5" />\n')
             f.write('<vType accel="2.7" decel="4.6" id="Car1" length="4.0" maxSpeed="11.2" sigma="0.5" />\n')
             f.write('<vType accel="2.4" decel="4.5" id="Car2" length="5.0" maxSpeed="11.2" sigma="0.5" />\n')
             f.write('<vType accel="1.9" decel="4.3" id="Car3" length="7.0" maxSpeed="11.2" sigma="0.5" />\n')
