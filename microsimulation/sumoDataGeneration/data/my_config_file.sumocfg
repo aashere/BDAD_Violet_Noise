@@ -7,7 +7,7 @@
 </input> 
 <time> 
 <begin value="0"/> 
-<end value="10080"/> 
+<end value="604800"/> 
 </time> 
 
 </configuration> 
