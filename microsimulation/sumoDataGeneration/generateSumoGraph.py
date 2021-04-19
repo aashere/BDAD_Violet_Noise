@@ -1,10 +1,10 @@
 import pickle
 
 
-with open("data/graph.p", "rb") as f:
+with open("data/inputs/graph.p", "rb") as f:
     DG = pickle.load(f)
 
-with open('data/my_nodes.nod.xml', 'w') as f:
+with open('data/net/my_nodes.nod.xml', 'w') as f:
     f.write('<nodes>\n')
     for i, n in enumerate(DG.nodes):
         f.write('<node id="{}" x = "{}" y="{}" type="traffic_light"/>\n'.format(DG.nodes[n]['name'], DG.nodes[n]['cartesian'][0] * 100,
@@ -13,7 +13,7 @@ with open('data/my_nodes.nod.xml', 'w') as f:
         #                                                    DG.nodes[n]['latitude']))
     f.write('</nodes>\n')
 
-with open('data/my_edge.edg.xml', 'w') as f:
+with open('data/net/my_edge.edg.xml', 'w') as f:
     f.write('<edges>\n')
     for i, n in enumerate(DG.edges):
         f.write(
