@@ -101,14 +101,16 @@ for node in DG.nodes:
             DG.nodes[node]["nodetype"] = "sink"
             DG.nodes[node]["color"] = "red"
 
-with open("data/nodelambdasdiffs.json", 'r') as inf:
+
+with open("data/inputs/nodelambdaspctdiffs.json", 'r') as inf:
     lambdas = json.load(inf)
     lambdas = {int(k):{int(i):j for i,j in v.items()} for k, v in lambdas.items()}
+
 
 for node in DG.nodes:
     if "source" in DG.nodes[node]["nodetype"]:
         DG.nodes[node]["volume_rate"] = lambdas[node]
 
 
-with open("data/graph.p", 'wb') as f:
+with open("data/inputs/graph.p", 'wb') as f:
     pickle.dump(DG, f)

@@ -2,7 +2,7 @@ import networkx as nx
 import json
 import pickle
 
-with open("data/graph.p", "rb") as f:
+with open("data/inputs/graph.p", "rb") as f:
     DG = pickle.load(f)
 
 
@@ -106,6 +106,6 @@ if __name__ == "__main__":
                 paths[pair] = records
                 
 
-    with open("data/pathdict.json", 'w') as outf:
+    with open("data/inputs/pathdict.json", 'w') as outf:
         jsonformat = json.dumps({"%s|%s" % k:v for k, v in paths.items()})
         outf.write(jsonformat)
