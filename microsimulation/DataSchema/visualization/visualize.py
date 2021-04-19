@@ -6,8 +6,8 @@ from matplotlib import cm
 node_table_path = '../sampleSchema/node_table.csv'
 edge_table_path = '../sampleSchema/edge_table.csv'
 time_series_path = '../OLAP/gps_detail/part-00000-9d5459a4-cc5a-49ac-a341-40bc2ef458d6-c000.csv'
-#TIME_UNITS_PER_DATE_UNIT = 86400
-TIME_UNITS_PER_DATE_UNIT=1999
+TIME_UNITS_PER_DATE_UNIT = 86400
+#TIME_UNITS_PER_DATE_UNIT = 1999
 
 node_df = pd.read_csv(node_table_path)
 edge_df = pd.read_csv(edge_table_path)
