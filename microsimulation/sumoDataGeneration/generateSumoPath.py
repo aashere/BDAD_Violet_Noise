@@ -4,26 +4,29 @@ import json
 import numpy as np
 import pandas
 import itertools
+import os
 # Dict of all paths from every source to every sink.
 # This gives all the routes. It is a dict that maps
 # (source, sink): [list of routes in ascending order of size]
+homedir = r"/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/inputs"
+
 
 class PathGenerator:
     def __init__(self, basevol=15.0):
-        self.lambdaavg = pandas.read_csv("data/inputs/weekdaymeanlambdas.csv").set_index('Seconds').applymap(lambda s: s*basevol)
+        self.lambdaavg = pandas.read_csv(os.path.join(homedir,"weekdaymeanlambdas.csv")).set_index('Seconds').applymap(lambda s: s*basevol)
         
-        with open("data/inputs/busschedule.json",'r') as inf:
+        with open(os.path.join(homedir,"busschedule.json"),'r') as inf:
             busroute = json.loads(inf.read())
             for record in busroute:
                 key = record['busroute']
                 record['busroute'] = tuple([int(i) for i in key.split("|")])
         self.busroute = busroute
 
-        with open("data/inputs/pathdict.json", 'r') as inf:
+        with open(os.path.join(homedir,"pathdict.json"), 'r') as inf:
             paths = json.load(inf)
             self.paths = {tuple([int(i) for i in k.split("|")]): v for k, v in paths.items()}
 
-        with open("data/inputs/graph.p", "rb") as f:
+        with open(os.path.join(homedir,"graph.p"), "rb") as f:
             self.DG = pickle.load(f)
 
         self.cardist = ["Car1"]*3 + ["Car2"]*6 + ["Car3"]        

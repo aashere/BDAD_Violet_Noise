@@ -4,9 +4,9 @@ import argparse
 config_schema = '''<configuration> 
 
 <input> 
-<net-file value="data/net/my_net.net.xml"/> 
+<net-file value="/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/net/my_net.net.xml"/> 
 <route-files value="%s"/> 
-<additional-files value="data/net/bus_stops.xml"/>
+<additional-files value="/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/net/bus_stops.xml"/>
 </input> 
 <time> 
 <begin value="%s"/> 
@@ -30,10 +30,10 @@ if __name__ == "__main__":
         for d in range(0,7):
             startseconds = (w * 604800) + (d * 86400)
             routefile = "week_%s_day_%s_route.rou.xml" % (w, d)
-            filename = "data/routes/" + routefile
+            filename = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/routes/" + routefile
             generator.generate_traffic_route(filepath=filename, start_tm_seconds=startseconds, weekday=d)
 
-            configname = "data/configs/week_%s_day_%s_config.sumocfg" % (w,d)
+            configname = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_%s_day_%s_config.sumocfg" % (w,d)
             configdata = config_schema % (filename, startseconds, startseconds + 86400)
             with open(configname, "w") as f:
                 f.write(configdata)
