@@ -48,15 +48,15 @@ class PathGenerator:
                     timestamps = [i + minute + daymins for i in range(15)]
                     cars_per_min = [i for i in zip(timestamps, spread_cars) if i[1] > 0]
                     for carstart in cars_per_min:
-                        time = carstart[0]
+                        timeseconds = carstart[0] * 60
                         for car in range(carstart[1]):
                             self.vehicle_id +=1
                             options = [v for k, v in self.paths.items() if k[0] == source]
                             options = list(itertools.chain.from_iterable(options))
                             options = [i["path_id"] for i in options]
-                            vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}"/>\n'.format(time, 
+                            vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}"/>\n'.format(timeseconds, 
                                 self.vehicle_id, np.random.choice(options), np.random.choice(self.cardist))
-                            assignment = {"time": time, "vxml":vehiclestr}
+                            assignment = {"time": timeseconds, "vxml":vehiclestr}
                             vehicle_assigns.append(assignment)
         return vehicle_assigns
 
@@ -72,10 +72,11 @@ class PathGenerator:
                         path_id = [i["path_id"] for i in options if i["turns"] <=1][0]
                         self.vehicle_id +=1
                         minute = bus["start_min"] + hour*60 + daymins
-                        vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}">\n'.format(minute, self.vehicle_id, path_id, "Bus")
-                        stopstr = "".join(["<stop busStop=\"%s\" duration=\"120\"/>\n" % i for i in bus['stops']])
+                        seconds = minute * 60
+                        vehiclestr = '<vehicle depart="{}" id="veh{}" route="route{}" type="{}">\n'.format(seconds, self.vehicle_id, path_id, "Bus")
+                        stopstr = "".join(["<stop busStop=\"%s\" duration=\"600\"/>\n" % i for i in bus['stops']])
                         vehiclestr = vehiclestr + stopstr + "</vehicle>\n"
-                        assignment = {"time":minute, "vxml":vehiclestr}
+                        assignment = {"time":seconds, "vxml":vehiclestr}
                         vehicle_assigns.append(assignment)
         return vehicle_assigns
 
@@ -88,10 +89,10 @@ class PathGenerator:
 
         with open(filepath, 'w') as f:
             f.write('<routes>\n')
-            f.write('<vType accel="1.0" decel="3.9" id="Bus" length="15.0" maxSpeed="9" sigma="0.5" />\n')
-            f.write('<vType accel="2.7" decel="4.6" id="Car1" length="4.0" maxSpeed="11" sigma="0.5" />\n')
-            f.write('<vType accel="2.4" decel="4.5" id="Car2" length="5.0" maxSpeed="11" sigma="0.5" />\n')
-            f.write('<vType accel="1.9" decel="4.3" id="Car3" length="7.0" maxSpeed="11" sigma="0.5" />\n')
+            f.write('<vType accel="1.0" decel="3.5" id="Bus" length="15.0" maxSpeed="8" sigma="0.5" />\n')
+            f.write('<vType accel="2.7" decel="4.6" id="Car1" length="4.0" maxSpeed="11.2" sigma="0.5" />\n')
+            f.write('<vType accel="2.4" decel="4.5" id="Car2" length="5.0" maxSpeed="11.2" sigma="0.5" />\n')
+            f.write('<vType accel="1.9" decel="4.3" id="Car3" length="7.0" maxSpeed="11.2" sigma="0.5" />\n')
             
             for pair in self.paths:
                 for record in self.paths[pair]:
