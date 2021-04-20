@@ -43,12 +43,18 @@ object ParseXML {
 //      StructField("lane", StringType, nullable = true),
 //      StructField("slope", IntegerType, nullable = true)))
 
-    val path = read_path + "week_0_day_0_trace.xml"
+    val path = read_path + "week_1_sumotrace.xml"
     val df = sqlContext.read.format("com.databricks.spark.xml").option("rowTag", "timestep").load(path)
-    val df_new = df.filter(pmod($"_time", lit(60)) === 0).withColumn("data", $"vehicle".getItem(0))
-      .select($"_time".as("time").cast("Int"),$"data._id".as("id"), $"data._x".as("x"), $"data._y".as("y"),
-        $"data._angle".as("angle").cast("Int"), $"data._type".as("type"), $"data._speed".as("speed"),
-        $"data._pos".as("pos"), $"data._lane".as("lane"), $"data._slope".as("slope").cast("Int"))
-    df_new.write.parquet(write_path + "test1")
+    val flat = df.select($"_time", explode($"vehicle")).select($"_time",$"col.*")
+      .select($"_time".as("time").cast("Int"),$"_id".as("id"), $"_x".as("x"), $"_y".as("y"),
+        $"_angle".as("angle").cast("Int"), $"_type".as("type"), $"_speed".as("speed"),
+        $"_pos".as("pos"), $"_lane".as("lane"), $"_slope".as("slope").cast("Int"))
+    flat.show()
+
+//    val df_new = df.filter(pmod($"_time", lit(60)) === 0).withColumn("data", $"vehicle".getItem(0))
+//      .select($"_time".as("time").cast("Int"),$"data._id".as("id"), $"data._x".as("x"), $"data._y".as("y"),
+//        $"data._angle".as("angle").cast("Int"), $"data._type".as("type"), $"data._speed".as("speed"),
+//        $"data._pos".as("pos"), $"data._lane".as("lane"), $"data._slope".as("slope").cast("Int"))
+    flat.write.parquet(write_path + "test1")
   }
 }
