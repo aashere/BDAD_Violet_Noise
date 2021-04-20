@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 04/18/21 14:37:22 by Eclipse SUMO sumo Version 1.8.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="my_net.net.xml"/>
+        <route-files value="week_0_route.rou.xml"/>
+        <additional-files value="bus_stops.xml"/>
+    </input>
+
+    <output>
+        <fcd-output value="week_0_sumoTrace.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="10080"/>
+    </time>
+
+</configuration>
+-->
+
+<fcd-export xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/fcd_file.xsd">
+    <timestep time="0.00">
+        <vehicle id="veh1711" x="990.90" y="1504.80" angle="270.00" type="Car2" speed="0.00" pos="5.10" lane="Lexington_45toPark_45_0" slope="0.00"/>
+        <vehicle id="veh40" x="9.10" y="195.20" angle="90.00" type="Car2" speed="0.00" pos="5.10" lane="9_32to8_32_0" slope="0.00"/>
+        <vehicle id="veh993" x="895.20" y="2785.50" angle="180.00" type="Car1" speed="0.00" pos="4.10" lane="Park_58toPark_57_0" slope="0.00"/>
+    </timestep>
+	<timestep time="1.00">
+        <vehicle id="veh1711" x="990.90" y="1504.80" angle="270.00" type="Car2" speed="0.00" pos="5.10" lane="Lexington_45toPark_45_0" slope="0.00"/>
+        <vehicle id="veh40" x="9.10" y="195.20" angle="90.00" type="Car2" speed="0.00" pos="5.10" lane="9_32to8_32_0" slope="0.00"/>
+        <vehicle id="veh993" x="895.20" y="2785.50" angle="180.00" type="Car1" speed="0.00" pos="4.10" lane="Park_58toPark_57_0" slope="0.00"/>
+    </timestep>
+	<timestep time="60.00">
+        <vehicle id="veh1711" x="990.90" y="1504.80" angle="270.00" type="Car2" speed="0.00" pos="5.10" lane="Lexington_45toPark_45_0" slope="0.00"/>
+        <vehicle id="veh40" x="9.10" y="195.20" angle="90.00" type="Car2" speed="0.00" pos="5.10" lane="9_32to8_32_0" slope="0.00"/>
+        <vehicle id="veh993" x="895.20" y="2785.50" angle="180.00" type="Car1" speed="0.00" pos="4.10" lane="Park_58toPark_57_0" slope="0.00"/>
+    </timestep>
+	 <timestep time="121.00">
+        <vehicle id="veh1711" x="990.90" y="1504.80" angle="270.00" type="Car2" speed="0.00" pos="5.10" lane="Lexington_45toPark_45_0" slope="0.00"/>
+        <vehicle id="veh40" x="9.10" y="195.20" angle="90.00" type="Car2" speed="0.00" pos="5.10" lane="9_32to8_32_0" slope="0.00"/>
+        <vehicle id="veh993" x="895.20" y="2785.50" angle="180.00" type="Car1" speed="0.00" pos="4.10" lane="Park_58toPark_57_0" slope="0.00"/>
+    </timestep>
+</fcd-export>
