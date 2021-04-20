@@ -9,8 +9,15 @@
 	--save-state.times 86399 \
 	--save-state.files /scratch/hls327/states/t86399_state.xml \
 	--summary-output /scratch/hls327/traces/week_0_day_0_summary.xml
+/scratch/work/public/singularity/run-sumo-1.9.0.bash sumo \
+	-c /home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_0_day_1_config.sumocfg \
+	--load-state /scratch/hls327/states/t86399_state.xml \
+	--save-state.times 172799 \
+	--save-state.files /scratch/hls327/states/t172799_state.xml \
+	--summary-output /scratch/hls327/traces/week_0_day_1_summary.xml
+
 #/scratch/work/public/singularity/run-sumo-1.9.0.bash sumo \
-#	-c ~/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_0_day_0_config.sumocfg \
+#	-c /home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_0_day_0_config.sumocfg \
 #	--save-state.times 86399 \
-#	--save-state.files ~/scratch/hls327/states/t86399_state.xml \
-#	--fcd-output /scratch/hls327/traces/week_0_day_0_Trace.xml 
+#	--save-state.files /scratch/hls327/states/t86399_state.xml \
+#	--fcd-output /scratch/hls327/traces/week_0_day_0_trace.xml 

@@ -28,13 +28,24 @@ if __name__ == "__main__":
 
     for w in range(0,weeks):
         for d in range(0,7):
+            if d == 2:
+                break
+            
             startseconds = (w * 604800) + (d * 86400)
+            endseconds = (w * 604800) + ((d+1) * 86400)
+            
             routefile = "week_%s_day_%s_route.rou.xml" % (w, d)
             filename = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/routes/" + routefile
             generator.generate_traffic_route(filepath=filename, start_tm_seconds=startseconds, weekday=d)
 
             configname = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_%s_day_%s_config.sumocfg" % (w,d)
-            configdata = config_schema % (filename, startseconds, startseconds + 86400)
+            
+            if startseconds > 0:
+                startseconds = startseconds - 1
+
+            print(endseconds-1)
+
+            configdata = config_schema % (filename, startseconds, endseconds)
             with open(configname, "w") as f:
                 f.write(configdata)
-            break
+            
