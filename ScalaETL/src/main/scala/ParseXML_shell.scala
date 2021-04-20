@@ -21,6 +21,6 @@ val df = sqlContext.read.format("com.databricks.spark.xml").option("rowTag", "ti
 val flat = df.select($"_time", explode($"vehicle")).select($"_time",$"col.*")
   .select($"_time".as("time").cast("Int"),$"_id".as("id"), $"_x".as("x"), $"_y".as("y"),
 	$"_angle".as("angle").cast("Int"), $"_type".as("type"), $"_speed".as("speed"),
-	$"_pos".as("pos"), $"_lane".as("lane"), $"_slope".as("slope").cast("Int"))
+	$"_pos".as("pos"), $"_lane".as("lane"), $"_slope".as("slope").cast("Int")).coalesce(6)
 flat.write.parquet(write_path + "test1")
 	
