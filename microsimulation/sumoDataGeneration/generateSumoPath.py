@@ -8,7 +8,7 @@ import os
 # Dict of all paths from every source to every sink.
 # This gives all the routes. It is a dict that maps
 # (source, sink): [list of routes in ascending order of size]
-homedir = r"/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/inputs"
+homedir = r"/scratch/hls327/sumoDataGeneration/data/inputs"
 
 
 class PathGenerator:
