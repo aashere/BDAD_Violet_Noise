@@ -84,8 +84,8 @@ def plot_edge_weights(edges=None, parts=None):
     '''
     fig, ax = plt.subplots()
     colormap = plt.cm.nipy_spectral
-    plt.xlabel('time')
-    plt.ylabel('density')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Density (vehicles per unit length)')
     
     # Get list of unique edges
     edge_list = density_df['edge'].unique()
@@ -111,8 +111,8 @@ def plot_edge_weights(edges=None, parts=None):
             plt.savefig("max_density_"+str(left)+"_to_"+str(right)+".png")
             plt.clf()
             plt.cla()
-            plt.xlabel('time')
-            plt.ylabel('density')
+            plt.xlabel('Time (s)')
+            plt.ylabel('Density (vehicles per unit length)')
             fig, ax = plt.subplots()
     else:
         for edge in edge_list:
@@ -122,9 +122,22 @@ def plot_edge_weights(edges=None, parts=None):
         plt.title("Edge Weights over Time")
         plt.savefig("edge_weight_plot.png")
 
-def max_density_distribution(edges=None, xscale='linear', num_bins=10):
-    plt.xlabel('max density')
-    plt.ylabel('frequency')
+def max_density_histogram(edges=None, xscale='linear', min_xlog=0.001, max_xlog=1.0, num_bins=10):
+    '''
+        Use this function to generate a histogram of the max density
+        each edge attains over the whole simulation.
+
+        Parameters:
+            edges:      List of edges to use for histogram. Default is
+                        all edges.
+            xscale:     Scale for x axis. Log scale used if 'log' passed in.
+                        Default is linear scale.
+            min_xlog:   Minimum value on x axis for log scale. Default 0.001.
+            max_xlog:   Maximum value on x axis for log scale. Default 1.0.
+            num_bins:   Number of bins for histogram. Default is 10.
+    '''
+    plt.xlabel('Max Density (vehicles per unit length)')
+    plt.ylabel('Frequency')
     plt.title('Max Density Histogram')
 
     max_density = density_df.groupby(by=['edge']).agg(max_density=('density','max')).reset_index().sort_values(by='max_density')
@@ -133,8 +146,6 @@ def max_density_distribution(edges=None, xscale='linear', num_bins=10):
     bins = num_bins
     if xscale == 'log':
         plt.xscale('log')
-        MIN = 0.001
-        MAX = 1.0
-        bins = np.logspace(np.log10(MIN),np.log10(MAX), 10)
+        bins = np.logspace(np.log10(min_xlog), np.log10(max_xlog), num=10, endpoint=True)
     plt.hist(max_density['max_density'], bins=bins)
     plt.savefig("max_density_histogram.png")
