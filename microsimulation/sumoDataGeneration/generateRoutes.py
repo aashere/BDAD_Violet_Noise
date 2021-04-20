@@ -4,9 +4,9 @@ import argparse
 config_schema = '''<configuration> 
 
 <input> 
-<net-file value="/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/net/my_net.net.xml"/> 
+<net-file value="%s/net/my_net.net.xml"/> 
 <route-files value="%s"/> 
-<additional-files value="/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/net/bus_stops.xml"/>
+<additional-files value="%s/net/bus_stops.xml"/>
 </input> 
 <time> 
 <begin value="%s"/> 
@@ -15,7 +15,7 @@ config_schema = '''<configuration>
 
 </configuration> 
 '''
-
+homedir = r"/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -33,17 +33,17 @@ if __name__ == "__main__":
             endseconds = (w * 604800) + ((d+1) * 86400)
             
             routefile = "week_%s_day_%s_route.rou.xml" % (w, d)
-            filename = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/routes/" + routefile
-            generator.generate_traffic_route(filepath=filename, start_tm_seconds=startseconds, weekday=d)
+            routefile = homedir + "/routes/" + routefile
+            generator.generate_traffic_route(filepath=routefile, start_tm_seconds=startseconds, weekday=d)
 
-            configname = "/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data/configs/week_%s_day_%s_config.sumocfg" % (w,d)
+            configname = homedir + "/configs/week_%s_day_%s_config.sumocfg" % (w,d)
             
             if startseconds > 0:
                 startseconds = startseconds - 1
 
             print(endseconds-1)
 
-            configdata = config_schema % (filename, startseconds, endseconds)
+            configdata = config_schema % (homedir, routefile, homedir, startseconds, endseconds)
             with open(configname, "w") as f:
                 f.write(configdata)
             

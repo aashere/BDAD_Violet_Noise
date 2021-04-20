@@ -8,5 +8,5 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=hls327@nyu.edu
 
-cd /home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration
-srun testrun.sh
+cd /scratch/hls327/
+srun sumoDataGeneration/testrun.sh
