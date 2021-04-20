@@ -15,7 +15,7 @@ config_schema = '''<configuration>
 
 </configuration> 
 '''
-homedir = r"/home/hls327/BDAD_Violet_Noise/microsimulation/sumoDataGeneration/data"
+homedir = r"/scratch/hls327/sumoDataGeneration/data"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
