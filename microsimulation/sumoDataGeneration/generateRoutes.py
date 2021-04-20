@@ -28,8 +28,6 @@ if __name__ == "__main__":
 
     for w in range(0,weeks):
         for d in range(0,7):
-            if d == 5:
-                break
             
             startseconds = (w * 604800) + (d * 86400)
             endseconds = (w * 604800) + ((d+1) * 86400)
