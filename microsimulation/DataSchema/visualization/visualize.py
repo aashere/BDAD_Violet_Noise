@@ -1,60 +1,8 @@
+import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
-
-node_table_path = '../sampleSchema/node_table.csv'
-edge_table_path = '../sampleSchema/edge_table.csv'
-time_series_path = '../OLAP/gps_detail/part-00000-9d5459a4-cc5a-49ac-a341-40bc2ef458d6-c000.csv'
-TIME_UNITS_PER_DATE_UNIT = 86400
-#TIME_UNITS_PER_DATE_UNIT = 1999
-
-node_df = pd.read_csv(node_table_path)
-edge_df = pd.read_csv(edge_table_path)
-edge_df.drop(columns=['type'],inplace=True)
-edge_df.rename(columns={'id':'edge_id'}, inplace=True)
-
-# Join from and to coordinates onto edge_df
-edge_df = pd.merge(edge_df, node_df, left_on='from', right_on='id')
-edge_df.drop(columns=['id'],inplace=True)
-edge_df.rename(columns={'x':'from_x','y':'from_y'}, inplace=True)
-
-edge_df = pd.merge(edge_df, node_df, left_on='to', right_on='id')
-edge_df.drop(columns=['id'],inplace=True)
-edge_df.rename(columns={'x':'to_x','y':'to_y'}, inplace=True)
-del node_df
-
-# Create new column for edge_length
-edge_df['edge_length'] = np.sqrt((edge_df['to_y']-edge_df['from_y'])**2+(edge_df['to_x']-edge_df['from_x'])**2)
-edge_df.drop(columns=['from','to','from_x','from_y','to_x','to_y'],inplace=True)
-
-# Get number of cars and number of buses
-vehicle_df = pd.read_csv(time_series_path)
-#vehicle_df = pd.read_csv('test_vehicle_data.csv')
-num_cars_df = vehicle_df.where(vehicle_df['vehicle_type'] == 'Car').groupby(by=["date", "time", "edge"]).agg(num_cars=('speed','count')).reset_index()
-num_bus_df = vehicle_df.where(vehicle_df['vehicle_type'] == 'Bus').groupby(by=["date", "time", "edge"]).agg(num_bus=('speed','count')).reset_index()
-del vehicle_df
-
-# Join them together
-vehicle_count = pd.merge(num_cars_df, num_bus_df, on=['date','time','edge'], how='outer')
-vehicle_count.fillna(value={'num_cars':0,'num_bus':0},inplace=True)
-vehicle_count['num_vehicles'] = vehicle_count['num_cars'] + vehicle_count['num_bus']*4
-vehicle_count.drop(columns=['num_cars','num_bus'],inplace=True)
-del num_cars_df
-del num_bus_df
-
-# Join edge lengths onto vehicle_count
-density_df = pd.merge(vehicle_count, edge_df, left_on='edge', right_on='edge_id')
-density_df.drop(columns=['edge_id'],inplace=True)
-del edge_df
-
-# New column for density (num_vehicles/edge_length)
-density_df['density'] = density_df['num_vehicles'].astype('float') / density_df['edge_length'].astype('float')
-density_df.drop(columns=['num_vehicles','edge_length'],inplace=True)
-
-# Create one time column
-density_df['time'] = (density_df['date']-1)*TIME_UNITS_PER_DATE_UNIT + density_df['time']
-density_df.drop(columns=['date'], inplace=True)
 
 def plot_edge_weights(edges=None, parts=None):
     '''
@@ -88,7 +36,7 @@ def plot_edge_weights(edges=None, parts=None):
     plt.ylabel('Density (vehicles per unit length)')
     
     # Get list of unique edges
-    edge_list = density_df['edge'].unique()
+    edge_list = unique_edges
     if edges:
         edge_list = edges
     
@@ -122,6 +70,37 @@ def plot_edge_weights(edges=None, parts=None):
         plt.title("Edge Weights over Time")
         plt.savefig("edge_weight_plot.png")
 
+def plot_road_edge_weights():
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (s)')
+    plt.ylabel('Density (vehicles per unit length)')
+    plt.title('Street-Level Density over Time')
+    
+    print(density_df['edge'].str.split(pat="(?<!g)(to)(?!n)").str[0])
+
+    streets = [str(i+30) for i in range(0,29)]
+    for street in streets:
+        #street_edges = density_df[density_df['edge'].str.split(pat="(?<!g)(to)(?!n)")]
+        pass
+    #colors = [colormap(i) for i in np.linspace(0, 1,len(edge_group))]
+
+    '''
+    plt.savefig("street_edge_weight_plot.png")
+    plt.clf()
+    plt.cla()
+
+    aves = ["9","8","7","6","5","Madison","Park","Lexington"]
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (s)')
+    plt.ylabel('Density (vehicles per unit length)')
+    plt.title('Avenue-Level Density over Time')
+
+    colors = [colormap(i) for i in np.linspace(0, 1,len(edge_group))]
+    plt.savefig("avenue_edge_weight_plot.png")
+    '''
+
 def max_density_histogram(edges=None, xscale='linear', min_xlog=0.001, max_xlog=1.0, num_bins=10):
     '''
         Use this function to generate a histogram of the max density
@@ -149,3 +128,12 @@ def max_density_histogram(edges=None, xscale='linear', min_xlog=0.001, max_xlog=
         bins = np.logspace(np.log10(min_xlog), np.log10(max_xlog), num=10, endpoint=True)
     plt.hist(max_density['max_density'], bins=bins)
     plt.savefig("max_density_histogram.png")
+
+def total_trip_time_histogram():
+    pass
+
+def deltas_histogram():
+    pass
+
+if __name__ == "__main__":    
+    pass
