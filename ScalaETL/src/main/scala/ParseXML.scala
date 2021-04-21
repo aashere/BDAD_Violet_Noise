@@ -17,11 +17,15 @@ object ParseXML {
     //println(s"parsing: week_${week}_day_${day}_trace.xml")
 
     // set up environment
-    // System.setProperty("hadoop.home.dir", "C:\\winutils")
-    val conf = new SparkConf().setAppName("Spark ETL")//.setMaster("local")//.setJars(Seq(System.getProperty("user.dir") + "/SparkETL.jar"))
-    val sc = new SparkContext(conf)
-    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-    val spark = SparkSession.builder().appName("Spark ETL").getOrCreate
+    val spark = SparkSession.builder().appName("ETL Parse XML").getOrCreate
+      // .config("spark.executor.instance", "16")
+      // .config("spark.executor.cores", "1")
+      // .config("spark.executor.memory", "2G")
+      // .config("spark.driver.memory", "10G")
+      // .getOrCreate
+    //val sc = spark.sparkContext
+    val sqlContext = spark.sqlContext //new org.apache.spark.sql.SQLContext(sc)
+
     import spark.implicits._
 
 	val dirpath = "/user/jl11257/big_data_project/"
@@ -43,6 +47,5 @@ object ParseXML {
     flat.write.parquet(write_path)
 
     spark.stop()
-    sc.stop()
   }
 }
