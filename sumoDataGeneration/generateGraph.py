@@ -5,6 +5,8 @@ import numpy as np
 from helpers import get_gps_coords
 import pickle
 import json
+import os
+
 
 cart_Xs = [0, 2, 4, 6, 7, 8, 9, 10]
 name_Xs = dict(zip(cart_Xs, ["9", "8", "7", "6", "5", "Madison", "Park", "Lexington"]))
@@ -101,8 +103,9 @@ for node in DG.nodes:
             DG.nodes[node]["nodetype"] = "sink"
             DG.nodes[node]["color"] = "red"
 
+homedir = r"/scratch/hls327/sumoDataGeneration/data/inputs"
 
-with open("data/inputs/nodelambdaspctdiffs.json", 'r') as inf:
+with open(os.path.join(homedir, "nodelambdaspctdiffs.json"), 'r') as inf:
     lambdas = json.load(inf)
     lambdas = {int(k):{int(i):j for i,j in v.items()} for k, v in lambdas.items()}
 
@@ -112,5 +115,5 @@ for node in DG.nodes:
         DG.nodes[node]["volume_rate"] = lambdas[node]
 
 
-with open("data/inputs/graph.p", 'wb') as f:
+with open(os.path.join(homedir, "graph.p"), 'wb') as f:
     pickle.dump(DG, f)

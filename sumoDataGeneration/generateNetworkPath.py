@@ -1,8 +1,12 @@
 import networkx as nx
 import json
 import pickle
+import os
 
-with open("data/inputs/graph.p", "rb") as f:
+homedir = r"/scratch/hls327/sumoDataGeneration/data/inputs"
+
+
+with open(os.path.join(homedir, "graph.p"), "rb") as f:
     DG = pickle.load(f)
 
 
@@ -106,6 +110,6 @@ if __name__ == "__main__":
                 paths[pair] = records
                 
 
-    with open("data/inputs/pathdict.json", 'w') as outf:
+    with open(os.path.join(homedir, "pathdict.json"), 'w') as outf:
         jsonformat = json.dumps({"%s|%s" % k:v for k, v in paths.items()})
         outf.write(jsonformat)
