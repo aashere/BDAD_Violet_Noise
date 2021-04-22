@@ -31,7 +31,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     weeks = args.weeks
-    with open(os.path.join("/scratch/hls327/runscripts/simulate.sh", "w") as f:
+    with open("/scratch/hls327/runscripts/simulate.sh", "w") as f:
         f.write(start_sim)
         for w in range(0,weeks):
             for d in range(0,7):
