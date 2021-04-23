@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
+
+
 def plot_edge_weights(edges=None, parts=None):
     '''
     Use this function to plot edge weights as a function of time.
