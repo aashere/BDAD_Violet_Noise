@@ -5,7 +5,7 @@ import org.apache.spark.sql.Column
 val node_table_path = "/user/jl11257/big_data_project/graph/node_table.csv"
 val edge_table_path = "/user/jl11257/big_data_project/graph/edge_table.csv"
 val trace_file_path = "/user/jl11257/big_data_project/traces/processed/*"
-val NUM_DAYS = 7
+val NUM_DAYS = 70
 //Load node_table data into dataframe from csv
 val node_df = (spark.read.format("csv")
                             .option("header", "true")
