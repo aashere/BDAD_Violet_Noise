@@ -1,0 +1,19 @@
+Binomial Logistic Classifier with Cross Validation
+thres = 0, all bus; thres = 1, all car. TODO: thres finally = 0.1 doesn't make sense?
+Best Param: {
+	logreg_8bd6ba57fdb7-threshold: 0.1
+}
+
+Linear SVM Classifier (highly doubt bug in code, todo)
+Training Error = 0.4267502470448905Area under ROC = 0.09870989229029956
+
+Binomial Logistic Classifier (TODO: maybe need down sampling for this method)
+Accuracy is 0.49974312186652964
+
+Random Forest Classifier
+Accuracy is 1.0
+Area under ROC is 1.0
+Random Forest feature importance
+(4,[0,1,2,3],[0.8023123075443884,0.12045269906705781,0.04897764374224062,0.028257349646313018])
+
+features: max_speed num_times num_turns avg_speed
