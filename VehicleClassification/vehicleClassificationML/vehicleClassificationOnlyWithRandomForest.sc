@@ -5,7 +5,6 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer, VectorAssembler}
 import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
 import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics
-
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 
@@ -13,30 +12,34 @@ import org.apache.spark.sql.types._
 // change schema according to the new data!!!
 val schema = StructType(
     StructField("id", StringType, nullable = true) ::
+    StructField("time", DoubleType, nullable = true) ::
     StructField("type", StringType, nullable = true) ::
     StructField("speed", DoubleType, nullable = true) ::
-    StructField("time", DoubleType, nullable = true) ::
     StructField("start_vertex_id", DoubleType, nullable = true) ::
     StructField("stop_vertex_id", DoubleType, nullable = true) ::
     StructField("maxSpeed", DoubleType, nullable = true) ::
+    StructField("averageSpeed", DoubleType, nullable = true) ::
     StructField("hour", DoubleType, nullable = true) ::
     StructField("minute", DoubleType, nullable = true) ::
     StructField("turnsCount", DoubleType, nullable = true) ::
-    StructField("consecutiveZerosCount", DoubleType, nullable = true) ::
     Nil
 )    
 
 // 2.Load data set: Load and parse the data file
-val vehicleInfo = spark.read.option("header",true).option("delimiter", ",").option("mode", "DROPMALFORMED").schema(schema).csv("/user/jl11257/big_data_project/onedaydata/gps")
+val carFileName = "/user/jl11257/big_data_project/testing/vehicleClassification/predictionDataOneDay/carDownSamping"
+val busFileName = "/user/jl11257/big_data_project/testing/vehicleClassification/predictionDataOneDay/bus"
+val carInfo = spark.read.option("header",true).option("delimiter", ",").option("mode", "DROPMALFORMED").schema(schema).csv(carFileName)
+val busInfo = spark.read.option("header",true).option("delimiter", ",").option("mode", "DROPMALFORMED").schema(schema).csv(busFileName)
+val vehicleInfo = carInfo.unionAll(busInfo)
 
 // 3.Add feature column:
 // columns that need to added to feature column
-val cols = Array("start_vertex_id", "stop_vertex_id", "maxSpeed", "hour", "minute", "turnsCount", "consecutiveZerosCount")
+val cols = Array("start_vertex_id", "stop_vertex_id", "maxSpeed", "averageSpeed", "hour", "minute", "turnsCount")
 
 // VectorAssembler to add feature column
 // input columns - cols
 // feature column - features
-val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
+val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features").setHandleInvalid("skip")
 val featureDf = assembler.transform(vehicleInfo)
 featureDf.printSchema()
 
@@ -63,12 +66,6 @@ println(randomForestModel.toDebugString)
 val predictionDf = randomForestModel.transform(testDataCache)
 predictionDf.show(10)
 
-// val predictionAndLabels = predictionDf.select("prediction", "label").as[(Double, Double)].rdd
-// predictionAndLabels.take(1)
-
-// this could also work for converting df to rdd[(type1,type2,..)]
-// val predictionAndLabels = predictionDf.select("prediction", "label").map{case Row(prediction: Double, label: Double) => (prediction, label)}.rdd
-
 // 6.Evaluate model: 
 // evaluate model with area under ROC
 val evaluator_auROC = new BinaryClassificationEvaluator().setLabelCol("label").setMetricName("areaUnderROC")
@@ -84,5 +81,8 @@ val evaluator_auPRC = new BinaryClassificationEvaluator().setLabelCol("label").s
 val auPRC = evaluator_auPRC.evaluate(predictionDf)
 println(auPRC)
 
-// 7.feature important
+// 7.feature importances
 println(randomForestModel.featureImportances)
+
+// 8.save model
+randomForestModel.write.overwrite().save("/user/jl11257/big_data_project/testing/vehicleClassification/randomForestModel")
