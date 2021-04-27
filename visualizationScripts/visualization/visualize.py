@@ -4,116 +4,245 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
+# Plot max, min, avg histograms for fields from regression feature table
+def deltas_histogram(xscale):
+    df = pd.read_csv("visualizations/delta_histogram/delta_hist.csv")
+    hists = df.columns.values.tolist()
+    hists.remove("edge")
+    for hist in hists:
+        plt.xlabel(hist)
+        plt.ylabel('Frequency')
+        plt.title(hist + ' Histogram')
+        bins = 50
+        if xscale == 'log':
+            plt.xscale('log')
+            bins = np.logspace(np.log10(0.001), np.log10(1.0), num=50, endpoint=True)
+        plt.hist(df[hist], bins=bins)
+        plt.savefig(hist+"_histogram_"+ xscale +".png")
+        plt.clf()
+        plt.cla()
+        print(hist + " done!")
+    print("delta_hist " + xscale +" done!")
 
+# Plot average of edge densities against time
+def edge_level_time_series():
+    df = pd.read_csv("visualizations/edge_time_series/plot_edge.csv")
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
+    plt.title("Edge Weights over Time")
 
-def plot_edge_weights():
-    '''
-    Use this function to plot edge weights as a function of time.
-    Once you generate the png file, make sure to rename it or
-    move it to another directory, as another run of this function
-    will overwrite file with the same name.
-    '''
-    fig, ax = plt.subplots()
-    colormap = plt.cm.nipy_spectral
-    plt.xlabel('Time (s)')
-    plt.ylabel('Density (vehicles per unit length)')
-    
-    # Get list of unique edges
-    edge_list = unique_edges
-    if edges:
-        edge_list = edges
-    
-    colors = [colormap(i) for i in np.linspace(0, 1,len(edge_list))]
-    ax.set_prop_cycle('color', colors)
+    plt.scatter(df['interval'], df['avg(tot_density)'],s=1)
+    plt.savefig("edge_level_time_series_density.png")
+    print("plot_edge density done!")
 
-    left = parts[i]
-    right = parts[i+1]
-    edge_group = max_density[(max_density['max_density']>=left) & (max_density['max_density']<right)]['edge'].tolist()
-    colors = [colormap(i) for i in np.linspace(0, 1,len(edge_group))]
-    ax.set_prop_cycle('color', colors)
-    for edge in edge_group:
-        df_edge = density_df[density_df['edge'] == edge]
-        plt.scatter(df_edge['time'], df_edge['density'], label=edge,s=1)
-    plt.legend(loc='upper left')
-    plt.title("Edge Weights over Time for edges with " + str(left) + " <= Max Density < " + str(right))
-    plt.savefig("max_density_"+str(left)+"_to_"+str(right)+".png")
     plt.clf()
     plt.cla()
-    plt.xlabel('Time (s)')
-    plt.ylabel('Density (vehicles per unit length)')
-    fig, ax = plt.subplots()
 
-    for edge in edge_list:
-            df_edge = density_df[density_df['edge'] == edge]
-            plt.scatter(df_edge['time'], df_edge['density'], label=edge, s=1)
-    plt.legend(loc='upper left')
-    plt.title("Edge Weights over Time")
-    plt.savefig("edge_weight_plot.png")
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title("Vehicle Count over Time")
 
-def plot_road_edge_weights():
+    plt.scatter(df['interval'], df['avg(tot_vehicle_count)'],s=1)
+    plt.savefig("edge_level_time_series_vehicle_count.png")
+    print("plot_edge vehicle count done!")
+
+    plt.clf()
+    plt.cla()
+
+    # First week of data
+    df= df[df['interval']<=672]
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
+    plt.title("Edge Weights over Time (First Week)")
+
+    plt.scatter(df['interval'], df['avg(tot_density)'],s=1)
+    plt.savefig("edge_level_time_series_density_first_week.png")
+    print("plot_edge density first week done!")
+
+    plt.clf()
+    plt.cla()
+
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title("Vehicle Count over Time (First Week)")
+
+    plt.scatter(df['interval'], df['avg(tot_vehicle_count)'],s=1)
+    plt.savefig("edge_level_time_series_vehicle_count_first_week.png")
+    print("plot_edge vehicle count first week done!")
+
+# Plot streets and avenue densities against time
+def road_level_time_series():
+    # Streets
+    df = pd.read_csv("visualizations/road_time_series/st/plot_st.csv")
     fig, ax = plt.subplots()
     colormap = plt.cm.nipy_spectral
-    plt.xlabel('Time (s)')
-    plt.ylabel('Density (vehicles per unit length)')
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
     plt.title('Street-Level Density over Time')
-    
-    print(density_df['edge'].str.split(pat="(?<!g)(to)(?!n)").str[0])
 
     streets = [str(i+30) for i in range(0,29)]
+    colors = [colormap(i) for i in np.linspace(0, 1,len(streets))]
+    ax.set_prop_cycle('color', colors)
     for street in streets:
-        #street_edges = density_df[density_df['edge'].str.split(pat="(?<!g)(to)(?!n)")]
-        pass
-    #colors = [colormap(i) for i in np.linspace(0, 1,len(edge_group))]
+        st_df = df[df['st'].astype('str') == street]
+        plt.scatter(st_df['interval'],st_df['agg_density'],label=street,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("street_level_time_series_density.png")
+    print("plot_street density done!")
 
-    '''
-    plt.savefig("street_edge_weight_plot.png")
     plt.clf()
     plt.cla()
 
-    aves = ["9","8","7","6","5","Madison","Park","Lexington"]
     fig, ax = plt.subplots()
     colormap = plt.cm.nipy_spectral
-    plt.xlabel('Time (s)')
-    plt.ylabel('Density (vehicles per unit length)')
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title('Street-Level Vehicle Count over Time')
+
+    colors = [colormap(i) for i in np.linspace(0, 1,len(streets))]
+    ax.set_prop_cycle('color', colors)
+    for street in streets:
+        st_df = df[df['st'].astype('str') == street]
+        plt.scatter(st_df['interval'],st_df['agg_vehicle_count'],label=street,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("street_level_time_series_vehicle_count.png")
+    print("plot_street vehicle count done!")
+
+    plt.clf()
+    plt.cla()
+
+    # First week for streets
+    df = df[df['interval']<=672]
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
+    plt.title('Street-Level Density over Time (First Week)')
+
+    streets = [str(i+30) for i in range(0,29)]
+    colors = [colormap(i) for i in np.linspace(0, 1,len(streets))]
+    ax.set_prop_cycle('color', colors)
+    for street in streets:
+        st_df = df[df['st'].astype('str') == street]
+        plt.scatter(st_df['interval'],st_df['agg_density'],label=street,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("street_level_time_series_density_first_week.png")
+    print("plot_street density first week done!")
+
+    plt.clf()
+    plt.cla()
+
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title('Street-Level Vehicle Count over Time (First Week)')
+
+    colors = [colormap(i) for i in np.linspace(0, 1,len(streets))]
+    ax.set_prop_cycle('color', colors)
+    for street in streets:
+        st_df = df[df['st'].astype('str') == street]
+        plt.scatter(st_df['interval'],st_df['agg_vehicle_count'],label=street,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("street_level_time_series_vehicle_count_first_week.png")
+    print("plot_street vehicle count first week done!")
+
+    plt.clf()
+    plt.cla()
+
+    # Avenues
+    df = pd.read_csv("visualizations/road_time_series/ave/plot_ave.csv")
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
     plt.title('Avenue-Level Density over Time')
 
-    colors = [colormap(i) for i in np.linspace(0, 1,len(edge_group))]
-    plt.savefig("avenue_edge_weight_plot.png")
-    '''
+    aves = ["9","8","7","6","5","Madison","Park","Lexington"]
+    colors = [colormap(i) for i in np.linspace(0, 1,len(aves))]
+    ax.set_prop_cycle('color', colors)
+    for ave in aves:
+        ave_df = df[df['ave'] == ave]
+        plt.scatter(ave_df['interval'],ave_df['agg_density'],label=ave,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("avenue_level_time_series_density.png")
+    print("plot_ave density done!")
 
-def max_density_histogram(edges=None, xscale='linear', min_xlog=0.001, max_xlog=1.0, num_bins=10):
-    '''
-        Use this function to generate a histogram of the max density
-        each edge attains over the whole simulation.
+    plt.clf()
+    plt.cla()
 
-        Parameters:
-            edges:      List of edges to use for histogram. Default is
-                        all edges.
-            xscale:     Scale for x axis. Log scale used if 'log' passed in.
-                        Default is linear scale.
-            min_xlog:   Minimum value on x axis for log scale. Default 0.001.
-            max_xlog:   Maximum value on x axis for log scale. Default 1.0.
-            num_bins:   Number of bins for histogram. Default is 10.
-    '''
-    plt.xlabel('Max Density (vehicles per unit length)')
-    plt.ylabel('Frequency')
-    plt.title('Max Density Histogram')
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title('Avenue-Level Vehicle Count over Time')
 
-    max_density = density_df.groupby(by=['edge']).agg(max_density=('density','max')).reset_index().sort_values(by='max_density')
-    if edges:
-        max_density = max_density[max_density['edge'].isin(edges)]
-    bins = num_bins
-    if xscale == 'log':
-        plt.xscale('log')
-        bins = np.logspace(np.log10(min_xlog), np.log10(max_xlog), num=10, endpoint=True)
-    plt.hist(max_density['max_density'], bins=bins)
-    plt.savefig("max_density_histogram.png")
+    colors = [colormap(i) for i in np.linspace(0, 1,len(aves))]
+    ax.set_prop_cycle('color', colors)
+    for ave in aves:
+        ave_df = df[df['ave'] == ave]
+        plt.scatter(ave_df['interval'],ave_df['agg_vehicle_count'],label=ave,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("avenue_level_time_series_vehicle_count.png")
+    print("plot_ave vehicle count done!")
 
+    # First week for avenues
+    df = df[df['interval']<=672]
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Density (vehicles per unit area)')
+    plt.title('Avenue-Level Density over Time (First Week)')
+
+    aves = ["9","8","7","6","5","Madison","Park","Lexington"]
+    colors = [colormap(i) for i in np.linspace(0, 1,len(aves))]
+    ax.set_prop_cycle('color', colors)
+    for ave in aves:
+        ave_df = df[df['ave'] == ave]
+        plt.scatter(ave_df['interval'],ave_df['agg_density'],label=ave,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("avenue_level_time_series_density_first_week.png")
+    print("plot_ave density first week done!")
+
+    plt.clf()
+    plt.cla()
+
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Vehicle Count (vehicles)')
+    plt.title('Avenue-Level Vehicle Count over Time (First Week)')
+
+    colors = [colormap(i) for i in np.linspace(0, 1,len(aves))]
+    ax.set_prop_cycle('color', colors)
+    for ave in aves:
+        ave_df = df[df['ave'] == ave]
+        plt.scatter(ave_df['interval'],ave_df['agg_vehicle_count'],label=ave,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("avenue_level_time_series_vehicle_count_first_week.png")
+    print("plot_ave vehicle count first week done!")
+
+# Plot histogram of total trip time across all vehicles
 def total_trip_time_histogram():
-    pass
-
-def deltas_histogram():
-    pass
+    df = pd.read_csv("visualizations/total_trip_time/total_trip_time.csv")
+    plt.xlabel("Total Trip Time (s)")
+    plt.ylabel('Frequency')
+    plt.title('Total Trip Time Histogram')
+    bins = 50
+    plt.hist(df["total_trip_time"], bins=bins)
+    plt.savefig("total_trip_time_histogram.png")
+    print("total_trip_time done!")
 
 if __name__ == "__main__":    
-    pass
+    args = dict()
+    for i, arg in enumerate(sys.argv):
+        if i!=0:
+            args[arg.split("=")[0]] = arg.split("=")[1]
+    if args["--type"] == "delta_hist":
+        deltas_histogram(xscale=args["--xscale"])
+    elif args["--type"] == "plot_edge":
+        edge_level_time_series()
+    elif args["--type"] == "plot_road":
+        road_level_time_series()
+    elif args["--type"] == "total_trip_time":
+        total_trip_time_histogram()
