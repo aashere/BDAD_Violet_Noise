@@ -1,11 +1,8 @@
 import org.apache.spark._
-import org.apache.spark.SparkContext._
-import org.apache.spark.SparkConf
-import org.apache.spark.sql.functions._
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql._
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.Column
 import com.databricks.spark._
 import org.apache.spark.sql.expressions.Window
@@ -129,6 +126,14 @@ object SummaryStats {
                                     .withColumn("t-3_lag", lag("t_0_density",3).over(windowSpec))
                                     .withColumn("t-3_delta", col("t_0_density")-col("t-3_lag"))
                                     .drop("t-3_lag")
+                                    .withColumn("mod_week", (col("interval")*DELTA_VALUE+DELTA_VALUE-1) % (60*60*24*7))
+                                    .withColumn("mod_day", col("mod_week") % (60*60*24))
+                                    .withColumn("mod_hour", col("mod_day") % (60*60))
+                                    .withColumn("week", ((col("interval")*DELTA_VALUE+DELTA_VALUE-1) / (60*60*24*7)).cast(IntegerType))
+                                    .withColumn("day_of_week", (col("mod_week") / (60*60*24)).cast(IntegerType))
+                                    .withColumn("hour_of_day", (col("mod_day") / (60*60)).cast(IntegerType))
+                                    .withColumn("minute_of_hour", (col("mod_hour") / 60).cast(IntegerType))
+                                    .drop("mod_week","mod_day","mod_hour")
                                     .cache)
         //Write deltas feature table to csv
         (delta_df.coalesce(1)
