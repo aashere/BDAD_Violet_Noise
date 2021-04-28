@@ -2,11 +2,13 @@
 The code to generate visualizations is contained in ```visualize.py```. 
 ## Types of Visualizations
 The following visualizations are supported:
-1. Histograms of max, min, and average of t_0_density, t-1_delta, t-2_delta, t-3_delta, and tot_vehicle_count (log and linear scales)
+1. Histograms of max, min, and average of t_0_density, t-1_delta, t-2_delta, t-3_delta, and tot_vehicle_count (log and linear scales, by edge)
 2. Edge-level time series plot
 3. Street-level time series plot
 4. Avenue-level time series plot
 5. Total trip time histogram
+6. Histograms of the deltas by interval
+7. Average delta time series plot for t-1, t-2, t-3 deltas
 ## visualize.py Options
 The following parameters can be passed to the ```visualize.py``` script:
 1. ```--type``` specifies the type of visualization. The following can be passed:
@@ -14,7 +16,9 @@ The following parameters can be passed to the ```visualize.py``` script:
     b. ```--type=plot_edge``` for 2. in list above.
     c. ```--type=plot_road``` for 3. and 4. in list above.
     d. ```--type=total_trip_time``` for 5. in list above.
-2. For ```--type=delta_hist``` the scale of the x-axis must also be passed via the ```--xscale``` parameter. The following can be passed:
+    e. ```--type=delta_hist_interval``` for 6. in list above.
+    f. ```--type=plot_delta``` for 7. in list above.
+2. For ```--type=delta_hist``` and ```--type=delta_hist_interval``` the scale of the x-axis must also be passed via the ```--xscale``` parameter. The following can be passed:
     a. ```--xscale=linear``` for linear scale.
     b. ```--xscale=log``` for log scale.
 ## How to Run

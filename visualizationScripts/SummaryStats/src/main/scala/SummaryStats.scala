@@ -87,6 +87,7 @@ object SummaryStats {
 
         val delta_df_write_path = "/user/jl11257/big_data_project/features/regression"
         val delta_hist_df_write_path = "/user/jl11257/big_data_project/visualizations/delta_histogram"
+        val delta_hist_interval_df_write_path = "/user/jl11257/big_data_project/visualizations/delta_histogram_interval"
         val density_time_series_df_write_path = "/user/jl11257/big_data_project/visualizations/edge_time_series"
         val ave_density_df_write_path = "/user/jl11257/big_data_project/visualizations/road_time_series/ave"
         val st_density_df_write_path = "/user/jl11257/big_data_project/visualizations/road_time_series/st"
@@ -135,6 +136,7 @@ object SummaryStats {
                                     .withColumn("minute_of_hour", (col("mod_hour") / 60).cast(IntegerType))
                                     .drop("mod_week","mod_day","mod_hour")
                                     .cache)
+
         //Write deltas feature table to csv
         (delta_df.coalesce(1)
                     .write.format("com.databricks.spark.csv")
@@ -142,7 +144,7 @@ object SummaryStats {
                     .save(delta_df_write_path))
 
         //DELTAS HISTOGRAM
-        //Do histogram calculations
+        //Do histogram calculations (groupby edge)
         val delta_hist_df = (delta_df.groupBy("edge").agg(max("t_0_density"),
                                                             min("t_0_density"),
                                                             avg("t_0_density"),
@@ -163,6 +165,22 @@ object SummaryStats {
                         .write.format("com.databricks.spark.csv")
                         .option("header", "true")
                         .save(delta_hist_df_write_path))
+
+        //Do histogram calculations (groupby interval)
+        val delta_hist_interval_df = (delta_df.groupBy("interval").agg(max("t-1_delta"),
+                                                                    min("t-1_delta"),
+                                                                    avg("t-1_delta"),
+                                                                    max("t-2_delta"),
+                                                                    min("t-2_delta"),
+                                                                    avg("t-2_delta"),
+                                                                    max("t-3_delta"),
+                                                                    min("t-3_delta"),
+                                                                    avg("t-3_delta")))
+        //Write delta_hist_df to csv
+        (delta_hist_interval_df.coalesce(1)
+                                .write.format("com.databricks.spark.csv")
+                                .option("header", "true")
+                                .save(delta_hist_interval_df_write_path))
 
         val delta_df_unpersist = delta_df.unpersist
 

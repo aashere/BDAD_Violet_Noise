@@ -4,25 +4,66 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-# Plot max, min, avg histograms for fields from regression feature table
-def deltas_histogram(xscale):
-    df = pd.read_csv("visualizations/delta_histogram/delta_hist.csv")
+# Plot max, min, avg histograms for fields from regression feature table (by edge)
+def deltas_histogram_edge(xscale):
+    df = pd.read_csv("visualizations/delta_histogram/delta_hist.csv").dropna()
     hists = df.columns.values.tolist()
     hists.remove("edge")
     for hist in hists:
         plt.xlabel(hist)
         plt.ylabel('Frequency')
-        plt.title(hist + ' Histogram')
+        plt.title(hist + ' Histogram (by Edge)')
         bins = 50
         if xscale == 'log':
             plt.xscale('log')
             bins = np.logspace(np.log10(0.001), np.log10(1.0), num=50, endpoint=True)
         plt.hist(df[hist], bins=bins)
-        plt.savefig(hist+"_histogram_"+ xscale +".png")
+        plt.savefig(hist+"_histogram_"+ xscale +"_by_edge.png")
         plt.clf()
         plt.cla()
         print(hist + " done!")
     print("delta_hist " + xscale +" done!")
+
+# Plot avg histograms for deltas by interval
+def deltas_histogram_interval(xscale):
+    df = pd.read_csv("visualizations/delta_histogram/delta_hist_interval.csv").dropna()
+    hists = df.columns.values.tolist()
+    hists.remove("interval")
+    for hist in hists:
+        plt.xlabel(hist)
+        plt.ylabel('Frequency')
+        plt.title(hist + ' Histogram (by Interval)')
+        bins = 50
+        if xscale == 'log':
+            plt.xscale('log')
+            bins = np.logspace(np.log10(0.001), np.log10(1.0), num=50, endpoint=True)
+        plt.hist(df[hist], bins=bins)
+        plt.savefig(hist+"_histogram_"+ xscale +"_by_interval.png")
+        plt.clf()
+        plt.cla()
+        print(hist + " done!")
+    print("delta_hist " + xscale +" done!")
+
+# Plot average of deltas over time
+def delta_time_series():
+    # Average deltas for first week
+    df = pd.read_csv("visualizations/delta_histogram/delta_hist_interval.csv")
+    df = df[df['interval']<=672].dropna()
+    fig, ax = plt.subplots()
+    colormap = plt.cm.nipy_spectral
+    plt.xlabel('Time (15 minute intervals)')
+    plt.ylabel('Delta Value (change in vehicles per unit area)')
+    plt.title('Deltas over Time (First Week)')
+
+    deltas = ["avg(t-1_delta)","avg(t-2_delta)","avg(t-3_delta)"]
+    colors = [colormap(i) for i in np.linspace(0, 1,len(deltas))]
+    ax.set_prop_cycle('color', colors)
+    for delta in deltas:
+        plt.scatter(df['interval'],df[delta],label=delta,s=1)
+    plt.legend(loc='upper left')
+    plt.savefig("delta_time_series_first_week.png")
+    print("plot_delta first week done!")
+
 
 # Plot average of edge densities against time
 def edge_level_time_series():
@@ -238,8 +279,12 @@ if __name__ == "__main__":
     for i, arg in enumerate(sys.argv):
         if i!=0:
             args[arg.split("=")[0]] = arg.split("=")[1]
-    if args["--type"] == "delta_hist":
-        deltas_histogram(xscale=args["--xscale"])
+    if args["--type"] == "delta_hist_edge":
+        deltas_histogram_edge(xscale=args["--xscale"])
+    elif args["--type"] == "delta_hist_interval":
+        deltas_histogram_interval(xscale=args["--xscale"])
+    elif args["--type"] == "plot_delta":
+        delta_time_series()
     elif args["--type"] == "plot_edge":
         edge_level_time_series()
     elif args["--type"] == "plot_road":

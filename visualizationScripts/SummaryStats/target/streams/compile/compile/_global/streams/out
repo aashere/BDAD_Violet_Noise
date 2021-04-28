@@ -1,4 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\astin\OneDrive\Desktop\NYU\Academics\Spark\Project\BDAD_Violet_Noise\visualizationScripts\SummaryStats\src\main\scala\SummaryStats.scala:70:29: value parallelize is not a member of org.apache.spark.sql.SparkSession[0m
-[0m[[0m[31merror[0m] [0m[0m        val days_df = spark.parallelize(days_arr).toDF("day")[0m
-[0m[[0m[31merror[0m] [0m[0m                            ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
