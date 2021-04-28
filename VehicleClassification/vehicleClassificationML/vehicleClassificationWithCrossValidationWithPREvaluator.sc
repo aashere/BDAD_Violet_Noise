@@ -92,4 +92,4 @@ val cvAccuracyWithauPRC = evaluatorWithauPRC.evaluate(cvPredictionDfWithauPRC)
 println(cvAccuracyWithauPRC)
 
 // 7.save model
-cvModelWithauPRC.write.overwrite().save("/user/jl11257/big_data_project/modelSaving/vehicleClassification/cvModelWithaPRC")
+cvModelWithauPRC.write.overwrite().save("/user/jl11257/big_data_project/modelSaving/vehicleClassification/cvModelWithauPRC")
