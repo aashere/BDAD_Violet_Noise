@@ -67,7 +67,7 @@ object VehicleFeatureGen {
 									.join(start_node_ft, Seq("id"),"inner")
 									.join(stop_node_ft, Seq("id"),"inner"))
 
-		all_features.repartition(6).write.parquet(write_path)
+		all_features.repartition(12).write.parquet(write_path)
 	}
 }
 
