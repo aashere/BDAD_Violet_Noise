@@ -17,7 +17,7 @@ object ParseXML {
     //println(s"parsing: week_${week}_day_${day}_trace.xml")
 
     // set up environment
-    val spark = SparkSession.builder().appName("ETL Parse XML").getOrCreate
+    val spark = SparkSession.builder().appName("ParseXML").getOrCreate
       // .config("spark.executor.instance", "16")
       // .config("spark.executor.cores", "1")
       // .config("spark.executor.memory", "2G")
@@ -28,9 +28,9 @@ object ParseXML {
 
     import spark.implicits._
 
-	val dirpath = "/user/jl11257/big_data_project/"
-	val read_path = dirpath + args(0)
-	val write_path = dirpath + args(1)
+	  val dirpath = "/user/jl11257/big_data_project/"
+	  val read_path = dirpath + args(0)
+	  val write_path = dirpath + args(1)
 
     //val read_path = "/user/jl11257/big_data_project/SimulationData_1/traces/"
     //val write_path = "/user/jl11257/big_data_project/SimulationData_1/traces/traces/"
