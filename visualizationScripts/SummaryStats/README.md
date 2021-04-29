@@ -13,6 +13,8 @@ Our edge weight is density, which is calculated as number of vehicles (normalize
 ```/user/jl11257/big_data_project/visualizations/road_time_series/st```  
 6. The histogram data for the total trip time can be found in:
 ```/user/jl11257/big_data_project/visualizations/total_trip_time```
+7. The data for delta histogram and time series by interval can be found in:
+```/user/jl11257/big_data_project/visualizations/delta_histogram_interval``` 
 
 ## To Regenerate Summary Stats
 Before regenerating summary stats, check if there is data in ```/user/jl11257/big_data_project/visualizations/```. If so, delete everything inside this folder (but not the folder itself). Also check if ```/user/jl11257/big_data_project/features/regression``` exists. If so, delete this folder. 
