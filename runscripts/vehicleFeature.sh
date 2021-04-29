@@ -1,7 +1,8 @@
 spark-submit --master yarn \
 --deploy-mode cluster \
---driver-memory 40G --executor-memory 6G \
+--driver-memory 40G --executor-memory 12G \
 --num-executors 60 --executor-cores 5 \
+spark.yarn.executor.memoryOverhead
 --class VehicleFeatureGen /home/hls327/BDAD_Violet_Noise/VehicleClassification/featurePipeline/vehiclefeaturegen_2.11-0.1.jar /user/jl11257/big_data_project/traces/processed/* /user/jl11257/big_data_project/features/vclassify
 
 hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/features/vclassify
