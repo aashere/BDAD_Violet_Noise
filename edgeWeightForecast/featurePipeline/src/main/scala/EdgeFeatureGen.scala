@@ -112,7 +112,7 @@ object EdgeFeatureGen {
                                     .drop("mod_week","mod_day","mod_hour")
                                     .cache)
         //Write deltas feature table 
-        delta_df.coalesce(1).write.parquet(delta_df_write_path)
+        delta_df.coalesce(1).write.mode("append").parquet(delta_df_write_path)
 
         spark.stop()
     }
