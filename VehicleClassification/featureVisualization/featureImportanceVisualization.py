@@ -1,9 +1,9 @@
-# visualize feature importance, features: startNodeId, stopNodeId, maxSpeed, hour, minute, turnsCount, consecutiveZerosCount
+# visualize feature importances, features: maxSpeed, averageSpeed, hour, minute, startNodeId, stopNodeId, turnsCount
 
 from matplotlib import pyplot as plt
 import matplotlib.ticker as plticker
 
-plt.bar(x=['startNodeId', 'stopNodeId', 'maxSpeed', 'average', 'hour', 'minute', 'turnsCount'],
+plt.bar(x=['maxSpeed', 'averageSpeed', 'hour', 'minute', 'startNode', 'stopNode', 'turnsCount'],
         # the values of height come from the training result
         height=[], 
         color=['limegreen', 'dodgerblue', 'crimson', 'purple', 'pink', 'cyan', 'orange'])

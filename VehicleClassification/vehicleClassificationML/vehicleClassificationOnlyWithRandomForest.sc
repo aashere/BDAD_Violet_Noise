@@ -12,15 +12,13 @@ import org.apache.spark.sql.types._
 // change schema according to the new data!!!
 val schema = StructType(
     StructField("id", StringType, nullable = true) ::
-    StructField("time", DoubleType, nullable = true) ::
     StructField("type", StringType, nullable = true) ::
-    StructField("speed", DoubleType, nullable = true) ::
-    StructField("start_vertex_id", DoubleType, nullable = true) ::
-    StructField("stop_vertex_id", DoubleType, nullable = true) ::
     StructField("maxSpeed", DoubleType, nullable = true) ::
     StructField("averageSpeed", DoubleType, nullable = true) ::
     StructField("hour", DoubleType, nullable = true) ::
     StructField("minute", DoubleType, nullable = true) ::
+    StructField("start_vertex_id", DoubleType, nullable = true) ::
+    StructField("stop_vertex_id", DoubleType, nullable = true) ::
     StructField("turnsCount", DoubleType, nullable = true) ::
     Nil
 )    
@@ -36,7 +34,7 @@ val vehicleInfo = carInfo.unionAll(busInfo)
 
 // 3.Add feature column:
 // columns that need to added to feature column
-val cols = Array("start_vertex_id", "stop_vertex_id", "maxSpeed", "averageSpeed", "hour", "minute", "turnsCount")
+val cols = Array("maxSpeed", "averageSpeed", "hour", "minute", "start_vertex_id", "stop_vertex_id", "turnsCount")
 
 // VectorAssembler to add feature column
 // input columns - cols
