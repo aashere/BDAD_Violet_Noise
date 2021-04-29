@@ -27,7 +27,8 @@ object VehicleFeatureGen {
 								.withColumnRenamed("first(type, true)", "type")
 								.withColumn("type", when($"type" === "Bus", $"type").otherwise(lit("Car")))
 								.withColumnRenamed("max(speed)", "maxSpeed")
-								.withColumnRenamed("avg(speed)", "averageSpeed")
+								.withColumn("averageSpeed",round(col("avg(speed)"),2))
+								.drop("avg(speed)")
 								.repartition(col("id")))
 		groupedfts.cache()					
 
@@ -46,8 +47,11 @@ object VehicleFeatureGen {
 						.select("id","stop_vertex_id").repartition(col("id")))
 
 		// calculating the starting hour and minute
-		val time_fts = (starttms.withColumn("hour", ($"time" % (24 * 60 * 60)) / (60 * 60)).withColumn("hour", col("hour").cast("int"))
-						.withColumn("minute", (($"time" % (24 * 60 * 60)) % (60 * 60)) / 60).withColumn("minute", col("minute").cast("int")))
+		val time_fts = (starttms.withColumn("hour", ($"time" % (24 * 60 * 60)) / (60 * 60))
+								.withColumn("hour", col("hour").cast("int"))
+								.withColumn("minute", (($"time" % (24 * 60 * 60)) % (60 * 60)) / 60)
+								.withColumn("minute", col("minute").cast("int"))
+								.drop("time"))
 
 
 		// angle feature -- to calculate the turns the vehicle makes
@@ -66,7 +70,7 @@ object VehicleFeatureGen {
 									.drop("starttime")
 									.drop("stoptime"))
 
-		all_features.repartition(12).write.mode("append").parquet(write_path)
+		all_features.repartition(6).write.mode("append").parquet(write_path)
 	}
 }
 
