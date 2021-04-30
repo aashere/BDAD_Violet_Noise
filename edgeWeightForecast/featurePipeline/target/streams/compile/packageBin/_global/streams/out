@@ -1,9 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0mPackaging /Users/hsajer3/NYU/bdad/BDAD_Violet_Noise/edgeWeightForecast/featurePipeline/target/scala-2.11/edgefeaturegen_2.11-0.1.jar ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	EdgeFeatureGen.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /Users/hsajer3/NYU/bdad/BDAD_Violet_Noise/edgeWeightForecast/featurePipeline/target/scala-2.11/classes/EdgeFeatureGen.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	EdgeFeatureGen$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /Users/hsajer3/NYU/bdad/BDAD_Violet_Noise/edgeWeightForecast/featurePipeline/target/scala-2.11/classes/EdgeFeatureGen$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	EdgeFeatureGen$$anonfun$main$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /Users/hsajer3/NYU/bdad/BDAD_Violet_Noise/edgeWeightForecast/featurePipeline/target/scala-2.11/classes/EdgeFeatureGen$$anonfun$main$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
