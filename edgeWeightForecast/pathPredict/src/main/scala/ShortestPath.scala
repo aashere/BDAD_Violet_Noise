@@ -15,7 +15,8 @@ object ShortestPath {
         //val edge_weight_df = spark.read.parquet(weights_path)
 
         val node_df = spark.read.parquet(nodes_path)
-        val edge_node_df = spark.read.parquet(vertices_path)
+        //This is used repeatedly for printing shortest path
+        val edge_node_df = spark.read.parquet(vertices_path).cache
 
         // PLACEHOLDER FOR REAL EDGE WEIGHTS
         val randfn = udf(() => scala.math.floor(scala.math.random*100).toInt)
@@ -60,6 +61,8 @@ object ShortestPath {
 
         //Shortest path
         var shortestPath: String = ""
+        //Aggregate density over shortest path
+        val agg_density = sssp.vertices.filter(v => v._1 == sinkId).collect.toList(0)._2._1.asInstanceOf[Number].longValue
 
         var tempId: VertexId = sinkId
         while(tempId != sourceId){
@@ -70,6 +73,7 @@ object ShortestPath {
             tempId = tempParent
         }
         println(shortestPath)
+        println(agg_density)
 
         spark.stop()
     }
