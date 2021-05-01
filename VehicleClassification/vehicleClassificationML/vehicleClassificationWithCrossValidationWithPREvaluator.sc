@@ -35,7 +35,7 @@ val vehicleInfo = carInfo.unionAll(busInfo)
 
 // 3.Add feature column:
 // columns that need to added to feature column
-val cols = Array("maxSpeed", "averageSpeed", "hour", "minute", "start_vertex_id", "stop_vertex_id", "turnsCount")
+val cols = Array("maxSpeed", "averageSpeed", "turnsCount")
 
 // VectorAssembler to add feature column
 // input columns - cols
