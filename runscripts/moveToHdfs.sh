@@ -48,3 +48,10 @@ hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/predictio
 hdfs dfs -setfacl -R -m user:as12366:rwx /user/jl11257/big_data_project/predictions
 hdfs dfs -setfacl -R -m user:yl3750:rwx /user/jl11257/big_data_project/predictions
 hdfs dfs -setfacl -R -m group::rwx /user/jl11257/big_data_project/predictions
+
+hdfs dfs -mkdir /user/jl11257/big_data_project/features/vehiclesample/
+
+hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/features/vehiclesample/
+hdfs dfs -setfacl -R -m user:as12366:rwx /user/jl11257/big_data_project/features/vehiclesample/
+hdfs dfs -setfacl -R -m user:yl3750:rwx /user/jl11257/big_data_project/features/vehiclesample/
+hdfs dfs -setfacl -R -m group::rwx /user/jl11257/big_data_project/features/vehiclesample/
