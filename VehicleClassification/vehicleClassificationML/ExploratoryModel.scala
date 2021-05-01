@@ -14,68 +14,83 @@ import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
 import org.apache.spark.ml.linalg.Vector
 import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
 import org.apache.spark.sql.Row
+import org.apache.spark.ml.classification.LinearSVC
 
 
-object VehicleClassification {
+object ExploratoryModel {
     def main(args: Array[String]) = {
-        val spark = SparkSession.builder().appName("VehicleClassification").getOrCreate
+        val spark = SparkSession.builder().appName("ExploratoryModel").getOrCreate
         import spark.implicits._
         
-        val seed = 5043
-        val pw = new PrintWriter(new File("result.txt" ))
-        val training_path = "/user/jl11257/big_data_project/features/vehiclesample/training"
-        val oos_test_path = "/user/jl11257/big_data_project/features/vehiclesample/witholdtest"
+val seed = 5043
+val pw = new PrintWriter(new File("exploratory_train_result.txt" ))
+val training_path = "/user/jl11257/big_data_project/features/vehiclesample/training"
+val oos_test_path = "/user/jl11257/big_data_project/features/vehiclesample/witholdtest"
 
-        val trainSampleData = LoadModelData(spark, training_path)
-        val ooSampleData = LoadModelData(spark, oos_test_path)
+val trainSampleData = LoadModelData(spark, training_path)
+val ooSampleData = LoadModelData(spark, oos_test_path)
 
-        val Array(trainData, testData) = trainSampleData.randomSplit(Array(0.8, 0.2), seed)
-        trainData.cache
+val Array(trainData, testData) = trainSampleData.randomSplit(Array(0.8, 0.2), seed)
+trainData.cache
 
-        // RANDOM FOREST
-        val randomForestClassifier = (new RandomForestClassifier()
-                                        .setImpurity("gini").setMaxDepth(10).setNumTrees(20)
-                                        .setFeatureSubsetStrategy("auto").setSeed(seed))
-        val randomForestModel = randomForestClassifier.fit(trainData)
+// RANDOM FOREST
+val randomForestClassifier = (new RandomForestClassifier()
+                                .setImpurity("gini").setMaxDepth(10).setNumTrees(20)
+                                .setFeatureSubsetStrategy("auto").setSeed(seed))
+val randomForestModel = randomForestClassifier.fit(trainData)
 
-        val rfSamplePredictions = randomForestModel.transform(testData)
-        val rfOutSamplePredictions = randomForestModel.transform(ooSampleData)
+val rfSamplePredictions = randomForestModel.transform(testData)
+val rfOutSamplePredictions = randomForestModel.transform(ooSampleData)
 
-        // LOGISTIC REGRESSION
-        // train logistic regression model with training data set
-        val logisticRegression = (new LogisticRegression()
-                                    .setMaxIter(100)
-                                    .setRegParam(0.02)
-                                    .setElasticNetParam(0.8))
-        val logisticRegressionModel = logisticRegression.fit(trainData)
+// LOGISTIC REGRESSION
+// train logistic regression model with training data set
+val logisticRegression = (new LogisticRegression()
+                            .setMaxIter(100)
+                            .setRegParam(0.02)
+                            .setElasticNetParam(0.8))
+val logisticRegressionModel = logisticRegression.fit(trainData)
 
-        val lrSamplePredictions = logisticRegressionModel.transform(testData)
-        val lrOutSamplePredictions = logisticRegressionModel.transform(ooSampleData)
+val lrSamplePredictions = logisticRegressionModel.transform(testData)
+val lrOutSamplePredictions = logisticRegressionModel.transform(ooSampleData)
 
-        trainData.unpersist
+// SVM
+val lsvc = (new LinearSVC()
+            .setMaxIter(20)
+            .setRegParam(0.1))
+val lsvcModel = lsvc.fit(trainData)
 
-        val evaluator = (new BinaryClassificationEvaluator()
-                            .setLabelCol("label")
-                            .setRawPredictionCol("prediction")
-                            .setMetricName("areaUnderPR"))
+val svmSamplePredictions = lsvcModel.transform(testData)
+val svmOutSamplePredictions = lsvcModel.transform(ooSampleData)
 
-        pw.write("Random Forest Classifier\n")
-        //println(randomForestModel.toDebugString)
-        pw.write("Random Forest feature importance\n")
-        pw.write(randomForestModel.featureImportances.toString+"\n\n")
+trainData.unpersist
 
-        pw.write("Area under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(rfSamplePredictions) + '\n')
-        pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(rfOutSamplePredictions) +"\n\n\n")
+val evaluator = (new BinaryClassificationEvaluator()
+                    .setLabelCol("label")
+                    .setRawPredictionCol("prediction")
+                    .setMetricName("areaUnderPR"))
 
-        pw.write("Logistic Regression Classifier\n")
-        pw.write(s"Coefficients: ${logisticRegressionModel.coefficients} Intercept: ${logisticRegressionModel.intercept}")
+pw.write("Random Forest Classifier\n")
+//println(randomForestModel.toDebugString)
+pw.write("Random Forest feature importance\n")
+pw.write(randomForestModel.featureImportances.toString+"\n\n")
 
-        pw.write("\nArea under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(lrSamplePredictions) + '\n')
-        pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(lrOutSamplePredictions) +"\n\n\n")
+pw.write("Area under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(rfSamplePredictions) + '\n')
+pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(rfOutSamplePredictions) +"\n\n\n")
 
-        // closing everything
-        pw.close
-        spark.close()
+pw.write("Logistic Regression Classifier\n")
+pw.write(s"Coefficients: ${logisticRegressionModel.coefficients} Intercept: ${logisticRegressionModel.intercept}")
+
+pw.write("\nArea under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(lrSamplePredictions) + '\n')
+pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(lrOutSamplePredictions) +"\n\n\n")
+
+pw.write("Linear Support Vector Machine\n")
+println(s"Coefficients: ${lsvcModel.coefficients} Intercept: ${lsvcModel.intercept}")
+
+pw.write("\nArea under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(svmSamplePredictions) + '\n')
+pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(svmOutSamplePredictions) +"\n\n\n")
+// closing everything
+pw.close
+spark.close
 
     }
 
