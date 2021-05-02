@@ -2,7 +2,6 @@ import org.apache.spark._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql._
-import org.apache.spark.sql.types._
 
 object AddNoise {
   def main(args: Array[String]) {
@@ -22,8 +21,8 @@ object AddNoise {
     val drop_percent = args(2).toDouble
 
     //For random number generation
-    //val seed = 1
-    val rand_gen = scala.util.Random
+    val seed = 1
+    val rand_gen = scala.util.Random(seed)
 
     // Read in trace file (with no noise)
     val trace_file_df = (spark.read.parquet(read_path)
@@ -42,16 +41,18 @@ object AddNoise {
                                     .withColumnRenamed("id", "to_node")
                                     .withColumn("ave", split(col("to_node"),"_")(0))
                                     .withColumn("st", split(col("to_node"),"_")(1))
-                                    .filter((col("ave") !== "9") && (col("ave") !== "Lexington") && (col("st") !== "30") && (col("st") !== "58"))
+                                    .filter(col("ave") !== "9" && col("ave") !== "Lexington" && col("st") !== "30" && col("st") !== "58")
                                     .drop("ave","st")
                                     .collect
                                     .toSeq)
     // Array for accidents
-    val last_day = trace_file_df.agg(max("day")).collect()(0)(0)
     // Day, accident start time, accident end time, node where accident happens
     val accidents_arr = new Array[Row[Int,Int,Int,String]]()
+    val day_agg = trace_file_df.agg(min("day"),max("day")).collect()(0)
+    val first_day = day_agg(0)
+    val last_day = day_agg(1)
     var i = 0
-    for(i<-0 to last_day){
+    for(i<-first_day to last_day){
         // Choose how many accidents this day will have (0, 1, or 2)
         val num_accidents = rand_gen.nextInt(3)
 
@@ -82,46 +83,50 @@ object AddNoise {
             accidents_arr :+ Row(i,accident_start_time,accident_end_time,accident_node)
         }
     }
-    
-    /*
-    
-    // Read in node table and grab percent_noise nodes randomly, add random timestamp column
-    
-    val noise_nodes = (spark.read.format("csv")
-			.option("header", "true")
-			.load(node_table_path)
-			.withColumnRenamed("id", "to_node")
-            .select("to_node")
-            .sample(false,percent_noise,seed)
-            .withColumn("time", rand_gen.nextInt(max_time+1)))
 
-    // Get vehicle records on edges with the noisy nodes incoming at their noisy timestamps
-    val noise_records = (trace_file_df.join(noise_nodes, Seq("to_node","time"),"inner")
-                                        .withColumnRenamed("time","noise_start_time")
-                                        .withColumn("noise_end_time",col("noise_start_time")+rand_gen.nextInt(max_noise_duration-min_noise_duration)+min_noise_duration)
-                                        .select("id","noise_start_time","noise_end_time"))
+    // Array of duplicates to union back to original dataset
+    val duplicates_arr = new Array()
+    // Loop through each accident
+    for(i<-0 to accidents_arr.length-1){
+        val accident = accidents_arr(i)
+        // Get all vehicles that will be in an edge incoming to the node during accident duration
+        val affected_vehicles = (trace_file_df.filter(col("day") === accident(0) && 
+                                                        col("time_of_day")>=accident(1) && 
+                                                        col("time_of_day")<=accident(2) && 
+                                                        col("to_node") === accident(3)))
+        // Get only the records for when vehicles enter an affected edge
+        val vehicle_enter = (affected_vehicles.groupBy("id")
+                                                .agg(min("time_of_day"))
+                                                .withColumnRenamed("id","vehicle_id")
+                                                .join(affected_vehicles, col("vehicle_id") === affected_vehicles.col("id") &&
+                                                                            col("min(time_of_day)") === affected_vehicles.col("time_of_day"))
+                                                .drop("vehicle_id","min(time_of_day)")
+                                                .toSeq)
+        // Duplicate these records accident_end_time - vehicle_entrance_time times
+        // Loop through each vehicle record
+        var j = 0
+        for(j<-0 to vehicle_enter.length-1){
+            val vehicle_record = vehicle_enter(j)
+            // TODO: Need to check what the index of time_of_day is in vehicle_enter
+            val idx = 12
+            val num_duplicates = accident(2) - vehicle_record(idx)
+            var k = 0
+            for(k<-0 to num_duplicates-1){
+                duplicates_arr :+ vehicle_record
+            }
+        }
+    }
 
-    // Label the current no noise records and drop the real ones so we can replace with noisy ones
-    val label = udf((time, start, end) => 
-                                            if(start.isNotNull && end.isNotNull && time==start){
-                                                "duplicate"
-                                            }
-                                            else if(start.isNotNull && end.isNotNull && time>start && time<=end){
-                                                "drop"
-                                            }
-                                            else{
-                                                "keep"
-                                            })
-    spark.udf.register("label",label)
-    val keep_records = (trace_file_df.join(noise_records,Seq("id"),"leftouter")
-                                        .withColumn("label", label(col("time"),col("noise_start_time"),col("noise_end_time")))
-                                        .filter(col("label") !== "drop"))
-    
-    //Duplicate the noise records over their range
-    */
+    // Parallelize and union back to original dataset
+    val trace_file_with_duplicates = (spark.sparkContext.parallelize(duplicates_arr)
+                                                        .union(trace_file_df)
+                                                        .drop("edge","to_node","day","time_of_day"))
 
     //Drop data
-    //.sample(false,drop_percent,seed)
+    val noisy_trace_file = trace_file_with_duplicates.sample(false,1.0-drop_percent,seed)
+
+    // Write out
+    noisy_trace_file.coalesce(1).write.parquet(write_path)
 
     spark.stop()
   }
