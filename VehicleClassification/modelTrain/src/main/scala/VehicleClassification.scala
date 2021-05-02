@@ -11,7 +11,6 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 
 
-
 object VehicleClassification {
     def main(args: Array[String]) = {
         val spark = SparkSession.builder().appName("VehicleClassification").getOrCreate
