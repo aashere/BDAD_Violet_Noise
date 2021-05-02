@@ -3,11 +3,17 @@
 
 
 BDAD_Violet_Noise
+
  ┣ Research
+ 
  ┣ sumoDataGeneration
+ 
  ┣ runscripts
+ 
  ┣ ScalaETL
+ 
  ┣ edgeWeightForecast
+ 
  ┗ VehicleClassification
 
  ## Research
