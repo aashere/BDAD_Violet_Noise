@@ -1,20 +1,15 @@
 # BDAD_Violet_Noise
 # Overall Structure
+     
+    .
+    ├── Research                    
+    ├── sumoDataGeneration
+    ├── runscripts  
+    ├── ScalaETL
+    ├── edgeWeightForecast
+    └── VehicleClassification
 
 
-BDAD_Violet_Noise
-
- ┣ Research
- 
- ┣ sumoDataGeneration
- 
- ┣ runscripts
- 
- ┣ ScalaETL
- 
- ┣ edgeWeightForecast
- 
- ┗ VehicleClassification
 
  ## Research
 
