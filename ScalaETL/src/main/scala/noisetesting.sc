@@ -8,7 +8,7 @@ import org.apache.spark.sql.types._
 
 
 val read_path = "/user/jl11257/big_data_project/traces/processed/week_6_day_5_gps"
-val write_path = "/user/jl11257/big_data_project/testing/noisedatatest"
+val write_path = c
 
 // Bounds for how long an accident lasts (seconds)
 val min_accident_duration = 420
@@ -50,7 +50,7 @@ spark.udf.register("randfn",randfn)
 val days = trace_file_df.select("day").distinct
 // val num_accidents = days.withColumn("accidentCount", explode(dummyArray(randfn(lit(3))))).filter(col("accidentCount") > 0)
 // for testing
-val num_accidents = days.withColumn("accidentCount", lit(1))
+val num_accidents = days.withColumn("accidentCount", lit(2))
 
 // modified this to simplify a little, basically every morning there is a blockage and SOME evenings
 case class Accident(accident_start_time: Int, accident_end_time: Int, to_node: String)
@@ -80,32 +80,31 @@ val traces_split = (trace_file_df.join(affected_vehicles, Seq("id"), "leftouter"
 								 							col("time_of_day") >= col("accident_start_time")
 								 						).otherwise(lit(false))))
 
-val traces_to_leave = traces_split.filter(col("adjust") === false)
+val traces_to_leave = traces_split.filter(col("adjust") === false).select("time", "id", "x", "y", "angle", "type", "lane")
 val traces_to_mod = traces_split.filter(col("adjust") === true)
 
 traces_to_mod.cache
 
-val test = traces_to_mod.filter(col("id") === "veh6232594")
-test.cache
-
-test.count()
-
-val repeatrec = (test.groupBy("id")
- 					.agg(min("time_of_day"))
+val repeatrec = (traces_to_mod.groupBy("id")
+ 					.agg(min("time_of_day"), first("accident_end_time", ignoreNulls=true))
  					.withColumnRenamed("min(time_of_day)","time_of_day")
- 					.withColumn("addDelay", lit(accident_end_time) - col("time_of_day")) // this is how many repeats we insert
- 					.withColumn("duplicate", lit(1)))
+ 					.withColumnRenamed("first(accident_end_time, true)", "accident_end_time")
+ 					.withColumn("repeatCount", col("accident_end_time") - col("time_of_day")) // this is how many repeats we insert
+ 					.withColumn("repeatRow", lit(1)))
 
-val rowchoice = (test.join(repeatrec.select("id", "time_of_day", "duplicate"), Seq("id", "time_of_day"), "leftouter").na.fill(0)
- 					 .join(repeatrec.select("id", "addDelay"), Seq("id")))
+val rowchoice = (traces_to_mod.join(repeatrec.select("id", "time_of_day", "repeatRow"), Seq("id", "time_of_day"), "leftouter").na.fill(0)
+ 					 .join(repeatrec.select("id", "repeatCount"), Seq("id")))
 
-val dummyArray = udf((d: Int) => (0 until d + 1).toArray)
-spark.udf.register("dummyArray",dummyArray)
-
-val repeats = (rowchoice.filter(col("duplicate")===1)
-						.withColumn("dummy",explode(dummyArray(col("addDelay")))) // generate repeated rows
+val repeats = (rowchoice.filter(col("repeatRow")===1)
+						.withColumn("dummy",explode(dummyArray(col("repeatCount")))) // generate repeated rows
 						.withColumn("new_time", col("time") + col("dummy"))
 						.drop("dummy"))
-val regulars = rowchoice.filter(col("duplicate")===0).withColumn("new_time", col("time") + col("addDelay")) // push back times on other rows for vehicle
+val regulars = rowchoice.filter(col("repeatRow")===0).withColumn("new_time", col("time") + col("repeatCount")) // push back times on other rows for vehicle
 
-val results = repeats.union(regulars)
+val modified_traces = repeats.union(regulars).select("new_time", "id", "x", "y", "angle", "type", "lane").withColumnRenamed("new_time","time")
+
+val final_traces = traces_to_leave.union(modified_traces)
+
+val dataloss = final_traces.sample(false,1.0-drop_percent)
+
+dataloss.repartition(4).write.parquet(write_path)
