@@ -14,24 +14,45 @@ Python scripts take these inputs and generate XML files that provide detailed in
 We simulate a day of data at a time, and at the end of each day we save the state.  At the beginning of the next day, we load the state and continue.  Each day of simulation is quite intensive, so we submit a batch job to slurm on the greene cluster.
 
 sumoDataGeneration
+
  ┣ data
+ 
  ┃ ┣ configs
+ 
  ┃ ┣ inputs
+ 
  ┃ ┃ ┣ busschedule.json
+ 
  ┃ ┃ ┣ graph.p
+ 
  ┃ ┃ ┣ nodelambdaspctdiffs.json
+ 
  ┃ ┃ ┣ pathdict.json
+ 
  ┃ ┃ ┗ weekdaymeanlambdas.csv
+ 
  ┃ ┣ net
+ 
  ┃ ┣ routes
+ 
  ┃ ┣ states
+ 
  ┃ ┣ traces
+ 
  ┣ generateBashRun.py
+ 
  ┣ generateGraph.py
+ 
  ┣ generateNetworkPath.py
+ 
  ┣ generateRoutes.py
+ 
  ┣ generateSumoGraph.py
+ 
  ┣ generateSumoPath.py
+ 
  ┣ helpers.py
+ 
  ┣ parseData.py
+ 
  ┗ simulationbatch.s
