@@ -42,7 +42,7 @@ object AddNoise {
                                     .withColumnRenamed("id", "to_node")
                                     .withColumn("ave", split(col("to_node"),"_")(0))
                                     .withColumn("st", split(col("to_node"),"_")(1))
-                                    .filter(col("ave") !== "9" && col("ave") !== "Lexington" && col("st") !== "30" && col("st") !== "58")
+                                    .filter((col("ave") !== "9") && (col("ave") !== "Lexington") && (col("st") !== "30") && (col("st") !== "58"))
                                     .drop("ave","st")
                                     .collect
                                     .toSeq)
