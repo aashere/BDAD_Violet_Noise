@@ -48,10 +48,12 @@ val randfn = udf((r: Int) => rand_gen.nextInt(r))
 spark.udf.register("randfn",randfn)
 
 val days = trace_file_df.select("day").distinct
-val num_accidents = days.withColumn("accidentCount", explode(dummyArray(randfn(lit(3))))).filter(col("accidentCount") > 0)
+// val num_accidents = days.withColumn("accidentCount", explode(dummyArray(randfn(lit(3))))).filter(col("accidentCount") > 0)
+// for testing
+val num_accidents = days.withColumn("accidentCount", lit(1))
 
-// modified this, basically every morning there is a blockage and SOME evenings
-case class Accident(accident_start_time: Int, accident_end_time: Int, accident_node: String)
+// modified this to simplify a little, basically every morning there is a blockage and SOME evenings
+case class Accident(accident_start_time: Int, accident_end_time: Int, to_node: String)
 val accident = udf((choice: Int) => {
 		val windowlength = if (choice == 1) 3 else 5
 		val startTime = if (choice == 2) 7 else 14
@@ -63,13 +65,14 @@ val accident = udf((choice: Int) => {
     }
 )
 
-val accidents = num_accidents.withColumn("accident", accident(col("accidents"))).select("day","accident.*")
+val accidents = num_accidents.withColumn("accident", accident(col("accidentCount"))).select("day","accident.*")
+// so it doesn't re-simulate with each run in testing
+accidents.cache
 
-val affected_vehicles = (trace_file_df.join(accidents, Seq("day"))
+val affected_vehicles = (trace_file_df.join(accidents, Seq("day", "to_node"))
 									 .filter((col("time_of_day")>=col("accident_start_time")) && 
-                                      	(col("time_of_day")<=col("accident_end_time")) && 
-                                      	(col("to_node") === col("accident_node")))
-									 .select("id","accident_start_time").distinct)
+                                      	(col("time_of_day")<=col("accident_end_time")))
+									 .select("id","accident_start_time", "accident_end_time").distinct)
                                       
 
 val traces_split = (trace_file_df.join(affected_vehicles, Seq("id"), "leftouter")
@@ -79,6 +82,8 @@ val traces_split = (trace_file_df.join(affected_vehicles, Seq("id"), "leftouter"
 
 val traces_to_leave = traces_split.filter(col("adjust") === false)
 val traces_to_mod = traces_split.filter(col("adjust") === true)
+
+traces_to_mod.cache
 
 val test = traces_to_mod.filter(col("id") === "veh6232594")
 test.cache
