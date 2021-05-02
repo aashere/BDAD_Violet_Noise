@@ -14,9 +14,8 @@ object AddNoise {
 	val write_path = dirpath + args(1)
     // Percent of nodes we want to create noise on
     val percent_noise = args(2).toDouble
-    // Min and max duration of noise (i.e., bounds for how long an accident would last, in seconds)
-    val min_noise_duration = args(3).toInt
-    val max_noise_duration = args(4).toInt
+    // How long an accident lasts (seconds)
+    val accident_duration = 600
     val seed = 1
 
     // Read in trace file (with no noise)
@@ -59,7 +58,7 @@ object AddNoise {
                                         .filter(col("label") !== "drop"))
     
     //Duplicate the noise records over their range
-    
+
 
     spark.stop()
   }
