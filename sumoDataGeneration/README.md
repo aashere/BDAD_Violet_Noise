@@ -15,44 +15,45 @@ We simulate a day of data at a time, and at the end of each day we save the stat
 
 sumoDataGeneration
 
- ┣ data
- 
- ┃ ┣ configs
- 
- ┃ ┣ inputs
- 
- ┃ ┃ ┣ busschedule.json
- 
- ┃ ┃ ┣ graph.p
- 
- ┃ ┃ ┣ nodelambdaspctdiffs.json
- 
- ┃ ┃ ┣ pathdict.json
- 
- ┃ ┃ ┗ weekdaymeanlambdas.csv
- 
- ┃ ┣ net
- 
- ┃ ┣ routes
- 
- ┃ ┣ states
- 
- ┃ ┣ traces
- 
- ┣ generateBashRun.py
- 
- ┣ generateGraph.py
- 
- ┣ generateNetworkPath.py
- 
- ┣ generateRoutes.py
- 
- ┣ generateSumoGraph.py
- 
- ┣ generateSumoPath.py
- 
- ┣ helpers.py
- 
- ┣ parseData.py
- 
- ┗ simulationbatch.s
+|──data
+
+│ │──configs
+
+│ │──inputs
+
+│ │ │──busschedule.json
+
+│ │ │──graph.p
+
+│ │ │──nodelambdaspctdiffs.json
+
+│ │ │──pathdict.json
+
+│ │ └──weekdaymeanlambdas.csv
+
+│ │──net
+
+│ │──routes
+
+│ │──states
+
+│ └──traces
+
+│──generateBashRun.py
+
+│──generateGraph.py
+
+│──generateNetworkPath.py
+
+│──generateRoutes.py
+
+│──generateSumoGraph.py
+
+│──generateSumoPath.py
+
+│──helpers.py
+
+│──parseData.py
+
+└──simulationbatch.s
+
