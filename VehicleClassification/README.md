@@ -6,18 +6,20 @@ Tree structure below shows the final scala programs packaged and used in the tes
 
 resultSummmaries and featureVisualization contain outputs provided in the team presentation.
 
-VehicleClassification
- ┣ featurePipeline
- ┃ ┣ src/main/scala
- ┃ ┃ ┃ ┃ ┗ VehicleFeatureGen.scala
- ┣ modelPredict
- ┃ ┣ src/main/scala
- ┃ ┃ ┃ ┃ ┗ VehiclePrediction.scala
- ┣ modelTrain
- ┃ ┣ src/main/scala
- ┃ ┃ ┃ ┃ ┣ VehicleClassification.scala
- ┃ ┃ ┃ ┃ ┗ VehicleSample.scala
- ┃ ┣ test
- ┃ ┃ ┗ ExploratoryModel.scala
- ┣ resultsSummaries
- ┗ featureVisualization
+    .
+    ├── featurePipeline                    
+    │   └── src/main/scala                    
+    │       └── VehicleFeatureGen.scala   
+    ├── modelPredict                    
+    │   └── src/main/scala                    
+    │       └── VehiclePrediction.scala
+    ├── modelTrain                    
+    │   ├── src/main/scala 
+    │   │   ├── VehicleSample.scala                  
+    │   │   └── VehicleClassification.scala
+    │   └── test     
+    │       └── ExploratoryModel.scala              
+    ├── resultsSummaries
+    └── featureVisualization
+ 
+ 
