@@ -19,11 +19,11 @@ We simulate a day of data at a time, and at the end of each day we save the stat
     ├── data                    
     │   ├── configs              
     │   ├── inputs              # inputs to python scripts for sumo
-    │   │   ├── configs         
-    │   │   ├── configs         
-    │   │   ├── configs         
-    │   │   ├── configs         
-    │   │   └── configs            
+    │   │   ├── busschedule.json         
+    │   │   ├── graph.p         
+    │   │   ├── nodelambdaspctdiffs.json         
+    │   │   ├── pathdict.json         
+    │   │   └── weekdaymeanlambdas.csv            
     │   ├── net                 # xml instructions for sumo
     │   ├── routes              # xml instructions for sumo
     │   ├── states              # xml instructions for sumo                         
