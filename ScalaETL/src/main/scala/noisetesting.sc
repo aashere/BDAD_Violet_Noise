@@ -2,14 +2,14 @@ import org.apache.spark._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql._
-import spark.implicits._
-import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import org.apache.spark.ml.linalg.DenseMatrix
 import scala.math.BigDecimal
 
+import spark.implicits._
+
 val read_path = "/user/jl11257/big_data_project/traces/processed/week_6_day_5_gps"
-val write_path = c
+val write_path = "/user/jl11257/big_data_project/testing/noisedatatest2"
 
 // Bounds for how long an accident lasts (seconds)
 val min_accident_duration = 420
@@ -17,7 +17,6 @@ val max_accident_duration = 720
 
 //What percent of the dataset to drop
 val drop_percent = 0.10
-
 
 // Read in trace file (with no noise)
 val trace_file_df = (spark.read.parquet(read_path)
@@ -45,19 +44,19 @@ val dummyArray = udf((d: Int) => (0 until d + 1).toArray)
 spark.udf.register("dummyArray",dummyArray)
 
 val rand_gen = scala.util.Random
-val randfn = udf((r: Int) => rand_gen.nextInt(r))
+val randfn = udf((r: Int) => rand_gen.nextInt(r) + 1)
 spark.udf.register("randfn",randfn)
 
 val days = trace_file_df.select("day").distinct
-// val num_accidents = days.withColumn("accidentCount", explode(dummyArray(randfn(lit(3))))).filter(col("accidentCount") > 0)
+val num_accidents = days.withColumn("accidentCount", explode(dummyArray(randfn(lit(4)))))
 // for testing
-val num_accidents = days.withColumn("accidentCount", lit(2))
+// val num_accidents = days.withColumn("accidentCount", lit(2))
 
 // modified this to simplify a little, basically every morning there is a blockage and SOME evenings
 case class Accident(accident_start_time: Int, accident_end_time: Int, to_node: String)
 val accident = udf((choice: Int) => {
-		val windowlength = if (choice == 1) 3 else 5
-		val startTime = if (choice == 2) 7 else 14
+		val windowlength = if ((choice % 2) == 0) 3 else 5
+		val startTime = if ((choice % 2) == 0) 7 else 14
 		val duration = rand_gen.nextInt(max_accident_duration-min_accident_duration)+min_accident_duration
         val start_time = rand_gen.nextInt(windowlength*60*60-duration+1)+(startTime*60*60)
         val end_time = start_time+duration
@@ -67,7 +66,7 @@ val accident = udf((choice: Int) => {
 )
 spark.udf.register("accident",accident)
 val accidents = num_accidents.withColumn("accident", accident(col("accidentCount"))).select("day","accident.*")
-// so it doesn't re-simulate with each run in testing
+// so it doesn't re-simulate with each run
 accidents.cache
 
 val affected_vehicles = (trace_file_df.join(accidents, Seq("day", "to_node"))
@@ -122,7 +121,7 @@ val transformXY = udf((x: Double, y: Double) => {
 spark.udf.register("transformXY",transformXY)
 
 val newcoords = (dataloss.withColumn("gpscoords", transformXY(col("x"), col("y")))
-						.select("new_time", "id", "gpscoords.*", "angle", "type", "lane"))
+						.select("time", "id", "gpscoords.*", "angle", "type", "lane"))
 
 newcoords.repartition(4).write.parquet(write_path)
 
