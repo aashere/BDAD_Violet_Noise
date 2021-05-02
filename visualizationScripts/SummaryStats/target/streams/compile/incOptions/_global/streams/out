@@ -1,9 +1,11 @@
 [0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = C:\Users\astin\OneDrive\Desktop\NYU\Academics\Spark\Project\BDAD_Violet_Noise\visualizationScripts\SummaryStats\target\scala-2.11\classes.bak[0m
 [0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats$$anonfun$main$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SummaryStats.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SummaryStats$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats$$anonfun$main$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SummaryStats$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: C:\Users\astin\OneDrive\Desktop\NYU\Academics\Spark\Project\BDAD_Violet_Noise\visualizationScripts\SummaryStats\target\scala-2.11\classes.bak[0m

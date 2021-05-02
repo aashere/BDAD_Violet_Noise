@@ -4,9 +4,49 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-# Plot max, min, avg histograms for fields from regression feature table (by edge)
-def deltas_histogram_edge(xscale):
-    df = pd.read_csv("visualizations/delta_histogram/delta_hist.csv").dropna()
+# Plot histograms of density, deltas, vehicle counts overall
+def histogram_overall(xscale):
+    df = pd.read_csv("visualizations/histogram/overall/histogram_overall.csv").dropna()
+    hists = df.columns.values.tolist()
+    hists.remove("interval")
+    hists.remove("edge")
+    # Whole simulation
+    for hist in hists:
+        plt.xlabel(hist)
+        plt.ylabel('Frequency')
+        plt.title(hist + ' Histogram (Overall)')
+        bins = 50
+        if xscale == 'log':
+            plt.xscale('log')
+            bins = np.logspace(np.log10(0.001), np.log10(1.0), num=50, endpoint=True)
+        plt.hist(df[hist], bins=bins)
+        plt.savefig(hist+"_histogram_"+ xscale +"_overall.png")
+        plt.clf()
+        plt.cla()
+        print(hist + " done!")
+    print("histogram_overall " + xscale +" done!")
+
+    # First week
+    df = df[df['interval']<=672]
+    for hist in hists:
+        plt.xlabel(hist)
+        plt.ylabel('Frequency')
+        plt.title(hist + ' Histogram (Overall, First Week)')
+        bins = 50
+        if xscale == 'log':
+            plt.xscale('log')
+            bins = np.logspace(np.log10(0.001), np.log10(1.0), num=50, endpoint=True)
+        plt.hist(df[hist], bins=bins)
+        plt.savefig(hist+"_histogram_"+ xscale +"_overall_first_week.png")
+        plt.clf()
+        plt.cla()
+        print(hist + " done!")
+    print("histogram_overall_first_week " + xscale +" done!")
+    
+
+# Plot histograms for avg density, deltas, vehicle counts by edge
+def histogram_edge_avg(xscale):
+    df = pd.read_csv("visualizations/histogram/edge_avg/histogram_edge_avg.csv").dropna()
     hists = df.columns.values.tolist()
     hists.remove("edge")
     for hist in hists:
@@ -22,11 +62,11 @@ def deltas_histogram_edge(xscale):
         plt.clf()
         plt.cla()
         print(hist + " done!")
-    print("delta_hist " + xscale +" done!")
+    print("histogram_edge_avg " + xscale +" done!")
 
-# Plot avg histograms for deltas by interval
-def deltas_histogram_interval(xscale):
-    df = pd.read_csv("visualizations/delta_histogram/delta_hist_interval.csv").dropna()
+# Plot histograms for avg density, deltas, vehicle counts by interval
+def histogram_interval_avg(xscale):
+    df = pd.read_csv("visualizations/histogram/interval_avg/histogram_interval_avg.csv").dropna()
     hists = df.columns.values.tolist()
     hists.remove("interval")
     for hist in hists:
@@ -42,79 +82,68 @@ def deltas_histogram_interval(xscale):
         plt.clf()
         plt.cla()
         print(hist + " done!")
-    print("delta_hist " + xscale +" done!")
+    print("histogram_interval_avg " + xscale +" done!")
 
-# Plot average of deltas over time
-def delta_time_series():
-    # Average deltas for first week
-    df = pd.read_csv("visualizations/delta_histogram/delta_hist_interval.csv")
-    df = df[df['interval']<=672].dropna()
-    fig, ax = plt.subplots()
-    colormap = plt.cm.nipy_spectral
-    plt.xlabel('Time (15 minute intervals)')
-    plt.ylabel('Delta Value (change in vehicles per unit area)')
-    plt.title('Deltas over Time (First Week)')
+# Plot average of edge densities, deltas, and vehicle counts against time
+def edge_time_series():
+    df = pd.read_csv("visualizations/edge_time_series/edge_time_series.csv")
+    cols = df.columns.values.tolist()
+    cols.remove("interval")
+    cols.remove("avg(tot_vehicle_count)")
+    
+    # Whole simulation
+    for col in cols:
+        plt.xlabel('Time (15 minute intervals)')
+        plt.ylabel('Density (vehicles per unit area)')
+        plt.title(col+" over Time")
 
-    deltas = ["avg(t-1_delta)","avg(t-2_delta)","avg(t-3_delta)"]
-    colors = [colormap(i) for i in np.linspace(0, 1,len(deltas))]
-    ax.set_prop_cycle('color', colors)
-    for delta in deltas:
-        plt.scatter(df['interval'],df[delta],label=delta,s=1)
-    plt.legend(loc='upper left')
-    plt.savefig("delta_time_series_first_week.png")
-    print("plot_delta first week done!")
+        plt.scatter(df['interval'], df[col],s=1)
+        plt.savefig("edge_time_series_"+col+".png")
+        print("edge_time_series "+ col +" done!")
 
-
-# Plot average of edge densities against time
-def edge_level_time_series():
-    df = pd.read_csv("visualizations/edge_time_series/plot_edge.csv")
-    plt.xlabel('Time (15 minute intervals)')
-    plt.ylabel('Density (vehicles per unit area)')
-    plt.title("Edge Weights over Time")
-
-    plt.scatter(df['interval'], df['avg(tot_density)'],s=1)
-    plt.savefig("edge_level_time_series_density.png")
-    print("plot_edge density done!")
-
-    plt.clf()
-    plt.cla()
+        plt.clf()
+        plt.cla()
 
     plt.xlabel('Time (15 minute intervals)')
     plt.ylabel('Vehicle Count (vehicles)')
-    plt.title("Vehicle Count over Time")
+    plt.title("avg(tot_vehicle_count) over Time")
 
     plt.scatter(df['interval'], df['avg(tot_vehicle_count)'],s=1)
-    plt.savefig("edge_level_time_series_vehicle_count.png")
-    print("plot_edge vehicle count done!")
+    plt.savefig("edge_level_time_series_avg(tot_vehicle_count).png")
+    print("edge_time_series  avg(tot_vehicle_count) done!")
 
     plt.clf()
     plt.cla()
 
-    # First week of data
-    df= df[df['interval']<=672]
-    plt.xlabel('Time (15 minute intervals)')
-    plt.ylabel('Density (vehicles per unit area)')
-    plt.title("Edge Weights over Time (First Week)")
+    # First week
+    df = df[df['interval']<=672]
+    for col in cols:
+        plt.xlabel('Time (15 minute intervals)')
+        plt.ylabel('Density (vehicles per unit area)')
+        plt.title(col+" over Time (First Week)")
 
-    plt.scatter(df['interval'], df['avg(tot_density)'],s=1)
-    plt.savefig("edge_level_time_series_density_first_week.png")
-    print("plot_edge density first week done!")
+        plt.scatter(df['interval'], df[col],s=1)
+        plt.savefig("edge_time_series_"+col+"_first_week.png")
+        print("edge_time_series "+ col +" first week done!")
 
-    plt.clf()
-    plt.cla()
+        plt.clf()
+        plt.cla()
 
     plt.xlabel('Time (15 minute intervals)')
     plt.ylabel('Vehicle Count (vehicles)')
-    plt.title("Vehicle Count over Time (First Week)")
+    plt.title("avg(tot_vehicle_count) over Time (First Week)")
 
     plt.scatter(df['interval'], df['avg(tot_vehicle_count)'],s=1)
-    plt.savefig("edge_level_time_series_vehicle_count_first_week.png")
-    print("plot_edge vehicle count first week done!")
+    plt.savefig("edge_level_time_series_avg(tot_vehicle_count)_first_week.png")
+    print("edge_time_series  avg(tot_vehicle_count) first week done!")
+
+    plt.clf()
+    plt.cla()
 
 # Plot streets and avenue densities against time
-def road_level_time_series():
+def road_time_series():
     # Streets
-    df = pd.read_csv("visualizations/road_time_series/st/plot_st.csv")
+    df = pd.read_csv("visualizations/road_time_series/st/st_time_series.csv")
     fig, ax = plt.subplots()
     colormap = plt.cm.nipy_spectral
     plt.xlabel('Time (15 minute intervals)')
@@ -192,7 +221,7 @@ def road_level_time_series():
     plt.cla()
 
     # Avenues
-    df = pd.read_csv("visualizations/road_time_series/ave/plot_ave.csv")
+    df = pd.read_csv("visualizations/road_time_series/ave/ave_time_series.csv")
     fig, ax = plt.subplots()
     colormap = plt.cm.nipy_spectral
     plt.xlabel('Time (15 minute intervals)')
@@ -264,7 +293,7 @@ def road_level_time_series():
     print("plot_ave vehicle count first week done!")
 
 # Plot histogram of total trip time across all vehicles
-def total_trip_time_histogram():
+def total_trip_time():
     df = pd.read_csv("visualizations/total_trip_time/total_trip_time.csv")
     plt.xlabel("Total Trip Time (s)")
     plt.ylabel('Frequency')
@@ -279,15 +308,15 @@ if __name__ == "__main__":
     for i, arg in enumerate(sys.argv):
         if i!=0:
             args[arg.split("=")[0]] = arg.split("=")[1]
-    if args["--type"] == "delta_hist_edge":
-        deltas_histogram_edge(xscale=args["--xscale"])
-    elif args["--type"] == "delta_hist_interval":
-        deltas_histogram_interval(xscale=args["--xscale"])
-    elif args["--type"] == "plot_delta":
-        delta_time_series()
+    if args["--type"] == "histogram_overall":
+        histogram_overall(xscale=args["--xscale"])
+    elif args["--type"] == "histogram_edge_avg":
+        histogram_edge_avg(xscale=args["--xscale"])
+    elif args["--type"] == "histogram_interval_avg":
+        histogram_interval_avg(xscale=args["--xscale"])
     elif args["--type"] == "plot_edge":
-        edge_level_time_series()
+        edge_time_series()
     elif args["--type"] == "plot_road":
-        road_level_time_series()
+        road_time_series()
     elif args["--type"] == "total_trip_time":
-        total_trip_time_histogram()
+        total_trip_time()

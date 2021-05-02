@@ -1,16 +1,26 @@
-mv visualizations/delta_histogram/*.csv visualizations/delta_histogram/delta_hist.csv
-mv visualizations/delta_histogram_interval/*.csv visualizations/delta_histogram/delta_hist_interval.csv
-mv visualizations/edge_time_series/*.csv visualizations/edge_time_series/plot_edge.csv
-mv visualizations/road_time_series/st/*.csv visualizations/road_time_series/st/plot_st.csv
-mv visualizations/road_time_series/ave/*.csv visualizations/road_time_series/ave/plot_ave.csv
+mv visualizations/histogram/overall/*.csv visualizations/histogram/overall/histogram_overall.csv
+mv visualizations/histogram/edge_avg/*.csv visualizations/histogram/edge_avg/histogram_edge_avg.csv
+mv visualizations/histogram/interval_avg/*.csv visualizations/histogram/interval_avg/histogram_interval_avg.csv
+mv visualizations/edge_time_series/*.csv visualizations/edge_time_series/edge_time_series.csv
+mv visualizations/road_time_series/ave/*.csv visualizations/road_time_series/ave/ave_time_series.csv
+mv visualizations/road_time_series/st/*.csv visualizations/road_time_series/st/st_time_series.csv
 mv visualizations/total_trip_time/*.csv visualizations/total_trip_time/total_trip_time.csv
 
-python visualize.py --type=delta_hist_edge --xscale=linear
-python visualize.py --type=delta_hist_interval --xscale=linear
-python visualize.py --type=plot_delta
+mkdir plots
+mkdir plots/histogram
+python visualize.py --type=histogram_overall --xscale=linear
+#python visualize.py --type=histogram_overall --xscale=log
+python visualize.py --type=histogram_edge_avg --xscale=linear
+#python visualize.py --type=histogram_edge_avg --xscale=log
+python visualize.py --type=histogram_interval_avg --xscale=linear
+#python visualize.py --type=histogram_interval_avg --xscale=log
+mv *.png plots/histogram
+
+mkdir plots/time_series
 python visualize.py --type=plot_edge
 python visualize.py --type=plot_road
-python visualize.py --type=total_trip_time
+mv *.png plots/time_series
 
-mkdir plots
-mv *.png plots
+mkdir plots/total_trip_time
+python visualize.py --type=total_trip_time
+mv *.png plots/total_trip_time
