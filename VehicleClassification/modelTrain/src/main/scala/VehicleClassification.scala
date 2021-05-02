@@ -65,7 +65,13 @@ object VehicleClassification {
 
         pw.write("Random Forest Classifier with Cross Validation\n")
         pw.write("Cross Validation Result Model\n")
-        pw.write("Best Model: " + model.bestModel.extractParamMap() + "\n")
+
+        val bestMetric = model.avgMetrics.indexOf(model.avgMetrics.max)
+        val bestMetricNum = model.avgMetrics(bestMetric)
+        val bestParams = model.getEstimatorParamMaps(bestMetric)
+
+        pw.write("Best Metric: " + bestMetricNum + "\n")
+        pw.write("Best Parameters: " + bestParams + "\n")
 
         pw.write("Area under Precision-Recall Curve in Down Sampled Data is " + evaluator.evaluate(trainSamplePredictions) + '\n')
         pw.write("Area under Precision-Recall Curve in Raw Test Data is " + evaluator.evaluate(outSamplePredictions) +"\n")
@@ -84,6 +90,6 @@ object VehicleClassification {
                                     case column =>
                                     col(column)
                                 }: _*)
-        return labelDf
+        return cast_df
     }
 }
