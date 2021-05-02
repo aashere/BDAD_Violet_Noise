@@ -91,4 +91,3 @@ object VehicleFeatureGen {
 		all_features.repartition(6).write.mode("append").parquet(write_path)
 	}
 }
-
