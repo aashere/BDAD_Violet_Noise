@@ -8,52 +8,39 @@ import java.io._
 import org.apache.spark.ml.regression.{GBTRegressionModel, GBTRegressor, GeneralizedLinearRegression, GeneralizedLinearRegressionModel, LinearRegression, LinearRegressionModel, RandomForestRegressionModel, RandomForestRegressor}
 import org.apache.spark.ml.stat.Correlation
 import org.apache.spark.sql.expressions.Window
+import org.apache.spark.ml.linalg.Matrix
 
 import scala.math
 import org.apache.spark.ml.{Pipeline, PipelineModel, Transformer}
 import org.apache.spark.ml.evaluation.RegressionEvaluator
 
 
-object EdgeWeightPrediction {
+object ExploratoryModelRegression {
 
   def main(args: Array[String]) = {
 
+    // OS sensitive things
     val spark = SparkSession.builder().appName("Edge Weight Prediction").master("local").getOrCreate
-    val sqlContext = spark.sqlContext //new org.apache.spark.sql.SQLContext(sc)
-    sqlContext.clearCache()
-    val time_of_day_feature = "_sin"  // "_sin"
-    val pw = new PrintWriter(new File(s"report${time_of_day_feature}.txt" ))
+    val sqlContext = spark.sqlContext
+    //sqlContext.clearCache()
+    val base_path = "/user/jl11257/big_data_project/"
+    val read_path = base_path + args(0) "features/edgeregress"
+    val write_path = base_path + args(1)"predictions/edgeWeightPrediction/"
+    val model_path = base_path + args(2) "models/edgeWeightPrediction/GeneralizedLinearPoisson"
+
+    //val base_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\"
+    //val read_path = base_path + "features\\edgeregress"
+    //val write_path = base_path + "predictions\\edgeWeightPrediction\\"
+    //val model_path = base_path + "models\\edgeWeightPrediction\\GeneralizedLinearPoisson"
 
     import spark.implicits._
 
+    val time_of_day_feature = "_sin"  // "_sin"
+    val pw = new PrintWriter(new File(write_path + s"report${time_of_day_feature}.txt" ))
+
     // 1.load dataset
-    val schema = StructType(
-      StructField("interval", IntegerType, nullable = true) ::
-        StructField("edge", StringType, nullable = true) ::
-        StructField("tot_car1_count", IntegerType, nullable = true) ::
-        StructField("tot_car2_count", IntegerType, nullable = true) ::
-        StructField("tot_car3_count", IntegerType, nullable = true) ::
-        StructField("tot_bus_count", IntegerType, nullable = true) ::
-        StructField("tot_vehicle_count", IntegerType, nullable = true) ::
-        StructField("t_0_density", DoubleType, nullable = true) ::
-        StructField("numLanes", IntegerType, nullable = true) ::
-        StructField("edge_length", DoubleType, nullable = true) ::
-        StructField("edge_area", DoubleType, nullable = true) ::
-        StructField("from", StringType, nullable = true) ::
-        StructField("to", StringType, nullable = true) ::
-        StructField("t-1_delta", DoubleType, nullable = true) ::
-        StructField("t-2_delta", DoubleType, nullable = true) ::
-        StructField("t-3_delta", DoubleType, nullable = true) ::
-        StructField("week", IntegerType, nullable = true) ::
-        StructField("day_of_week", IntegerType, nullable = true) ::
-        StructField("hour_of_day", IntegerType, nullable = true) ::
-        StructField("minute_of_hour", IntegerType, nullable = true) ::
-        Nil
-    )
-
-    val path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\regression"
-    val df_raw = spark.read.option("header",true).option("delimiter", ",").schema(schema).option("mode", "DROPMALFORMED").csv(path)
-
+    val df_raw = spark.read.parquet(read_path)
+    //df_raw.printSchema()
 
     // 2. create dependent variable by shifting one
     val windowSpec = Window.partitionBy('edge).orderBy('interval)
@@ -65,12 +52,18 @@ object EdgeWeightPrediction {
       //.withColumn("minute_sin", sin(col("minute_of_hour")*2*math.Pi/(60)) * -1)
       //.withColumn("day_of_week_sin", sin(col("day_of_week")*2*math.Pi/(6)))
 
-    // TODO: df_pred.describe().show()
-
     // 3.Add feature column:
     val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day"+time_of_day_feature)
     val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
     var df_feature = assembler.setHandleInvalid("skip").transform(df_pred).filter($"label".isNotNull)
+
+    val corr_assembler = new VectorAssembler().setInputCols(
+      Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day"+time_of_day_feature, "label"))
+      .setOutputCol("corr_features")
+    val coeff_df = Correlation.corr(corr_assembler.transform(df_feature), "corr_features")
+    val Row(coeff_matrix: Matrix) = coeff_df.head
+    val matrix_rdd = spark.sparkContext.parallelize(coeff_matrix.rowIter.toSeq)
+    matrix_rdd.take(coeff_matrix.numRows).foreach(println)
 
     /*
     some feature encoding
@@ -117,17 +110,20 @@ object EdgeWeightPrediction {
       if (m == 0) {
         // test model based on fold 0
         val lrModel = LinearRegression(spark, filteredDF, pw, m)
-        val glmModel = GeneralizedLinearModels(spark, filteredDF, pw, m)
+        val glmModelGaussian = GeneralizedLinearModelsGaussian(spark, filteredDF, pw, m)
+        val glmModelPoisson = GeneralizedLinearModelsPoisson(spark, filteredDF, pw, m)
         val baggingModel = RandomForestRegression(spark, filteredDF, pw, m)
         val boostingModel = GradientBoostedTreeRegression(spark, filteredDF, pw, m)
 
-        TestModel(lrModel, test, pw, "LinearRegression")
-        TestModel(glmModel, test, pw, "GeneralizedLinear")
-        TestModel(baggingModel, test, pw, "RandomForest")
-        TestModel(boostingModel, test, pw, "GradientBoostedTree")
+        TestModel(lrModel, test, pw, write_path, "LinearRegression")
+        TestModel(glmModelGaussian, test, pw, write_path, "GeneralizedLinearGaussian")
+        TestModel(glmModelPoisson, test, pw, write_path, "GeneralizedLinearPoisson")
+        TestModel(baggingModel, test, pw, write_path, "RandomForest")
+        TestModel(boostingModel, test, pw, write_path, "GradientBoostedTree")
       } else {
         LinearRegression(spark, filteredDF, pw, m)
-        GeneralizedLinearModels(spark, filteredDF, pw, m)
+        GeneralizedLinearModelsGaussian(spark, filteredDF, pw, m)
+        GeneralizedLinearModelsPoisson(spark, filteredDF, pw, m)
         RandomForestRegression(spark, filteredDF, pw, m)
         GradientBoostedTreeRegression(spark, filteredDF, pw, m)
       }
@@ -140,6 +136,14 @@ object EdgeWeightPrediction {
     filteredDF.unpersist()
     }
 
+    // save model
+    val glr = new GeneralizedLinearRegression()
+      .setFamily("Poisson")
+      .setLink("identity")
+      .setMaxIter(20)
+      .setRegParam(0.3)
+    val model = glr.fit(training)
+    model.write.overwrite().save(model_path)
 
     // closing everything
     pw.close
@@ -170,11 +174,44 @@ object EdgeWeightPrediction {
     lrModel
   }
 
-  def GeneralizedLinearModels(spark:SparkSession, filteredDF: DataFrame, pw: PrintWriter, m: Int): GeneralizedLinearRegressionModel = {
+  def GeneralizedLinearModelsPoisson(spark:SparkSession, filteredDF: DataFrame, pw: PrintWriter, m: Int): GeneralizedLinearRegressionModel = {
     pw.write("\nGeneralized Linear Regression with Poisson Distribution\n")
 
     val glr = new GeneralizedLinearRegression()
       .setFamily("Poisson")
+      .setLink("identity")
+      .setMaxIter(20)
+      .setRegParam(0.3)
+
+    // Fit the model
+    val model = glr.fit(filteredDF)
+
+    // Print the coefficients and intercept for generalized linear regression model
+    pw.write(s"Coefficients: ${model.coefficients}\n")
+    pw.write(s"Intercept: ${model.intercept}\n")
+
+    // Summarize the model over the training set and print out some metrics
+    val summary = model.summary
+
+    pw.write(s"Coefficient Standard Errors: ${summary.coefficientStandardErrors.mkString(",")}\n")
+    pw.write(s"T Values: ${summary.tValues.mkString(",")}\n")
+    pw.write(s"P Values: ${summary.pValues.mkString(",")}\n")
+    pw.write(s"Dispersion: ${summary.dispersion}\n")
+    pw.write(s"Null Deviance: ${summary.nullDeviance}\n")
+    pw.write(s"Residual Degree Of Freedom Null: ${summary.residualDegreeOfFreedomNull}\n")
+    pw.write(s"Deviance: ${summary.deviance}\n")
+    pw.write(s"Residual Degree Of Freedom: ${summary.residualDegreeOfFreedom}\n")
+    pw.write(s"AIC: ${summary.aic}\n")
+
+    ModelEvaluation(model, filteredDF, pw, "GeneralizedLinear")
+    model
+  }
+
+  def GeneralizedLinearModelsGaussian(spark:SparkSession, filteredDF: DataFrame, pw: PrintWriter, m: Int): GeneralizedLinearRegressionModel = {
+    pw.write("\nGeneralized Linear Regression with Gaussian Distribution\n")
+
+    val glr = new GeneralizedLinearRegression()
+      .setFamily("gaussian")
       .setLink("identity")
       .setMaxIter(20)
       .setRegParam(0.3)
@@ -281,14 +318,14 @@ object EdgeWeightPrediction {
     val featureIndexer = new VectorIndexer()
       .setInputCol("features")
       .setOutputCol("indexedFeatures")
-      .setMaxCategories(4)
+      //.setMaxCategories(4)
       .fit(filteredDF)
 
     // Train a GBT model.
     val gbt = new GBTRegressor()
       .setLabelCol("label")
       .setFeaturesCol("indexedFeatures")
-      .setMaxIter(40)
+      .setMaxIter(100)
 
     // Chain indexer and GBT in a Pipeline.
     val pipeline = new Pipeline()
@@ -321,8 +358,8 @@ object EdgeWeightPrediction {
       .sort(desc("RMSE"))
 
     //df_agg.show(10)
-    val agg_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\regressionResult\\edgeErrorAggregation\\"
-    df_agg.write.format("csv").option("header", "true").mode(SaveMode.Overwrite).save(agg_path + modelName)
+    //val agg_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\regressionResult\\edgeErrorAggregation\\"
+    //df_agg.write.format("csv").option("header", "true").mode(SaveMode.Overwrite).save(agg_path + modelName)
 
     //PREDICTION AND METRICS
     val evaluatorRMSE = new RegressionEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("rmse")
@@ -346,8 +383,8 @@ object EdgeWeightPrediction {
     pw.write("Mean absolute error (MAE) on in sample training data = " + mae + "\n")
   }
 
-  def TestModel(model: Transformer, testDF: DataFrame, pw: PrintWriter, modelName: String): Unit = {
-    pw.write("\n\n out sample test data result from model " + modelName + "\n")
+  def TestModel(model: Transformer, testDF: DataFrame, pw: PrintWriter, write_path: String, modelName: String): Unit = {
+    pw.write("\nout sample test data result from model " + modelName + "\n")
     val predictions = model.transform(testDF)
 
     //PREDICTION AND METRICS
@@ -371,12 +408,11 @@ object EdgeWeightPrediction {
     pw.write("Regression through the origin(R2) on out sample test data = " + r2 + "\n")
     pw.write("Mean absolute error (MAE) on out sample test data = " + mae + "\n")
 
-    val write_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\regressionResult\\fold0ModelTest\\"
     val df = predictions.select("interval","edge","tot_car1_count","tot_car2_count","tot_car3_count",
       "tot_bus_count","tot_vehicle_count","t_0_density","numLanes","edge_length","edge_area","from","to","t-1_delta",
       "t-2_delta","t-3_delta","week","day_of_week","hour_of_day","minute_of_hour","label","time_of_day",
       "time_of_day_sin","prediction")
-    df.show(10)
+    //df.show(10)
     df.write.format("csv").option("header", "true").mode(SaveMode.Overwrite).save(write_path + modelName)
   }
 
