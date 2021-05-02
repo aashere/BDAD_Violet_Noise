@@ -2,6 +2,7 @@ import org.apache.spark._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql._
+import org.apache.spark.sql.types._
 
 object AddNoise {
   def main(args: Array[String]) {
@@ -21,8 +22,8 @@ object AddNoise {
     val drop_percent = args(2).toDouble
 
     //For random number generation
-    val seed = 1
-    val rand_gen = scala.util.Random(seed)
+    //val seed = 1
+    val rand_gen = scala.util.Random
 
     // Read in trace file (with no noise)
     val trace_file_df = (spark.read.parquet(read_path)
