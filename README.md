@@ -6,6 +6,7 @@
     ├── sumoDataGeneration
     ├── runscripts  
     ├── ScalaETL
+    ├── NoiseGenerator
     ├── edgeWeightForecast
     └── VehicleClassification
 
@@ -26,6 +27,10 @@
  ## Scala ETL
 
  Raw data processing to be used by multiple insights down stream
+
+  ## NoiseGenerator
+
+ Add noise on top of output data to further bury insights
 
  ## edgeWeightForecast
 
