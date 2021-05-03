@@ -89,3 +89,8 @@ spark-submit --master yarn \
 --class VehicleFeatureGen /home/$(whoami)/BDAD_Violet_Noise/NoiseGenerator/noisegenerator_2.11-0.1.jar \
 /user/jl11257/big_data_project/traces/processed/week_9_* \
 /user/jl11257/big_data_project/traces/noised/week_9 12
+
+hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m user:as12366:r-x /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m user:yl3750:r-x /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m group::r-x /user/jl11257/big_data_project/traces
