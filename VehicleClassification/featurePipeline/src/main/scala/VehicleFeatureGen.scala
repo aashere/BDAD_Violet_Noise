@@ -40,7 +40,7 @@ object VehicleFeatureGen {
 								.withColumn("yDiff", lag("y", 1) over windowSpec)
 								.withColumn("yDiff", round($"y" - $"yDiff", 6)))
 			
-		val speed = udf((xDiff: Double, yDiff: Double, time: Double) => { (sqrt(pow(xDiff,2) + pow(yDiff,2))) / time})
+		val speed = udf((xDiff: Double, yDiff: Double, time: Double) =>  (1000 * sqrt(pow(xDiff,2.0) + pow(yDiff,2.0))) / time)
 		spark.udf.register("speed", speed)
 
 		val speed_df = (timeDistance.withColumn("speed", speed(col("xDiff"), col("yDiff"), col("timeDiff"))).na.fill(0.0)
@@ -62,14 +62,32 @@ object VehicleFeatureGen {
 		val start_node_ft = (gps_df.join(starttms, Seq("id","time"), "inner")
 						.join(edge_node_df.select("edge_id", "from_vertex_id"), Seq("edge_id"), "inner")
 						.withColumnRenamed("from_vertex_id","start_vertex_id")
-						.select("id","start_vertex_id").repartition(col("id")))
+						.select("id","start_vertex_id", "type").repartition(col("id")))
+
+		val startfilter = (start_node_ft.filter(col("type") === "Bus")
+								.select("start_vertex_id").distinct
+								.rdd.map(r => r(0)).collect())
+
+		val start_node_reduc = (start_node_ft.withColumn("start_vertex_id", 
+									when(col("start_vertex_id").isin(startfilter:_*), 
+									col("start_vertex_id")).otherwise(lit(9999)))
+									.select("id", "start_vertex_id"))
 
 		val endtms = groupedfts.select("id","stoptime").withColumnRenamed("stoptime","time")
 		// end node
 		val stop_node_ft = (gps_df.join(endtms, Seq("id","time"), "inner")
 						.join(edge_node_df.select("edge_id", "to_vertex_id"),  Seq("edge_id"), "inner")
 						.withColumnRenamed("to_vertex_id","stop_vertex_id")
-						.select("id","stop_vertex_id").repartition(col("id")))
+						.select("id","stop_vertex_id", "type").repartition(col("id")))
+
+		val stopfilter = (stop_node_ft.filter(col("type") === "Bus")
+								.select("stop_vertex_id").distinct
+								.rdd.map(r => r(0)).collect())
+
+		val stop_node_reduc = (stop_node_ft.withColumn("stop_vertex_id", 
+									when(col("stop_vertex_id").isin(stopfilter:_*), 
+									col("stop_vertex_id")).otherwise(lit(9999)))
+									.select("id", "stop_vertex_id"))			
 
 		// calculating the starting hour and minute
 		val time_fts = (starttms.withColumn("hour", ($"time" % (24 * 60 * 60)) / (60 * 60))
@@ -85,11 +103,10 @@ object VehicleFeatureGen {
 								.withColumn("angleMinus", $"angle" - $"angleLag")
 								.filter(!(isnull($"angleMinus")) && ($"angleMinus" !== 0)))
 		val turncount_ft = df_angle_minus.groupBy("id").count().withColumnRenamed("count", "turnsCount").repartition(col("id"))
-		//.na.fill(0, Array("turnsCount")).drop("angle")
 
 		val all_features = (groupedfts.join(time_fts, Seq("id"),"inner")
-									.join(start_node_ft, Seq("id"),"inner")
-									.join(stop_node_ft, Seq("id"),"inner")
+									.join(start_node_reduc, Seq("id"),"inner")
+									.join(stop_node_reduc, Seq("id"),"inner")
 									.join(turncount_ft, Seq("id"),"left").na.fill(0, Array("turnsCount"))
 									.drop("starttime")
 									.drop("stoptime"))
