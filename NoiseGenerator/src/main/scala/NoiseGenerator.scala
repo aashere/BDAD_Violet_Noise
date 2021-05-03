@@ -21,6 +21,7 @@ object NoiseGenerator {
 
 		val read_path = args(0)
 		val write_path = args(1)
+		val write_partitions = args(2).toInt
 
 		// Bounds for how long an accident lasts (seconds)
 		val min_accident_duration = 180
@@ -135,7 +136,7 @@ object NoiseGenerator {
 		val newcoords = (dataloss.withColumn("gpscoords", transformXY(col("x"), col("y")))
 								.select("time", "id", "gpscoords.*", "angle", "type", "lane"))
 
-		newcoords.repartition(12).write.parquet(write_path)
+		newcoords.repartition(write_partitions).write.mode("append").parquet(write_path)
 	}
 }
 

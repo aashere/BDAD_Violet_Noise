@@ -21,8 +21,8 @@ object VehicleFeatureGen {
         import spark.implicits._
 
 		val trace_path = args(0)
-		//val trace_path = "/user/jl11257/big_data_project/testing/noisedatatest2"
 		val write_path = args(1)
+		val write_partitions = args(2).toInt
 		val nodes_path = "/user/jl11257/big_data_project/graph/nodes"
 		val vertices_path = "/user/jl11257/big_data_project/graph/vertices"
 
@@ -94,6 +94,6 @@ object VehicleFeatureGen {
 									.drop("starttime")
 									.drop("stoptime"))
 
-		all_features.repartition(6).write.mode("append").parquet(write_path)
+		all_features.repartition(write_partitions).write.mode("append").parquet(write_path)
 	}
 }

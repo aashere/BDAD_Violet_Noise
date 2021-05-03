@@ -16,6 +16,7 @@ object EdgeFeatureGen {
         val trace_file_path = args(0)
         val delta_df_write_path = args(1)
         val DELTA_VALUE = args(2).toInt
+        val write_partitions = args(3).toInt
 
         val edge_areas_path = "/user/jl11257/big_data_project/graph/edge_area"
         val vertices_path = "/user/jl11257/big_data_project/graph/vertices"
@@ -102,7 +103,7 @@ object EdgeFeatureGen {
                                     .drop("t-3_lag"))
 
         //Write deltas feature table 
-        delta_df.coalesce(6).write.mode("append").parquet(delta_df_write_path)
+        delta_df.coalesce(write_partitions).write.mode("append").parquet(delta_df_write_path)
 
         spark.stop()
     }
