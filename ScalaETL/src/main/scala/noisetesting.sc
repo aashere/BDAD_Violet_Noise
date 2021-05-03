@@ -16,7 +16,7 @@ val min_accident_duration = 180
 val max_accident_duration = 540
 
 //What percent of the dataset to drop
-val drop_percent = 0.10
+//val drop_percent = 0.10
 
 // Read in trace file (with no noise)
 val trace_file_df = (spark.read.parquet(read_path)
@@ -111,19 +111,18 @@ val transformer = (new DenseMatrix(3, 3, Array(-5.01725277e-03,  9.53725133e-03,
 spark.sparkContext.broadcast(transformer)
 case class GpsCoord(x: Double, y: Double)
 val transformXY = udf((x: Double, y: Double) => {
-		val xorig = (x < 0) 0.0 else x / 100.0
-		val yorig = (y < 0) 0.0 else y / 100.0
+		val xorig = if (x < 0) 0.0 else x / 100.0
+		val yorig = if (y < 0) 0.0 else y / 100.0
 		val mcoords = new DenseMatrix(3, 1, Array(xorig, yorig, 1))
 		val output = transformer.multiply(mcoords)
 		val latitude = BigDecimal(output.apply(0,0) / output.apply(2,0)).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble
 		val longitude = BigDecimal(output.apply(1,0) / output.apply(2,0)).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble
         GpsCoord(latitude, longitude)
-    }
-)
+    })
 spark.udf.register("transformXY",transformXY)
 
 val newcoords = (final_traces.withColumn("gpscoords", transformXY(col("x"), col("y")))
 						.select("time", "id", "gpscoords.*", "angle", "type", "lane"))
 
-newcoords.repartition(4).write.parquet(write_path)
+newcoords.repartition(12).write.parquet(write_path)
 
