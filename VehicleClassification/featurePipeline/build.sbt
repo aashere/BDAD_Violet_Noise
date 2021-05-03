@@ -1,4 +1,4 @@
-name := "VehiclePrediction"
+name := "VehicleFeatureGen"
 
 version := "0.1"
 
