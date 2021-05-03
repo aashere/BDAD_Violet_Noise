@@ -8,12 +8,12 @@ import scala.math.BigDecimal
 
 import spark.implicits._
 
-val read_path = "/user/jl11257/big_data_project/traces/processed/week_6_day_5_gps"
-val write_path = "/user/jl11257/big_data_project/testing/noisedatatest2"
+val read_path = "/user/jl11257/big_data_project/traces/processed/week_6_*"
+val write_path = "/user/jl11257/big_data_project/testing/noisedatatest3"
 
 // Bounds for how long an accident lasts (seconds)
-val min_accident_duration = 420
-val max_accident_duration = 720
+val min_accident_duration = 180
+val max_accident_duration = 540
 
 //What percent of the dataset to drop
 val drop_percent = 0.10
@@ -105,13 +105,15 @@ val modified_traces = repeats.union(regulars).select("new_time", "id", "x", "y",
 
 val final_traces = traces_to_leave.union(modified_traces)
 
-val dataloss = final_traces.sample(false,1.0-drop_percent)
+//val dataloss = final_traces.sample(false,1.0-drop_percent)
 
 val transformer = (new DenseMatrix(3, 3, Array(-5.01725277e-03,  9.53725133e-03, -1.04285047e-04, 3.38651231e-03, -4.53778690e-03, 6.75830166e-05, 4.07162682e+01, -7.39353095e+01, 9.99150526e-01)))
 spark.sparkContext.broadcast(transformer)
 case class GpsCoord(x: Double, y: Double)
 val transformXY = udf((x: Double, y: Double) => {
-		val mcoords = new DenseMatrix(3, 1, Array(x, y, 1))
+		val xorig = (x < 0) 0.0 else x / 100.0
+		val yorig = (y < 0) 0.0 else y / 100.0
+		val mcoords = new DenseMatrix(3, 1, Array(xorig, yorig, 1))
 		val output = transformer.multiply(mcoords)
 		val latitude = BigDecimal(output.apply(0,0) / output.apply(2,0)).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble
 		val longitude = BigDecimal(output.apply(1,0) / output.apply(2,0)).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble
@@ -120,7 +122,7 @@ val transformXY = udf((x: Double, y: Double) => {
 )
 spark.udf.register("transformXY",transformXY)
 
-val newcoords = (dataloss.withColumn("gpscoords", transformXY(col("x"), col("y")))
+val newcoords = (final_traces.withColumn("gpscoords", transformXY(col("x"), col("y")))
 						.select("time", "id", "gpscoords.*", "angle", "type", "lane"))
 
 newcoords.repartition(4).write.parquet(write_path)
