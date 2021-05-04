@@ -57,7 +57,8 @@ object VehicleClassification {
                             .setEstimator(pipeline)
                             .setEvaluator(evaluator)
                             .setEstimatorParamMaps(paramGrid)
-                            .setNumFolds(3))
+                            .setNumFolds(3)
+                            .setParallelism(12))
 
         val model = cvWithauPRC.fit(trainSampleData)
 
