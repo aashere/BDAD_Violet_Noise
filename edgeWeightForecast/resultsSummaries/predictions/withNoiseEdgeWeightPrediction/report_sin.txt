@@ -1,0 +1,331 @@
+features: t_0_density t-1_delta t-2_delta t-3_delta time_of_day_sin
+
+####################################################################################
+Value of fold: 0
+
+Linear Regression with Normal Distribution
+Coefficients: [0.6939227089674993,0.43261886827214124,0.0,0.006314890256303769,0.5610491597774168] Intercept: 5.71055014144427
+numIterations: 21
+objectiveHistory: [0.5000000000000001,0.4501455555497819,0.1983934179486679,0.1768990532532227,0.16539274213812755,0.16452103074399174,0.16416855827807877,0.1641015234774191,0.164079000576581,0.164075909656255,0.16407240137176718,0.1640695149229397,0.1640682647630138,0.1640661592528969,0.16406594043691608,0.1640659058900201,0.16406583898745414,0.16406582995428085,0.16406581863574904,0.16406581813554302,0.16406581791740515]
+Root Mean Squared Error (RMSE) on in sample training data = 33.10886836283689
+Mean squared error (MSE) on in sample training data = 1096.1971642676613
+Regression through the origin(R2) on in sample training data = 0.6802475777986625
+Mean absolute error (MAE) on in sample training data = 6.4837067049974
+
+Generalized Linear Regression with Gaussian Distribution
+Coefficients: [0.6928289744928483,0.43818838469339855,-0.0017864215844959213,0.011475552206957387,0.9011846086560844]
+Intercept: 5.730532748302642
+Coefficient Standard Errors: 7.566407136855954E-4,0.00277440685669525,0.002614639459984789,0.001568072843156048,0.06163485824841483,0.04592809590960739
+T Values: 915.6644123973713,157.93948304155688,-0.6832382100231571,7.318251991317338,14.621346333335028,124.77183377210093
+P Values: 0.0,0.0,0.49445660671226355,2.5157653738006047E-13,0.0,0.0
+Dispersion: 1096.0976593137746
+Null Deviance: 1.9729136828366816E9
+Residual Degree Of Freedom Null: 575483
+Deviance: 6.307800887865723E8
+Residual Degree Of Freedom: 575478
+AIC: 5661267.761285698
+Root Mean Squared Error (RMSE) on in sample training data = 33.10719304610873
+Mean squared error (MSE) on in sample training data = 1096.0862313923103
+Regression through the origin(R2) on in sample training data = 0.6802799360794094
+Mean absolute error (MAE) on in sample training data = 6.504306383682674
+
+Generalized Linear Regression with Poisson Distribution
+Coefficients: [9.35830606801451,0.4411526732448724,-0.125026895746678,0.07515027932734526,0.05424418789334379]
+Intercept: 150.37816439463498
+Coefficient Standard Errors: 1.653753140784812E-10,7.629353514765464E-12,6.036124607608751E-12,1.2326849850543773E-12,3.983162487641699E-9,5.141986894755117E-9
+T Values: 5.658828900892303E10,5.782307405091243E10,-2.0713107146442455E10,6.096470731654946E10,1.3618371849414561E7,2.924514734722921E10
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 1.0
+Null Deviance: 1.0855176398947498E7
+Residual Degree Of Freedom Null: 575483
+Deviance: 2.9683874953726596E8
+Residual Degree Of Freedom: 575478
+AIC: 3.0107986068702626E8
+Root Mean Squared Error (RMSE) on in sample training data = 637.3238571011544
+Mean squared error (MSE) on in sample training data = 406181.6988302927
+Regression through the origin(R2) on in sample training data = -117.48012956830429
+Mean absolute error (MAE) on in sample training data = 309.3290735085205
+
+Random Forest Regression
+(5,[0,1,2,3,4],[0.5929906359595221,0.09697219865810648,0.14989772564745046,0.12865230777471506,0.03148713196020606])
+Root Mean Squared Error (RMSE) on in sample training data = 55.17905662258817
+Mean squared error (MSE) on in sample training data = 3044.728289758791
+Regression through the origin(R2) on in sample training data = 0.11187578536958098
+Mean absolute error (MAE) on in sample training data = 5.778591581348366
+
+Gradient Boosted Tree Regression
+(5,[0,1,2,3,4],[0.19864792596698974,0.1860462891496757,0.14152061902081003,0.17950125755180427,0.29428390831072027])
+Root Mean Squared Error (RMSE) on in sample training data = 31.48978017365015
+Mean squared error (MSE) on in sample training data = 991.6062553848101
+Regression through the origin(R2) on in sample training data = 0.7107559548914582
+Mean absolute error (MAE) on in sample training data = 4.223331552026848
+
+out sample test data result from model LinearRegression
+Root Mean Squared Error (RMSE) on out sample test data = 49.940846014968606
+Mean squared error (MSE) on out sample test data = 2494.0881006908057
+Regression through the origin(R2) on out sample test data = 0.8346947679054829
+Mean absolute error (MAE) on out sample test data = 7.429533141214154
+
+out sample test data result from model GeneralizedLinearGaussian
+Root Mean Squared Error (RMSE) on out sample test data = 49.95856278224174
+Mean squared error (MSE) on out sample test data = 2495.85799526719
+Regression through the origin(R2) on out sample test data = 0.8345774613702203
+Mean absolute error (MAE) on out sample test data = 7.450300926600162
+
+out sample test data result from model GeneralizedLinearPoisson
+Root Mean Squared Error (RMSE) on out sample test data = 1090.1574310239284
+Mean squared error (MSE) on out sample test data = 1188443.224416691
+Regression through the origin(R2) on out sample test data = -77.76862208233283
+Mean absolute error (MAE) on out sample test data = 327.38210414811505
+
+out sample test data result from model RandomForest
+Root Mean Squared Error (RMSE) on out sample test data = 118.87232769486677
+Mean squared error (MSE) on out sample test data = 14130.63029159579
+Regression through the origin(R2) on out sample test data = 0.06343840887293728
+Mean absolute error (MAE) on out sample test data = 7.7928146852498426
+
+out sample test data result from model GradientBoostedTree
+Root Mean Squared Error (RMSE) on out sample test data = 82.2631642173951
+Mean squared error (MSE) on out sample test data = 6767.228187058115
+Regression through the origin(R2) on out sample test data = 0.5514760582080656
+Mean absolute error (MAE) on out sample test data = 5.87541468231907
+
+####################################################################################
+Value of fold: 1
+
+Linear Regression with Normal Distribution
+Coefficients: [0.9724615364058092,0.0,0.0,0.027426370625377162,0.0] Intercept: 0.45553454325675197
+numIterations: 21
+objectiveHistory: [0.4999999999999999,0.3970805661923429,0.08819191139720141,0.0651326924620904,0.06151515023261298,0.060868243614121076,0.06082706462256527,0.06079279145845197,0.06077123887999985,0.06073404990839427,0.06073323582784256,0.060730051127489845,0.060729723045110304,0.06072959862623846,0.060729596779599486,0.06072959160539025,0.06072959070760279,0.06072959042270389,0.060729590356216584,0.06072959035137449,0.060729590350581994]
+Root Mean Squared Error (RMSE) on in sample training data = 20.670554098867772
+Mean squared error (MSE) on in sample training data = 427.2718067542192
+Regression through the origin(R2) on in sample training data = 0.886806057806022
+Mean absolute error (MAE) on in sample training data = 4.454560510040874
+
+Generalized Linear Regression with Gaussian Distribution
+Coefficients: [0.9696945070519634,-0.01865125724475985,0.012795247854882001,0.0327362767242624,0.009382867172692731]
+Intercept: 0.5063247758339419
+Coefficient Standard Errors: 5.215053532030732E-4,0.0014926344571753207,0.0017007044116091388,0.0011449942678284843,0.03849015860073461,0.02896281897019659
+T Values: 1859.4142919073088,-12.495529066142364,7.523498949929604,28.590777826641634,0.2437731491320395,17.481888636425953
+P Values: 0.0,0.0,5.3512749786932545E-14,0.0,0.8074066039913199,0.0
+Dispersion: 427.176649084518
+Null Deviance: 2.172272505685372E9
+Residual Degree Of Freedom Null: 575483
+Deviance: 2.4583076366186023E8
+Residual Degree Of Freedom: 575478
+AIC: 5118981.164122497
+Root Mean Squared Error (RMSE) on in sample training data = 20.66814445802869
+Mean squared error (MSE) on in sample training data = 427.172195337942
+Regression through the origin(R2) on in sample training data = 0.8868324471177381
+Mean absolute error (MAE) on in sample training data = 4.458678619088747
+
+Generalized Linear Regression with Poisson Distribution
+Coefficients: [5.907201290214849,0.10798114692999228,-0.48793524036625135,0.5537414157612259,-0.2573258532793285]
+Intercept: -6.975276850310372
+Coefficient Standard Errors: 3.4680907730627274E-11,1.0354393477033014E-12,1.3057248207112496E-12,9.400617355520532E-13,6.372959892061962E-11,6.057552401897495E-11
+T Values: 1.7033006564006696E11,1.0428534241962532E11,-3.736891821513089E11,5.890479261301282E11,-4.037776129736023E9,-1.1515008682591676E11
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 1.0
+Null Deviance: 1.0923332122913253E7
+Residual Degree Of Freedom Null: 575483
+Deviance: 6.647063768794665E7
+Residual Degree Of Freedom: 575478
+AIC: 6.924083225865173E7
+Root Mean Squared Error (RMSE) on in sample training data = 306.8794817848063
+Mean squared error (MSE) on in sample training data = 94175.01634051124
+Regression through the origin(R2) on in sample training data = -23.949086710738133
+Mean absolute error (MAE) on in sample training data = 86.53595879003956
+
+Random Forest Regression
+(5,[0,1,2,3,4],[0.6016886174859534,0.07011455720255363,0.1451888621134563,0.12991709978551697,0.05309086341251967])
+Root Mean Squared Error (RMSE) on in sample training data = 58.319910292744495
+Mean squared error (MSE) on in sample training data = 3401.2119365537656
+Regression through the origin(R2) on in sample training data = 0.0989422160559319
+Mean absolute error (MAE) on in sample training data = 5.869756164022697
+
+Gradient Boosted Tree Regression
+(5,[0,1,2,3,4],[0.21467587408789718,0.19017759666873893,0.12237566580522737,0.14573883478970667,0.32703202864842973])
+Root Mean Squared Error (RMSE) on in sample training data = 34.69203747413869
+Mean squared error (MSE) on in sample training data = 1203.5374641070428
+Regression through the origin(R2) on in sample training data = 0.6811557701985583
+Mean absolute error (MAE) on in sample training data = 4.1457234541793735
+
+####################################################################################
+Value of fold: 2
+
+Linear Regression with Normal Distribution
+Coefficients: [0.8245329548311097,0.36232838174343435,0.0,0.022762232034117688,0.5031402411874193] Intercept: 3.325582896521867
+numIterations: 21
+objectiveHistory: [0.5,0.3964565619973819,0.13199410104784537,0.10778756258272247,0.10344962704895752,0.10275815862848175,0.10274460373877725,0.1027354924243366,0.10271724129193457,0.10271432384967968,0.1027126703431852,0.10271241821812785,0.10271215169322497,0.10271214547319103,0.10271210449027403,0.10271209348427768,0.10271208564985533,0.1027120824763378,0.10271208170051722,0.10271208141076878,0.1027120813714339]
+Root Mean Squared Error (RMSE) on in sample training data = 26.893088593634047
+Mean squared error (MSE) on in sample training data = 723.2382141050497
+Regression through the origin(R2) on in sample training data = 0.8030925574504534
+Mean absolute error (MAE) on in sample training data = 5.556128597947542
+
+Generalized Linear Regression with Gaussian Distribution
+Coefficients: [0.8202074865356658,0.3825401784586171,-0.039936251065498925,0.05566461258607499,0.8560966236921834]
+Intercept: 3.4055537821119235
+Coefficient Standard Errors: 6.482158808645261E-4,0.002011407247207494,0.0019159091465507153,0.0015879548699581079,0.05005526836223876,0.03749924458482058
+T Values: 1265.3307497523112,190.18534361438284,-20.844543248513475,35.054278707267976,17.10302734762711,90.81659696927512
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 722.6118790134962
+Null Deviance: 2.1126940093797784E9
+Residual Degree Of Freedom Null: 575197
+Deviance: 4.156405719135309E8
+Residual Degree Of Freedom: 575192
+AIC: 5418804.169780729
+Root Mean Squared Error (RMSE) on in sample training data = 26.881300960169686
+Mean squared error (MSE) on in sample training data = 722.6043413112196
+Regression through the origin(R2) on in sample training data = 0.8032651344358789
+Mean absolute error (MAE) on in sample training data = 5.620090743294727
+
+Generalized Linear Regression with Poisson Distribution
+Coefficients: [0.5825279008254968,0.13415030809732253,-5.68466041149953E-4,0.028653429769505162,21.25303468477086]
+Intercept: 192.2036740671356
+Coefficient Standard Errors: 4.139615488687286E-11,1.0068915964165589E-11,8.62407537512731E-12,1.6483156506406303E-12,4.733933371695643E-9,7.528996545904454E-9
+T Values: 1.4072029211829582E10,1.3323212605483253E10,-6.5916172624078125E7,1.738346035746781E10,4.489508621275389E9,2.5528458260707874E10
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 1.0
+Null Deviance: 1.0987782766656019E7
+Residual Degree Of Freedom Null: 575197
+Deviance: 1.6870922308552092E8
+Residual Degree Of Freedom: 575192
+AIC: 1.7273407680550453E8
+Root Mean Squared Error (RMSE) on in sample training data = 187.5661848525688
+Mean squared error (MSE) on in sample training data = 35181.07370014801
+Regression through the origin(R2) on in sample training data = -8.578331334462728
+Mean absolute error (MAE) on in sample training data = 184.9241218664005
+
+Random Forest Regression
+(5,[0,1,2,3,4],[0.4840900934837583,0.10197514397560402,0.16259585652563593,0.11652043181281978,0.13481847420218182])
+Root Mean Squared Error (RMSE) on in sample training data = 56.46177213583824
+Mean squared error (MSE) on in sample training data = 3187.9317127193194
+Regression through the origin(R2) on in sample training data = 0.13205985478668258
+Mean absolute error (MAE) on in sample training data = 5.88291192745751
+
+Gradient Boosted Tree Regression
+(5,[0,1,2,3,4],[0.2225959396704094,0.2130488361906931,0.14748544315958875,0.11043654607238391,0.30643323490692487])
+Root Mean Squared Error (RMSE) on in sample training data = 37.37773424437669
+Mean squared error (MSE) on in sample training data = 1397.09501724325
+Regression through the origin(R2) on in sample training data = 0.6196296026966776
+Mean absolute error (MAE) on in sample training data = 4.116582516102191
+
+####################################################################################
+Value of fold: 3
+
+Linear Regression with Normal Distribution
+Coefficients: [0.9375209463569817,0.2178341867576461,0.0,0.0,0.0] Intercept: 1.277188958421107
+numIterations: 21
+objectiveHistory: [0.5000000000000001,0.39418518961173504,0.10972607498811046,0.08266413109018059,0.07660980871072817,0.07599541091919146,0.07575681715440628,0.07557062412335071,0.075385959313844,0.07526105272978546,0.07519146207133907,0.0751901585809428,0.07518955285919321,0.07518841993740012,0.07518839440500613,0.07518839166366473,0.07518839163143363,0.07518839162291793,0.0751883916229123,0.07518839162291052,0.07518839162290739]
+Root Mean Squared Error (RMSE) on in sample training data = 23.91846425202544
+Mean squared error (MSE) on in sample training data = 572.0929321754189
+Regression through the origin(R2) on in sample training data = 0.8579162445625259
+Mean absolute error (MAE) on in sample training data = 4.785105906648542
+
+Generalized Linear Regression with Gaussian Distribution
+Coefficients: [0.9400936663519742,0.2483743183308813,-0.019690051022627653,-0.0020981175305956196,0.1557848866068423]
+Intercept: 1.2272239877163948
+Coefficient Standard Errors: 5.798544801743248E-4,0.002058973434967593,0.0018066473459362705,8.244235780190208E-4,0.044533182137249425,0.03337724521548138
+T Values: 1621.2579164161132,120.63017138188115,-10.898668778340662,-2.5449509045303076,3.4981754981424804,36.76828269659507
+P Values: 0.0,0.0,0.0,0.010929569073481193,4.6848810392541296E-4,0.0
+Dispersion: 571.7130525834193
+Null Deviance: 2.317156721867129E9
+Residual Degree Of Freedom Null: 575483
+Deviance: 3.29008284074601E8
+Residual Degree Of Freedom: 575478
+AIC: 5286699.981345131
+Root Mean Squared Error (RMSE) on in sample training data = 23.91039715059836
+Mean squared error (MSE) on in sample training data = 571.7070918993422
+Regression through the origin(R2) on in sample training data = 0.8580120710136857
+Mean absolute error (MAE) on in sample training data = 4.814711114252914
+
+Generalized Linear Regression with Poisson Distribution
+Coefficients: [9.633494853776224,0.09911196850922929,-0.006289358078222401,0.04225882975178189,-0.03288820774429342]
+Intercept: 25.725526562108946
+Coefficient Standard Errors: 1.0175726191490397E-9,7.887969134551124E-12,9.174404409239021E-12,5.045968589854532E-12,4.882733032039019E-9,6.740388547708477E-9
+T Values: 9.467132539230839E9,1.2564953896066353E10,-6.855331199362376E8,8.374770670738589E9,-6735614.568417102,3.8166236827482038E9
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 1.0
+Null Deviance: 1.1247543255700056E7
+Residual Degree Of Freedom Null: 575483
+Deviance: 1.6605827222104847E8
+Residual Degree Of Freedom: 575478
+AIC: 1.6994921896085572E8
+Root Mean Squared Error (RMSE) on in sample training data = 559.8494125184834
+Mean squared error (MSE) on in sample training data = 313431.364697291
+Regression through the origin(R2) on in sample training data = -76.84313153239323
+Mean absolute error (MAE) on in sample training data = 188.38774641520538
+
+Random Forest Regression
+(5,[0,1,2,3,4],[0.5316466507503044,0.10061611089786549,0.14844647693175664,0.12989176048403772,0.08939900093603574])
+Root Mean Squared Error (RMSE) on in sample training data = 59.71508200359029
+Mean squared error (MSE) on in sample training data = 3565.8910186955127
+Regression through the origin(R2) on in sample training data = 0.11438306799136488
+Mean absolute error (MAE) on in sample training data = 5.876715285746332
+
+Gradient Boosted Tree Regression
+(5,[0,1,2,3,4],[0.21579357702899393,0.18539362949113586,0.12942660418895888,0.15959204829785997,0.30979414099305125])
+Root Mean Squared Error (RMSE) on in sample training data = 38.79196646767149
+Mean squared error (MSE) on in sample training data = 1504.8166624289497
+Regression through the origin(R2) on in sample training data = 0.6262670090508458
+Mean absolute error (MAE) on in sample training data = 4.116244034437617
+
+####################################################################################
+Value of fold: 4
+
+Linear Regression with Normal Distribution
+Coefficients: [0.9197627540255706,0.17213840187394422,0.0,0.0,0.0] Intercept: 1.559015649123698
+numIterations: 21
+objectiveHistory: [0.5,0.389887984307766,0.11752525544058148,0.08030253851683619,0.06735701076772961,0.06659737298919313,0.06647920658781711,0.06628412598274182,0.06624898089486485,0.06624746444496385,0.06624681083443305,0.06624632758327001,0.06624632472627344,0.06624632448417081,0.06624632447496381,0.06624632446946944,0.06624632445283143,0.06624632445282069,0.06624632445280305,0.06624632445279643,0.06624632445279408]
+Root Mean Squared Error (RMSE) on in sample training data = 22.666244328781488
+Mean squared error (MSE) on in sample training data = 513.758631972019
+Regression through the origin(R2) on in sample training data = 0.875564292878424
+Mean absolute error (MAE) on in sample training data = 4.731374573146802
+
+Generalized Linear Regression with Gaussian Distribution
+Coefficients: [0.91618253135097,0.19532592846287666,-0.03507807361413102,0.026638265353806652,0.27280332525872847]
+Intercept: 1.6270282501862174
+Coefficient Standard Errors: 5.444844035782885E-4,0.0018172537581298035,0.0019472856225117665,0.0015302090675744491,0.0422014502407546,0.03160127379730676
+T Values: 1682.6607435032563,107.48412410157462,-18.01383074398941,17.408252191337,6.464311622051274,51.48616035613355
+P Values: 0.0,0.0,0.0,0.0,1.0184186827189023E-10,0.0
+Dispersion: 513.4523095501933
+Null Deviance: 2.376005082471253E9
+Residual Degree Of Freedom Null: 575483
+Deviance: 2.954805081953261E8
+Residual Degree Of Freedom: 575478
+AIC: 5224846.927963673
+Root Mean Squared Error (RMSE) on in sample training data = 22.659367958815825
+Mean squared error (MSE) on in sample training data = 513.4469562930093
+Regression through the origin(R2) on in sample training data = 0.8756397827701681
+Mean absolute error (MAE) on in sample training data = 4.777411959502042
+
+Generalized Linear Regression with Poisson Distribution
+Coefficients: [12.993587013585557,0.13483975519728977,0.5405972691435774,-0.5907764782855461,-1.6550656858626274]
+Intercept: 83.45415442629734
+Coefficient Standard Errors: 7.066734689019303E-10,2.056201541407338E-11,9.405676445939377E-11,1.2146180008934284E-10,6.2562867797642815E-9,1.2856004699886032E-8
+T Values: 1.8386974444895657E10,6.557711025982434E9,5.747563955136521E9,-4.863887064500877E9,-2.645444085485137E8,6.491453322744753E9
+P Values: 0.0,0.0,0.0,0.0,0.0,0.0
+Dispersion: 1.0
+Null Deviance: 1.1388690031823944E7
+Residual Degree Of Freedom Null: 575483
+Deviance: 2.9703846233618724E8
+Residual Degree Of Freedom: 575478
+AIC: 3.012351623969832E8
+Root Mean Squared Error (RMSE) on in sample training data = 821.6998933035378
+Mean squared error (MSE) on in sample training data = 675190.7146550454
+Regression through the origin(R2) on in sample training data = -162.5356153482571
+Mean absolute error (MAE) on in sample training data = 310.7105451380894
+
+Random Forest Regression
+(5,[0,1,2,3,4],[0.5440840698091545,0.09239469822229125,0.16024213207427063,0.13080527441943854,0.072473825474845])
+Root Mean Squared Error (RMSE) on in sample training data = 60.63911907415406
+Mean squared error (MSE) on in sample training data = 3677.102762089435
+Regression through the origin(R2) on in sample training data = 0.10938161641589739
+Mean absolute error (MAE) on in sample training data = 6.136323336667693
+
+Gradient Boosted Tree Regression
+(5,[0,1,2,3,4],[0.20932515512873728,0.2013719081622579,0.155642304122812,0.1471449613914381,0.2865156711947549])
+Root Mean Squared Error (RMSE) on in sample training data = 38.9620178645553
+Mean squared error (MSE) on in sample training data = 1518.0388360779261
+Regression through the origin(R2) on in sample training data = 0.6323210467913674
+Mean absolute error (MAE) on in sample training data = 4.186423908879037
