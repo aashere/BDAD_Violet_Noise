@@ -15,10 +15,10 @@ object VehiclePrediction {
     def main(args: Array[String]) = {
         val spark = SparkSession.builder().appName("VehiclePrediction").getOrCreate
 
-        //val modelPath = "/user/jl11257/big_data_project/models/vehicleClassifier/randomForestCVAUPRNoNoise"
-        //val dataPath = "/user/jl11257/big_data_project/features/vehicleclass/part-00000-f8c4250a-43a1-4003-aa7d-ecf08b452f25-c000.snappy.parquet"
-        val modelPath = args(0)
-        val dataPath = args(1)
+        val modelPath = "/user/jl11257/big_data_project/models/vehicleClassifier/randomForestFinal"
+        val dataPath = "/user/jl11257/big_data_project/features/vehicleclass/part-00000-f8c4250a-43a1-4003-aa7d-ecf08b452f25-c000.snappy.parquet"
+        //val modelPath = args(0)
+        //val dataPath = args(1)
 
         val cvModel = CrossValidatorModel.load(modelPath)
 

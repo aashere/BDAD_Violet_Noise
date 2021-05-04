@@ -32,16 +32,16 @@ object VehicleClassification {
         trainSampleData.cache
 
         // Begin Pipeline
-        val encoder = (new OneHotEncoderEstimator().setInputCols(Array("start_vertex_id","stop_vertex_id"))
-                                                        .setOutputCols(Array("start_encoding","stop_encoding")))
-        val cols = Array("maxSpeed", "averageSpeed", "turnsCount", "start_encoding", "stop_encoding")
+        //val encoder = (new OneHotEncoderEstimator().setInputCols(Array("start_vertex_id","stop_vertex_id"))
+        //                                                .setOutputCols(Array("start_encoding","stop_encoding")))
+        val cols = Array("maxSpeed", "averageSpeed", "turnsCount", "hour")
         val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
         val indexer = new StringIndexer().setInputCol("type").setOutputCol("label")
         val randomForestClassifier = (new RandomForestClassifier()
                                         .setImpurity("gini")
                                         .setFeatureSubsetStrategy("auto")
                                         .setSeed(seed))
-        val stages = Array(encoder, assembler, indexer, randomForestClassifier)
+        val stages = Array(assembler, indexer, randomForestClassifier)
         val pipeline = new Pipeline().setStages(stages)
 
         // Set Up Training
@@ -96,6 +96,8 @@ object VehicleClassification {
         val df = spark.read.option("mergeSchema", "true").parquet(filepath)
         val cast_df = df.select(df.columns.map {
                                     case column@"turnsCount" =>
+                                    col(column).cast("Double").as(column)
+                                    case column@"hour" =>
                                     col(column).cast("Double").as(column)
                                     case column =>
                                     col(column)

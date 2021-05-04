@@ -23,9 +23,9 @@ object ExploratoryModel {
         import spark.implicits._
         
         val seed = 5043
-        val pw = new PrintWriter(new File("exploratory_train_result.txt" ))
-        val training_path = "/user/jl11257/big_data_project/features/vehiclesample/training"
-        val oos_test_path = "/user/jl11257/big_data_project/features/vehiclesample/witholdtest"
+        val pw = new PrintWriter(new File("exploratory_train_result2.txt" ))
+        val training_path = "/user/jl11257/big_data_project/features/vehiclesamplenoise/training"
+        val oos_test_path = "/user/jl11257/big_data_project/features/vehiclesamplenoise/witholdtest"
 
         val trainSampleData = LoadModelData(spark, training_path)
         val ooSampleData = LoadModelData(spark, oos_test_path)
