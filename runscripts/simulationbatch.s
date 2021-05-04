@@ -9,4 +9,4 @@
 #SBATCH --mail-user=hls327@nyu.edu
 
 cd /scratch/hls327/
-srun runscripts/simulate.sh
+srun runscripts/simulateForEval.sh

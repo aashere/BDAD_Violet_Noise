@@ -19,15 +19,18 @@ homedir = r"/scratch/hls327/sumoDataGeneration/data"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("weeks", type=int)
+    #parser.add_argument("weeks", type=int)
     parser.add_argument("basevol", type=float)
     args = parser.parse_args()
 
     generator = PathGenerator(basevol=args.basevol)
-    weeks = args.weeks
+    #weeks = args.weeks
+    start = 10
+    weeks = 11
+    days = 1
 
-    for w in range(0,weeks):
-        for d in range(0,7):
+    for w in range(start,weeks):
+        for d in range(0,days):
             
             startseconds = (w * 604800) + (d * 86400)
             endseconds = (w * 604800) + ((d+1) * 86400)

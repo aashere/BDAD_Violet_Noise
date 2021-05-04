@@ -1,4 +1,23 @@
 # BDAD_Violet_Noise
+
+
+/user/jl11257/big_data_project/graph
+
+spark-submit --master yarn \
+--deploy-mode cluster \
+--driver-memory 16G --executor-memory 1G \
+--num-executors 18 --executor-cores 2 \
+--packages com.databricks:spark-xml_2.10:0.4.1 \
+--class ParseXML /home/hls327/BDAD_Violet_Noise/ScalaETL/etl_2.11-0.1.jar \
+traces/raw/week_10_day_0_trace.xml traces/demo/week_10_day_0_gps
+
+hdfs dfs -put /scratch/hls327/traces/week_10_day_0_trace.xml /user/jl11257/big_data_project/traces/raw
+
+hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m user:as12366:r-x /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m user:yl3750:r-x /user/jl11257/big_data_project/traces
+hdfs dfs -setfacl -R -m group::r-x /user/jl11257/big_data_project/traces
+
 # Overall Structure
      
     .
