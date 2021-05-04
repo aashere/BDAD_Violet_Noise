@@ -9,7 +9,7 @@ spark-submit --master yarn \
 --num-executors 20 --executor-cores 4 \
 --packages com.databricks:spark-csv_2.11:1.5.0 \
 --class ShortestPathPrediction shortest-path-prediction_2.11-0.1.jar \
-GeneralizedLinearGaussian features/edgeregressnoise 9 3 12 59
+GeneralizedLinearGaussian features/edgeregressnoise 9 3 12 59 {resultPathHere}
  
  
 Result is writen to: /user/jl11257/big_data_project/results/shortestPathPrediction
