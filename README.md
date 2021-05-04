@@ -20,9 +20,11 @@ You are testing on ~2 hours of data, a Monday morning between 7 and 9 AM.
 
 The data is stored in `/user/jl11257/big_data_project/traces/demo/morningsample`
 
+**Please Note: The zip file must be unpacked in the top level directory on PEEL. If it is not unpacked at the top level directory, the demo will not work.**
+
 #### To run the demo, simply run `source runscripts/demo.sh` in your home user directory.
 
-If you wish to re-run the demo, you may will want to run the following command first.
+If you wish to re-run the demo, you will want to run the following command first.
 
 `hdfs dfs -rm -r /user/$(whoami)/violetnoisesummary`
 
