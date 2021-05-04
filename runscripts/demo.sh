@@ -46,7 +46,7 @@ spark-submit --master yarn \
 /user/$(whoami)/violetnoisesummary/vehiclefeatures \
 2 &> vehiclefeaturelog.txt
 
-printf "Vehicle feature output log is in vehiclefeaturelog.txt\n"
+printf "Vehicle feature spark log is in vehiclefeaturelog.txt\n"
 hdfs dfs -du -h /user/$(whoami)/violetnoisesummary/vehiclefeatures
 
 printf "Running feature calculations for the edge weight regression model\n"
@@ -60,7 +60,7 @@ spark-submit --master yarn \
 /user/$(whoami)/violetnoisesummary/edgefeatures \
 900 2 &> edgefeaturelog.txt
 
-printf "Edge weight feature output log is in edgefeaturelog.txt\n"
+printf "Edge weight feature spark log is in edgefeaturelog.txt\n"
 hdfs dfs -du -h /user/$(whoami)/violetnoisesummary/edgefeatures
 
 printf "Running car classification predictions on sample data\n"
@@ -71,7 +71,9 @@ spark-submit --master yarn \
 --num-executors 4 \
 --class VehiclePrediction /home/$(whoami)/BDAD_Violet_Noise/VehicleClassification/modelPredict/vehicleprediction_2.11-0.1.jar \
 /user/$(whoami)/violetnoisesummary/vehiclefeatures \
-/user/$(whoami)/violetnoisesummary/carclassify
+/user/$(whoami)/violetnoisesummary/carclassify &> carclassifylog.txt
+
+printf "Car prediction spark log is in carclassifylog.txt\n"
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/carclassify/part-00000
 
@@ -86,8 +88,9 @@ spark-submit --master yarn
 --class ShortestPathPrediction shortest-path-prediction_2.11-0.1.jar \
 /user/$(whoami)/violetnoisesummary/edgefeatures \
 10 0 8 29 \
-/user/$(whoami)/violetnoisesummary/carclassify
+/user/$(whoami)/violetnoisesummary/edgeforecast &> edgeforecast.txt
+
+printf "Edge forecast spark log is in edgeforecast.txt\n"
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/edgeforecast/part-00000
-
 printf "\n\n\nDemo is complete!\n"
