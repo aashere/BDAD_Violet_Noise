@@ -1,0 +1,11 @@
+Random Forest Classifier with Cross Validation
+Cross Validation Result Model
+Best Metric: 1.0
+Best Parameters: {
+	rfc_ca7914b857e1-impurity: entropy,
+	rfc_ca7914b857e1-maxBins: 25,
+	rfc_ca7914b857e1-maxDepth: 6
+}
+Area under Precision-Recall Curve in Down Sampled Data is 1.0
+Area under Precision-Recall Curve in Raw Test Data is 1.0
+Model saved under /user/jl11257/big_data_project/models/vehicleClassifier/randomForestCVAUPRNoNoise

@@ -1,0 +1,13 @@
+Root Mean Squared Error (RMSE) on out sample test data = 43.66141232250356
+Mean squared error (MSE) on out sample test data = 1906.3189259956653
+Regression through the origin(R2) on out sample test data = 0.8736514189612622
+Mean absolute error (MAE) on out sample test data = 5.7432089198290335
+
+True Shortest Path 
+
+9_30to8_30 8_30to8_31 8_31to8_32 8_32to8_33 8_33to8_34 8_34to8_35 8_35to8_36 8_36to8_37 8_37to8_38 8_38to8_39 8_39to9_39 9_39to9_38 
+179
+Predicted Shortest Path 
+
+9_30to8_30 8_30to8_31 8_31to8_32 8_32to8_33 8_33to8_34 8_34to8_35 8_35to8_36 8_36to8_37 8_37to8_38 8_38to8_39 8_39to9_39 9_39to9_38 
+184

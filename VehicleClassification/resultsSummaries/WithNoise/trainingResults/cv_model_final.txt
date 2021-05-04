@@ -1,0 +1,16 @@
+Random Forest Classifier with Cross Validation
+
+Cross Validation Result Model
+
+Best Metric: 0.9924516828518595
+
+Best Parameters: {
+	rfc_55e1c082966d-maxBins: 30,
+	rfc_55e1c082966d-maxDepth: 8
+}
+
+Area under Precision-Recall Curve in Down Sampled Data is 0.9922953133274539
+
+Area under Precision-Recall Curve in Raw Test Data is 0.9231984663088683
+
+Model saved under /user/jl11257/big_data_project/models/vehicleClassifier/randomForestFinal

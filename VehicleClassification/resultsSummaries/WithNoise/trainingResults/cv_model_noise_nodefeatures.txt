@@ -1,0 +1,14 @@
+Random Forest Classifier with Cross Validation
+
+Cross Validation Result Model
+
+Best Metric: 0.021271795152466744
+
+Best Parameters: {
+	rfc_ddd3f071a7da-maxBins: 20,
+	rfc_ddd3f071a7da-maxDepth: 4
+}
+
+Area under Precision-Recall Curve in Down Sampled Data is 0.02127158073656272
+
+Area under Precision-Recall Curve in Raw Test Data is 0.00224482274428819

@@ -1,0 +1,9 @@
+There were 1474 buses and 655148 cars in the data set provided
+
+The model predicted 1595 buses and 655027 cars
+
+Confusion matrix:
+655026.0  122.0   
+1.0       1473.0  
+
+Area under precision-recall curve = 0.9231984663088683
