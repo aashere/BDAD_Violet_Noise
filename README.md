@@ -20,7 +20,7 @@ You are testing on ~2 hours of data, a Monday morning between 7 and 9 AM.
 
 The data is stored in `/user/jl11257/big_data_project/traces/demo/morningsample`
 
-**Please Note: The zip file must be unpacked in the top level directory on PEEL. If it is not unpacked at the top level directory, the demo will not work.**
+**Please Note: The zip file must be unpacked in the top level of your user's /home/ directory on PEEL. If it is not unpacked at the top level directory, the demo will not work.**
 
 #### To run the demo, simply run `source runscripts/demo.sh` in your home user directory.
 
