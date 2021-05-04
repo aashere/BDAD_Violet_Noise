@@ -1,5 +1,3 @@
-#/scratch/hls327/sumovenv/bin/python /scratch/hls327/sumoDataGeneration/generateRoutes.py 25.0
-
 /scratch/work/public/singularity/run-sumo-1.9.0.bash netconvert \
 	--node-files /scratch/hls327/sumoDataGeneration/data/net/my_nodes.nod.xml \
 	--edge-files /scratch/hls327/sumoDataGeneration/data/net/my_edge.edg.xml \
