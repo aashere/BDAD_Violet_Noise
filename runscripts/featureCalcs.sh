@@ -22,3 +22,10 @@ hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/features
 hdfs dfs -setfacl -R -m user:as12366:r-x /user/jl11257/big_data_project/features
 hdfs dfs -setfacl -R -m user:yl3750:r-x /user/jl11257/big_data_project/features
 hdfs dfs -setfacl -R -m group::r-x /user/jl11257/big_data_project/features
+
+
+spark-submit --master yarn \
+--deploy-mode cluster \
+--driver-memory 20G --executor-memory 10G \
+--num-executors 40 --executor-cores 5 \
+--class VehicleClassification /home/hls327/BDAD_Violet_Noise/VehicleClassification/modelTrain/vehicleclassification_2.11-0.1.jar
