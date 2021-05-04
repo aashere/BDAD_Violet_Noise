@@ -9,7 +9,8 @@ object VehicleSample {
         val spark = SparkSession.builder().appName("VehicleSample").getOrCreate
         import spark.implicits._
 
-        val full_data_path = "/user/jl11257/big_data_project/features/vehicleclass"
+        //val full_data_path = "/user/jl11257/big_data_project/features/vehicleclass"
+        val full_data_path = "/user/jl11257/big_data_project/features/vehicleclassnoise"
         val full_data_df = spark.read.parquet(full_data_path)
 
         // preserve some data in current class balance for testing
@@ -22,8 +23,8 @@ object VehicleSample {
 
         val sampleTrainData = trainingData.filter($"type" === "Bus").union(choosenCarData)
 
-        testData.coalesce(1).write.mode("append").parquet("/user/jl11257/big_data_project/features/vehiclesample/witholdtest")
-        sampleTrainData.coalesce(1).write.mode("append").parquet("/user/jl11257/big_data_project/features/vehiclesample/training")
+        testData.coalesce(1).write.mode("append").parquet("/user/jl11257/big_data_project/features/vehiclesamplenoise/witholdtest")
+        sampleTrainData.coalesce(1).write.mode("append").parquet("/user/jl11257/big_data_project/features/vehiclesamplenoise/training")
 
         spark.stop()
 
