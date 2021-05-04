@@ -12,3 +12,4 @@ spark-submit --master yarn \
 GeneralizedLinearGaussian features/edgeregressnoise 9 3 12 59
  
  
+Result is writen to: /user/jl11257/big_data_project/results/shortestPathPrediction

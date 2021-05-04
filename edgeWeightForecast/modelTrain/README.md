@@ -12,3 +12,4 @@ spark-submit --master yarn \
 GeneralizedLinearGaussian features/edgeregressnoise
  
  
+Result is writen to: /user/jl11257/big_data_project/results/edgeWeightPrediction
