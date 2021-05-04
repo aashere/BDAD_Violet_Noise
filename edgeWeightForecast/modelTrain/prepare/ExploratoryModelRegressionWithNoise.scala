@@ -1,7 +1,7 @@
 import java.io._
 
 import org.apache.spark.ml.evaluation.RegressionEvaluator
-import org.apache.spark.ml.feature.{VectorAssembler, VectorIndexer}
+import org.apache.spark.ml.feature.{OneHotEncoderEstimator, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.ml.regression._
 import org.apache.spark.ml.{Pipeline, PipelineModel, Transformer}
 import org.apache.spark.sql._
@@ -19,8 +19,8 @@ object ExploratoryModelRegressionWithNoise {
 
     val base_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\"
     val read_path = base_path + "features\\edgeregressnoise"
-    val write_path = base_path + "predictions\\withNoiseEdgeWeightPrediction\\"
-    val extra_feature_path = base_path + "features\\extra_graph_features"
+    val write_path = base_path + "predictions\\withNoiseEdgeWeightPredictionExtraFeat\\"
+    val extra_feature_path = base_path + "graph\\extra_graph_features"
 
     import spark.implicits._
 
@@ -30,10 +30,8 @@ object ExploratoryModelRegressionWithNoise {
     // 1.load dataset
     val df_etl = spark.read.parquet(read_path)
     val df_extra_feature = spark.read.parquet(extra_feature_path)
+    val df_raw = df_etl.join(df_extra_feature, df_etl.col("edge") === df_extra_feature.col("edge_id")).drop("edge_id")
 
-    print(df_etl.count())
-    val df_raw = df_etl//.join(df_extra_feature, df_etl.col("edge") === df_extra_feature.col("edge_id")).drop("edge_id")
-    print(df_raw.count())
     // 2. create dependent variable by shifting one
     val windowSpec = Window.partitionBy("edge").orderBy("interval")
     val df_pred = df_raw.withColumn("label", lead('t_0_density, 1) over windowSpec)
@@ -45,18 +43,24 @@ object ExploratoryModelRegressionWithNoise {
       //.withColumn("day_of_week_sin", sin(col("day_of_week")*2*math.Pi/(6)))
 
     // 3.Add feature column:
-    val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day"+time_of_day_feature)
+
+    // one hot encoding
+    val borderIndexer = new StringIndexer().setInputCol("border_edge").setOutputCol("border_edge_indexed")
+    var df_feature = borderIndexer.fit(df_pred).transform(df_pred)
+    val borderEncoder = new OneHotEncoderEstimator().setInputCols(Array(borderIndexer.getOutputCol)).setOutputCols(Array("borderEncoded"))
+    df_feature = borderEncoder.fit(df_feature).transform(df_feature)
+
+    val twoWayIndexer = new StringIndexer().setInputCol("two_way_edge").setOutputCol("two_way_edge_indexed")
+    df_feature = twoWayIndexer.fit(df_feature).transform(df_feature)
+    val twoWayEncoder = new OneHotEncoderEstimator().setInputCols(Array(twoWayIndexer.getOutputCol)).setOutputCols(Array("twoWayEncoded"))
+    df_feature = twoWayEncoder.fit(df_feature).transform(df_feature)
+
+    val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day"+time_of_day_feature, "borderEncoded", "twoWayEncoded")
+    //val cols = Array("t_0_density", "t-1_delta", "time_of_day"+time_of_day_feature, "border_edge", "two_way_edge")
     val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
-    val df_feature = assembler.setHandleInvalid("skip").transform(df_pred).filter($"label".isNotNull)//.filter(col("label") < 100)
+    df_feature = assembler.setHandleInvalid("skip").transform(df_feature).filter($"label".isNotNull)//.filter(col("label") < 100)
     //val df_clean = df_pred.filter(col("t-3_delta").isNotNull).filter(col("label").isNotNull).filter(col("label") < 100)
     //val df_feature = assembler.transform(df_clean)
-
-     // one hot encoding for weekday
-//    val dayIndexer = new StringIndexer().setInputCol("day_of_week").setOutputCol("day_of_week_indexed")
-//    df_feature = dayIndexer.fit(df_feature).transform(df_feature)
-//    val dayEncoder = new OneHotEncoderEstimator().setInputCols(Array(dayIndexer.getOutputCol)).setOutputCols(Array("dayEncoded"))
-//    df_feature = dayEncoder.fit(df_feature).transform(df_feature)
-
 
     //    val corr_assembler = new VectorAssembler().setInputCols(
     //      Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day"+time_of_day_feature, "label"))
@@ -351,7 +355,7 @@ object ExploratoryModelRegressionWithNoise {
       .sort(desc("RMSE"))
 
     //df_agg.show(10)
-    val agg_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\predictions\\withNoiseEdgeWeightErrorAgg\\"
+    val agg_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\predictions\\withNoiseEdgeWeightErrorExtraFeat\\"
     df_agg.write.format("csv").option("header", "true").mode(SaveMode.Overwrite).save(agg_path + modelName)
 
     //PREDICTION AND METRICS

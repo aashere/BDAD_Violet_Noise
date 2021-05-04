@@ -1,5 +1,5 @@
 import org.apache.spark.ml.evaluation.RegressionEvaluator
-import org.apache.spark.ml.feature.{VectorAssembler, VectorIndexer}
+import org.apache.spark.ml.feature.{OneHotEncoderEstimator, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.ml.regression._
 import org.apache.spark.ml.{Pipeline, PipelineModel, Transformer}
 import org.apache.spark.sql._
@@ -14,26 +14,23 @@ object EdgeWeightPrediction {
   def main(args: Array[String]) = {
 
     // OS sensitive things
-    val spark = SparkSession.builder().appName("Edge Weight Prediction").master("local").getOrCreate
+    val spark = SparkSession.builder().appName("EdgeWeightPrediction").getOrCreate
+    val base_path = "/user/jl11257/big_data_project/"
 
-    //    val base_path = "/user/jl11257/big_data_project/"
-    //    val read_path = base_path + args(0) //"features/edgeregress"
-    //    val write_path = base_path + args(1)//"predictions/edgeWeightPrediction/"
-    //    val model_path = base_path + args(2) //"models/edgeWeightPrediction/GeneralizedLinearPoisson"
-    val input_model = "LinearRegression"
-    //val base_path = "/user/jl11257/big_data_project/"
-    val base_path = "C:\\Users\\yingl\\OneDrive\\Desktop\\Data_OLAP\\"
-    val read_path = base_path + "features\\edgeregressnoise"
-    // write
-    val model_path = base_path + "models\\PredictionModel\\" + input_model
+    val input_model = args(0) 
+    val read_path = base_path + args(1) 
+    val model_path = base_path + "models/edgeWeightPrediction/" + input_model
+    val result_path = base_path + "results/edgeWeightPrediction/" + input_model
+    val extra_feature_path = base_path + "graph/extra_graph_features"
 
     import spark.implicits._
 
-
     var result = new ListBuffer[String]()
-
+    result += "Training data from path " + read_path + "\n"
     // 1.load dataset
-    val df_raw = spark.read.parquet(read_path)
+    val df_etl = spark.read.parquet(read_path)
+    val df_extra_feature = spark.read.parquet(extra_feature_path)
+    val df_raw = df_etl.join(df_extra_feature, df_etl.col("edge") === df_extra_feature.col("edge_id")).drop("edge_id")
 
     // 2. create dependent variable by shifting one
     val windowSpec = Window.partitionBy("edge").orderBy("interval")
@@ -42,9 +39,20 @@ object EdgeWeightPrediction {
       .withColumn("time_of_day_sin", sin(col("time_of_day")*2*math.Pi/(24*60)) * -1)
 
     // 3.Add feature column
-    val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day_sin")
+    val borderIndexer = new StringIndexer().setInputCol("border_edge").setOutputCol("border_edge_indexed")
+    var df_feature = borderIndexer.fit(df_pred).transform(df_pred)
+    val borderEncoder = new OneHotEncoderEstimator().setInputCols(Array(borderIndexer.getOutputCol)).setOutputCols(Array("borderEncoded"))
+    df_feature = borderEncoder.fit(df_feature).transform(df_feature)
+
+    val twoWayIndexer = new StringIndexer().setInputCol("two_way_edge").setOutputCol("two_way_edge_indexed")
+    df_feature = twoWayIndexer.fit(df_feature).transform(df_feature)
+    val twoWayEncoder = new OneHotEncoderEstimator().setInputCols(Array(twoWayIndexer.getOutputCol)).setOutputCols(Array("twoWayEncoded"))
+    df_feature = twoWayEncoder.fit(df_feature).transform(df_feature)
+
+    val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day_sin", "borderEncoded", "twoWayEncoded")
+    //val cols = Array("t_0_density", "t-1_delta", "time_of_day"+time_of_day_feature, "border_edge", "two_way_edge")
     val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
-    val df_feature = assembler.setHandleInvalid("skip").transform(df_pred).filter($"label".isNotNull)//.filter(col("label") < 100)
+    df_feature = assembler.setHandleInvalid("skip").transform(df_feature).filter($"label".isNotNull)//.filter(col("label") < 100)
     //val df_clean = df_pred.filter(col("t-3_delta").isNotNull).filter(col("label").isNotNull).filter(col("label") < 100)
     //val df_feature = assembler.transform(df_clean)
 
@@ -65,11 +73,11 @@ object EdgeWeightPrediction {
 
     // save model
     model.write.overwrite().save(model_path)
-    result += "model save to path" + model_path + "\n"
+    result += "model save to path " + model_path + "\n"
 
     // closing everything
     val outp = spark.sparkContext.parallelize(result)
-    outp.coalesce(1).saveAsTextFile("edgeWeightPrediction")
+    outp.coalesce(1).saveAsTextFile(result_path)
     spark.close()
   }
 
