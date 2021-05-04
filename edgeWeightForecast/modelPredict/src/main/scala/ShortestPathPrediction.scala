@@ -26,18 +26,18 @@ object ShortestPathPrediction {
         val sc = spark.sparkContext
 
         val base_path = "/user/jl11257/big_data_project/"      
-        val model_path = base_path + "models/edgeWeightPrediction/" + args(0)
+        val model_path = base_path + "models/edgeWeightPrediction/GeneralizedLinearGaussian" 
         val nodes_path = base_path + "graph/nodes"
         val vertices_path = base_path + "graph/vertices"
-        val read_path = base_path + args(1) 
+        val read_path = args(0) //base_path + args(1) 
         val extra_feature_path = base_path + "graph/extra_graph_features"
 
-        val week = args(2).toLong
-        val day_of_week = args(3).toLong
-        val hour_of_day = args(4).toLong
-        val minute_of_hour = args(5).toLong
+        val week = args(1).toLong
+        val day_of_week = args(2).toLong
+        val hour_of_day = args(3).toLong
+        val minute_of_hour = args(4).toLong
 
-        val result_path = base_path + "results/shortestPathPrediction/" + s"week${week}_day${day_of_week}_hour${hour_of_day}_min${minute_of_hour}"
+        val result_path = args(5)  //base_path + "results/shortestPathPrediction/" + s"week${week}_day${day_of_week}_hour${hour_of_day}_min${minute_of_hour}"
 
         import spark.implicits._
         var result = new ListBuffer[String]()
@@ -111,7 +111,7 @@ object ShortestPathPrediction {
 
         // closing everything
         val rdd = sc.parallelize(result)
-        rdd.saveAsTextFile(result_path)
+        rdd.coalesce(1).saveAsTextFile(result_path)
 
         spark.close()
     }
