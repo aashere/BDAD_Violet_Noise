@@ -88,7 +88,7 @@ spark-submit --master yarn \
 --class ShortestPathPrediction edgeWeightForecast/modelPredict/shortest-path-prediction_2.11-0.1.jar \
 /user/$(whoami)/violetnoisesummary/edgefeatures \
 10 0 8 29 \
-/user/$(whoami)/violetnoisesummary/edgeforecast2 &> edgeforecast.txt
+/user/$(whoami)/violetnoisesummary/edgeforecast &> edgeforecast.txt
 
 printf "Edge forecast spark log is in edgeforecast.txt\n"
 
