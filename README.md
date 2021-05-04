@@ -1,22 +1,25 @@
 # BDAD_Violet_Noise
+### Team Members
 
+### Running the Demo
 
-/user/jl11257/big_data_project/graph
+Data is designed to be simulated one day at a time, each output from the microsimulation is an ~8GB file.
+To save time, several pre-processing steps of the data pipeline have already been run so that you can test on a small set of data.
 
-spark-submit --master yarn \
---deploy-mode cluster \
---driver-memory 16G --executor-memory 1G \
---num-executors 18 --executor-cores 2 \
---packages com.databricks:spark-xml_2.10:0.4.1 \
---class ParseXML /home/hls327/BDAD_Violet_Noise/ScalaETL/etl_2.11-0.1.jar \
-traces/raw/week_10_day_0_trace.xml traces/demo/week_10_day_0_gps
+We have generated data, parsed it into parquet, and added noise already, see the following scripts for details:
+runscripts/simulateForEval.sh
+runscripts/prepforEval.sh
 
-hdfs dfs -put /scratch/hls327/traces/week_10_day_0_trace.xml /user/jl11257/big_data_project/traces/raw
+You are testing on ~2 hours of data, a Monday morning between 7 and 9 AM.
 
-hdfs dfs -setfacl -R -m user:hls327:rwx /user/jl11257/big_data_project/traces
-hdfs dfs -setfacl -R -m user:as12366:r-x /user/jl11257/big_data_project/traces
-hdfs dfs -setfacl -R -m user:yl3750:r-x /user/jl11257/big_data_project/traces
-hdfs dfs -setfacl -R -m group::r-x /user/jl11257/big_data_project/traces
+The data is stored in /user/jl11257/big_data_project/traces/demo/morningsample
+
+To run the demo, simply run "source runscripts/demo.sh" in your home user directory.
+
+If you wish to re-run the demo, you may will want to run the following command first.
+"hdfs dfs -rm -rf /user/$(whoami)/violetnoisesummary"
+
+In the event of folder permission issues please contact hls327@nyu.edu.
 
 # Overall Structure
      

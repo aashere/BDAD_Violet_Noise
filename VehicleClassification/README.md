@@ -15,9 +15,9 @@ resultSummmaries and featureVisualization contain outputs provided in the team p
     │       └── VehiclePrediction.scala
     ├── modelTrain                    
     │   ├── src/main/scala 
-    │   │   ├── VehicleSample.scala                  
     │   │   └── VehicleClassification.scala
-    │   └── test     
+    │   └── prepare     
+    │       ├── VehicleSample.scala                      
     │       └── ExploratoryModel.scala              
     ├── resultsSummaries
     └── featureVisualization
