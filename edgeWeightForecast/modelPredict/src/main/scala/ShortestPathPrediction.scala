@@ -1,5 +1,3 @@
-import java.io.{File, PrintWriter}
-
 import org.apache.spark._
 import org.apache.spark.graphx._
 import org.apache.spark.ml.evaluation.RegressionEvaluator
@@ -14,7 +12,6 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.types._
 import org.apache.spark.ml.PipelineModel
-
 import scala.collection.mutable.ListBuffer
 
 
@@ -29,15 +26,15 @@ object ShortestPathPrediction {
         val model_path = base_path + "models/edgeWeightPrediction/GeneralizedLinearGaussian" 
         val nodes_path = base_path + "graph/nodes"
         val vertices_path = base_path + "graph/vertices"
-        val read_path = args(0) //base_path + args(1) 
+        val read_path = args(0)
         val extra_feature_path = base_path + "graph/extra_graph_features"
 
-        val week = args(1).toLong
-        val day_of_week = args(2).toLong
-        val hour_of_day = args(3).toLong
-        val minute_of_hour = args(4).toLong
+        val week = args(1)
+        val day_of_week = args(2)
+        val hour_of_day = args(3)
+        val minute_of_hour = args(4)
 
-        val result_path = args(5)  //base_path + "results/shortestPathPrediction/" + s"week${week}_day${day_of_week}_hour${hour_of_day}_min${minute_of_hour}"
+        val result_path = args(5) 
 
         import spark.implicits._
         var result = new ListBuffer[String]()
@@ -49,9 +46,9 @@ object ShortestPathPrediction {
 
         // 2. create dependent variable by shifting one
         val windowSpec = Window.partitionBy("edge").orderBy("interval")
-        val df_pred = df_raw.withColumn("label", lead('t_0_density, 1) over windowSpec)
+        val df_pred = (df_raw.withColumn("label", lead('t_0_density, 1) over windowSpec)
           .withColumn("time_of_day", col("hour_of_day") * 60 + col("minute_of_hour"))
-          .withColumn("time_of_day_sin", sin(col("time_of_day")*2*math.Pi/(24*60)) * -1)
+          .withColumn("time_of_day_sin", sin(col("time_of_day")*2*math.Pi/(24*60)) * -1))
 
         // 3.Add feature column
         val borderIndexer = new StringIndexer().setInputCol("border_edge").setOutputCol("border_edge_indexed")
@@ -65,14 +62,12 @@ object ShortestPathPrediction {
         df_feature = twoWayEncoder.fit(df_feature).transform(df_feature)
 
         val cols = Array("t_0_density", "t-1_delta", "t-2_delta", "t-3_delta", "time_of_day_sin", "borderEncoded", "twoWayEncoded")
-        //val cols = Array("t_0_density", "t-1_delta", "time_of_day"+time_of_day_feature, "border_edge", "two_way_edge")
         val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
         df_feature = assembler.setHandleInvalid("skip").transform(df_feature).filter($"label".isNotNull)//.filter(col("label") < 100)
 
-        val df_all_data = df_feature.withColumn("rank", row_number().over(Window.partitionBy()
-          .orderBy("interval")) / df_feature.count())
-        val test = df_all_data.where("rank > .9").drop("rank")
-
+        val test = (df_feature.filter(col("day_of_week") === day_of_week)
+                        .filter(col("hour_of_day") === hour_of_day)
+                        .filter(col("minute_of_hour") === minute_of_hour))
 
         // 2. load model and test
         val model = GeneralizedLinearRegressionModel.load(model_path)
@@ -95,20 +90,16 @@ object ShortestPathPrediction {
         // 3. shortest path
         val node_df = spark.read.parquet(nodes_path)
         val edge_node_df = spark.read.parquet(vertices_path).cache
-        val df_pred_weight = predictions.filter(col("week") === week)
-          .filter(col("day_of_week") === day_of_week)
-          .filter(col("hour_of_day") === hour_of_day)
-          .filter(col("minute_of_hour") === minute_of_hour)
-          .select("edge", "label", "prediction")
-          .withColumnRenamed("edge", "edge_id")
-
-        println(df_pred_weight.count())  // TODO: only work if 476 lines, i.e. have prediction for ever edge
+        val df_pred_weight = (predictions.select("edge", "label", "prediction")
+                                .withColumnRenamed("edge", "edge_id")
+                                .withColumn("prediction", when(col("prediction") < 0, lit(0.0)).otherwise(col("prediction"))))
 
         result += "True Shortest Path \n"
         findShortestPath(spark:SparkSession, node_df, edge_node_df, df_pred_weight, result, "label")
         result += "Predicted Shortest Path \n"
         findShortestPath(spark:SparkSession, node_df, edge_node_df, df_pred_weight, result, "prediction")
 
+        edge_node_df.unpersist
         // closing everything
         val rdd = sc.parallelize(result)
         rdd.coalesce(1).saveAsTextFile(result_path)
@@ -118,30 +109,22 @@ object ShortestPathPrediction {
 
     def findShortestPath(spark:SparkSession, node_df: DataFrame, edge_node_df: DataFrame, edge_weight_df:DataFrame,
                          result: ListBuffer[String], density: String): Unit = {
+                             
         val edge_weight_df_join_id = edge_weight_df.join(edge_node_df, "edge_id").drop("edge_id")
+        edge_weight_df_join_id.cache
         val nodeRDD = node_df.rdd.map(row => (row.getLong(row.size-1), row.toSeq.slice(0,row.toSeq.size-1)))
-        //val edgeRDD = edge_weight_df_join_id.rdd.map(row => Edge(row.getLong(3), row.getLong(4), row.getInt(0).toDouble))
-        val edgeRDD = edge_weight_df_join_id.rdd.map(row => Edge(row.getAs[Long]("from_vertex_id"),
-            row.getAs[Long]("to_vertex_id"), row.getAs[Double](density)))
+        val edgeRDD = (edge_weight_df_join_id.rdd.map(row => Edge(row.getAs[Long]("from_vertex_id"),
+            row.getAs[Long]("to_vertex_id"), row.getAs[Double](density))))
+
         val graph = Graph(nodeRDD, edgeRDD)
 
-        //Source & sink for shortest path
-        // val sourceId: VertexId = args(1).toLong
         val sourceId: VertexId = 0
-        // val sinkId: VertexId = args(2).toLong
         val sinkId: VertexId = 8
-
-
-        //Initial parent is -1 for all vertices
         val initParent: VertexId = -1
-        //Initialize all distances to infinity except source
-        val initialGraph = graph.mapVertices((id,_) =>
-            if (id == sourceId) (0.0,-1) else (Double.PositiveInfinity,initParent))
-        //Define pregel for shortest path
-        val sssp = initialGraph.pregel((Double.PositiveInfinity,initParent))(
-            //Function to receive message: vprog
+        val initialGraph = (graph.mapVertices((id,_) => if (id == sourceId) (0.0,-1) else (Double.PositiveInfinity,initParent)))
+
+        val sssp = (initialGraph.pregel((Double.PositiveInfinity,initParent))(
             (id, attr, newAttr) => if (math.min(attr._1, newAttr._1) == attr._1) attr else newAttr,
-            //Function to send message: sendMsg
             triplet => {
                 if(triplet.srcAttr._1 + triplet.attr < triplet.dstAttr._1){
                     Iterator((triplet.dstId, (triplet.srcAttr._1 + triplet.attr, triplet.srcId)))
@@ -150,9 +133,8 @@ object ShortestPathPrediction {
                     Iterator.empty
                 }
             },
-            //Function to merge messages: mergeMsg
             (a, b) => if (math.min(a._1,b._1) == a._1) a else b
-        )
+        ))
 
         //Shortest path
         var shortestPath: String = ""
@@ -170,6 +152,8 @@ object ShortestPathPrediction {
         }
         result += shortestPath
         result += agg_density.toString
+
+        edge_weight_df_join_id.unpersist
     }
 }
 
