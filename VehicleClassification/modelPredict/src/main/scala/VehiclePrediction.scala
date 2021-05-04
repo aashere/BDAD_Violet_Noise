@@ -18,9 +18,8 @@ object VehiclePrediction {
         val spark = SparkSession.builder().appName("VehiclePrediction").getOrCreate
 
         val modelPath = "/user/jl11257/big_data_project/models/vehicleClassifier/randomForestFinal"
-        val dataPath = "/user/jl11257/big_data_project/features/vehiclesamplenoise/witholdtest"
-        //val modelPath = args(0)
-        //val dataPath = args(1)
+        val dataPath = args(0)
+        val summaryPath = args(1)
 
         val cvModel = CrossValidatorModel.load(modelPath)
 
@@ -47,6 +46,8 @@ object VehiclePrediction {
         result += "Confusion matrix:\n" + metrics.confusionMatrix + "\n"
         result += "Area under precision-recall curve = " + evaluator.evaluate(predictions) + "\n"
         val outp = spark.sparkContext.parallelize(result)
-        outp.coalesce(1).saveAsTextFile("/user/hls327/predsum")
+        outp.coalesce(1).saveAsTextFile(summaryPath)
+        
+        spark.stop
     }
 }
