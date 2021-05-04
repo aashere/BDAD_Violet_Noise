@@ -35,7 +35,7 @@ printf "Making local hdfs directories for demo output\n"
 
 hdfs dfs -mkdir /user/$(whoami)/violetnoisesummary
 
-printf "Running feature calculations for the vehicle classification model\n"
+printf "Running feature calculations for the vehicle classification model, please allow 1-2 mins \n"
 
 spark-submit --master yarn \
 --deploy-mode cluster \
@@ -49,7 +49,7 @@ spark-submit --master yarn \
 printf "Vehicle feature spark log is in vehiclefeaturelog.txt\n"
 hdfs dfs -du -h /user/$(whoami)/violetnoisesummary/vehiclefeatures
 
-printf "Running feature calculations for the edge weight regression model\n"
+printf "Running feature calculations for the edge weight regression model, please allow 1-2 mins \n"
 
 spark-submit --master yarn \
 --deploy-mode cluster \
@@ -63,7 +63,7 @@ spark-submit --master yarn \
 printf "Edge weight feature spark log is in edgefeaturelog.txt\n"
 hdfs dfs -du -h /user/$(whoami)/violetnoisesummary/edgefeatures
 
-printf "Running car classification predictions on sample data\n"
+printf "Running car classification predictions on sample data, please allow 1-2 mins \n"
 spark-submit --master yarn \
 --deploy-mode cluster \
 --driver-memory 2G \
@@ -77,7 +77,7 @@ printf "Car prediction spark log is in carclassifylog.txt\n"
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/carclassify/part-00000
 
-printf "\n\n\nRunning shortest path forecast on sample data\n"
+printf "\n\nRunning shortest path forecast on sample data, please allow 2-3 mins \n"
 
 spark-submit --master yarn \
 --deploy-mode cluster \
@@ -93,4 +93,6 @@ spark-submit --master yarn \
 printf "Edge forecast spark log is in edgeforecast.txt\n"
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/edgeforecast/part-00000
-printf "\n\n\nDemo is complete!\n"
+printf "\n"
+
+printf "                __ \n              .'  '. \n             | STOP | \n              '.__.' \n                || \n                || \n                || \n               \\||/// \n          ^^^^^^^^^^^^^^^ \n        Demo is complete! \n####################################\n"
