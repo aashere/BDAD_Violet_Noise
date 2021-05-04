@@ -1,5 +1,9 @@
 # BDAD_Violet_Noise
 ### Team Members
+Ameya - as12366
+Kristin - jl11257
+Emma - yl3750
+Helene - hls327
 
 ### Running the Demo
 
