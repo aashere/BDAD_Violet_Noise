@@ -24,7 +24,7 @@ The data is stored in `/user/jl11257/big_data_project/traces/demo/morningsample`
 
 If you wish to re-run the demo, you may will want to run the following command first.
 
-`hdfs dfs -rm -rf /user/$(whoami)/violetnoisesummary`
+`hdfs dfs -rm -r /user/$(whoami)/violetnoisesummary`
 
 In the event of folder permission issues please contact hls327@nyu.edu.
 
