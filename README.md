@@ -11,8 +11,10 @@ Data is designed to be simulated one day at a time, each output from the microsi
 To save time, several pre-processing steps of the data pipeline have already been run so that you can test on a small set of data.
 Steps completed include generating a new day of data, parsing into parquet format, adding noise, and selecting a subset to test.
 See the following scripts for details:
-runscripts/simulateForEval.sh
-runscripts/prepforEval.sh
+
+`runscripts/simulateForEval.sh`
+
+`runscripts/prepforEval.sh`
 
 You are testing on ~2 hours of data, a Monday morning between 7 and 9 AM.
 
