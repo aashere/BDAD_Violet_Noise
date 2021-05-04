@@ -75,18 +75,19 @@ spark-submit --master yarn \
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/carclassify/part-00000
 
-printf "\n\n\nRunning shorest path forecast on sample data\n"
+printf "\n\n\nRunning shortest path forecast on sample data\n"
 
 spark-submit --master yarn
 --deploy-mode cluster
 --driver-memory 2G \
 --executor-memory 2G \
---num-executors 4 \
+--num-executors 8 \
 --packages com.databricks:spark-csv_2.11:1.5.0 \
 --class ShortestPathPrediction shortest-path-prediction_2.11-0.1.jar \
-GeneralizedLinearGaussian \
 /user/$(whoami)/violetnoisesummary/edgefeatures \
 10 0 8 29 \
 /user/$(whoami)/violetnoisesummary/carclassify
 
 hdfs dfs -cat /user/$(whoami)/violetnoisesummary/edgeforecast/part-00000
+
+printf "\n\n\nDemo is complete!\n"
