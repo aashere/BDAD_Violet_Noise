@@ -1,6 +1,6 @@
 # Traffic Simulation Project
 
-![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Apache Spark](https://img.shields.io/badge/apache%20spark-3c3a3e?style=for-the-badge&logo=apachespark&logoColor=E25A1C)
 ![Scala](https://img.shields.io/badge/scala-%23DC322F.svg?style=for-the-badge&logo=scala&logoColor=white)
 
