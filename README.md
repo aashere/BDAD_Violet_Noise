@@ -1,9 +1,7 @@
 # Traffic Simulation Project
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) (pandas, matplotlib)
-
-![Apache Spark](https://img.shields.io/badge/apache%20spark-3c3a3e?style=for-the-badge&logo=apachespark&logoColor=E25A1C) (Spark SQL, MLlib, GraphX)
-
+![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
+![Apache Spark](https://img.shields.io/badge/apache%20spark-3c3a3e?style=for-the-badge&logo=apachespark&logoColor=E25A1C)
 ![Scala](https://img.shields.io/badge/scala-%23DC322F.svg?style=for-the-badge&logo=scala&logoColor=white)
 
 In this project, our team generated 70 days of noisy synthetic traffic data (550 GB) for a region of Manhattan. Our goal was to embed certain insights into the data and use Apache Spark libraries (Spark SQL, MLlib, GraphX) to recover them. Running our Spark code on a distributed Hadoop cluster, we did the following:
